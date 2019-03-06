@@ -1,0 +1,28 @@
+plugins {
+    id 'java'
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '4.10'
+}
+
+group 'scse.ntu.edu.sg'
+version '1.0'
+
+sourceCompatibility = 1.8
+
+jar {
+    manifest {
+        attributes(
+                'Main-Class': 'MainApp'
+        )
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // Any project level dependencies will be located here
+}
