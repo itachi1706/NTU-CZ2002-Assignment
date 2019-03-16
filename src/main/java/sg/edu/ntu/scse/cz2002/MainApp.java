@@ -4,6 +4,13 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.stream.Stream;
 
+/**
+ * Main Application Class
+ * Entry point for the RRPSS application
+ * @author Kenneth Soh
+ * @version 1.0
+ * @since 2019-03-16
+ */
 public class MainApp {
 
     /**

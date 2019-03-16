@@ -23,6 +23,17 @@ repositories {
     mavenCentral()
 }
 
+javadoc {
+    source = sourceSets.main.allJava
+    classpath = configurations.compile
+    destinationDir = file('html')
+    options.addBooleanOption('author', true)
+    options.addStringOption('noqualifier', 'all')
+    options.addBooleanOption('private', true)
+    options.addBooleanOption('version', true)
+}
+
+
 dependencies {
     // Any project level dependencies will be located here
 }
