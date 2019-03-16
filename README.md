@@ -10,6 +10,15 @@ and [IntelliJ IDEA](https://ntugit.itachi1706.com/guides/import-intellij.html) r
 Also note that the Master branch will be locked from being pushed. All code changes are to be done through pull requests.
 And view the Projects/Issues tab to see roughly where we are in terms of progress for this assignment.
 
+#### Pull Request Notice  
+Should you find one of the checks being hanged (stuck at "Waiting for status to be reported"), do a force push of your 
+commit again. Launch the Console in git and run the following commands
+
+```bash
+git commit --amend
+# Just exit the editor (Ctrl+X)
+git push -f
+```
 
 
 ## Some References
