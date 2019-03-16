@@ -21,12 +21,24 @@ before_install:
   - wget $DISCORD_URL
   - chmod +x send.sh
 script: travis_retry ./gradlew assemble
-after_success: 
+after_success:
+  - ./gradlew javadoc # Generate Javadocs
+  - zip -r javadocs.zip ./html # Compress it
   - ./send.sh success $WEBHOOK_URL
   - DISCORD_CALL=1
 after_failure: 
   - ./send.sh failure $WEBHOOK_URL
   - DISCORD_CALL=1
 after_script: if [ $DISCORD_CALL -eq 0 ]; then ./send.sh error $WEBHOOK_URL; fi
+deploy:
+  provider: releases
+  api_key: "$OAUTH_KEY"
+  file_glob: true
+  file:
+    - './build/libs/*.jar'
+    - 'javadocs.zip'
+  skip_cleanup: true
+  on:
+    tags: true
 notifications:
   email: false # Disable email notification completely
