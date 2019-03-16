@@ -6,7 +6,7 @@ task wrapper(type: Wrapper) {
     gradleVersion = '4.10'
 }
 
-group 'scse.ntu.edu.sg'
+group 'sg.edu.ntu.scse.cz2002'
 version '1.0'
 
 sourceCompatibility = 1.8
@@ -14,7 +14,7 @@ sourceCompatibility = 1.8
 jar {
     manifest {
         attributes(
-                'Main-Class': 'MainApp'
+                'Main-Class': 'sg.edu.ntu.scse.cz2002.MainApp'
         )
     }
 }
