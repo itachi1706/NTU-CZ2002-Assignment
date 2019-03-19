@@ -10,17 +10,32 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Kenneth on 19/3/2019.
- * for sg.edu.ntu.scse.cz2002.util in assignment-fsp6-grp2
+ * Helper class for CSV I/O of Menu Items
+ *
+ * @author Kenneth
+ * @version 1.0
+ * @since 2019-03-19
  */
 public class MenuItemCSVHelper {
 
+    /**
+     * Path to Menu Items CSV File in the data folder
+     */
     private String menuItemCsv;
 
+    /**
+     * Initialize the Helper object
+     * @param filename Path to MenuItems CSV File
+     */
     public MenuItemCSVHelper(String filename) {
         this.menuItemCsv = filename;
     }
 
+    /**
+     * Reads the CSV file and parse it into an array list of menu item objects
+     * @return ArrayList of Menu Item Objects
+     * @throws IOException
+     */
     public ArrayList<MenuItem> readFromCsv() throws IOException {
         CSVReader csvReader = new CSVReaderBuilder(FileIOHelper.getFileBufferedReader(this.menuItemCsv)).withSkipLines(1).build(); // Skip Header Line
         List<String[]> csvLines = csvReader.readAll();
