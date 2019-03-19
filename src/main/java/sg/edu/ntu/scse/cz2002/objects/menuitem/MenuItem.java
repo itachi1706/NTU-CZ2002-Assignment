@@ -1,6 +1,6 @@
 package sg.edu.ntu.scse.cz2002.objects.menuitem;
 
-public abstract class MenuItem {
+public class MenuItem {
 
     protected int id;
     protected String name;
