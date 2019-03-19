@@ -3,7 +3,7 @@ package sg.edu.ntu.scse.cz2002.util;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
 import com.opencsv.CSVWriter;
-import sg.edu.ntu.scse.cz2002.objects.menuitem.MenuItem;
+import sg.edu.ntu.scse.cz2002.objects.menuitem.*;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -42,8 +42,16 @@ public class MenuItemCSVHelper {
         csvReader.close();
         ArrayList<MenuItem> items = new ArrayList<>();
         if (csvLines.size() == 0) return items;
-        csvLines.forEach((str) -> items.add(new MenuItem(str)));
-
+        csvLines.forEach((str) -> {
+            MenuItem item; // Create based on type
+            switch (str[2].toLowerCase()) {
+                case "main": item = new MainCourse(str); break;
+                case "dessert": item = new Dessert(str); break;
+                case "drink": item = new Drink(str); break;
+                case "appetizer": item = new Appetizer(str); break;
+                default: item = new MenuItem(str); break;
+            }
+            items.add(item); });
         return items;
     }
 
