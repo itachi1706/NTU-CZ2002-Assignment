@@ -1,9 +1,6 @@
 package sg.edu.ntu.scse.cz2002.util;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.stream.Stream;
 
 /**
  * Helper class for File IO to the CSV files in the data folder
@@ -18,11 +15,13 @@ public class FileIOHelper {
 
     /**
      * Ensure that the data folder exists. Otherwise creates it
+     * @return Folder file object
      */
     @SuppressWarnings("ResultOfMethodCallIgnored")
-    private static void init() {
-        File folder = new File("/data");
+    private static File init() {
+        File folder = new File("./data");
         if (!folder.exists()) folder.mkdir();
+        return folder;
     }
 
     /**
@@ -31,57 +30,27 @@ public class FileIOHelper {
      * @return File object if valid, null otherwise
      */
     public static File getFile(String name) {
-        init();
-        return new File("/data/" + name);
+        File folder = init();
+        return new File(folder.getAbsolutePath() + File.separator + name);
     }
 
     /**
-     * Returns a concatenated String read from the CSV files
-     * @param filename The filename with extension
-     * @return A single string of text in the file
-     * @throws IOException If any error occurs
+     * Get the buffered reader object from the file
+     * @param name Filename with extension
+     * @return Buffered Reader of the file
+     * @throws IOException File Not Found Exception
      */
-    public static String readStringFromFile(String filename) throws IOException {
-        BufferedReader reader = new BufferedReader(new FileReader(getFile(filename)));
-
-        StringBuilder sb = new StringBuilder();
-        Stream<String> fileString = reader.lines();
-        fileString.forEach((s) -> sb.append(s).append("\n"));
-        reader.close();
-        return sb.toString();
+    public static BufferedReader getFileBufferedReader(String name) throws IOException {
+        return new BufferedReader(new FileReader(getFile(name)));
     }
 
     /**
-     * Writes an arraylist of Strings to the file
-     *
-     * @param filename Filename with extension where the list of Strings are being saved into
-     * @param strings The Arraylist of Strings to be written to the file
-     * @return true if operation completes
-     * @throws IOException Any error occurs
+     * Get the Buffered Writer object from the file
+     * @param name filename with extension
+     * @return Buffered Writer of the file
+     * @throws IOException File Not Found Exception
      */
-    public static boolean writeStringToFile(String filename, ArrayList<String> strings) throws IOException {
-        PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(getFile(filename))));
-
-        for (String s : strings) {
-            writer.println(s);
-        }
-        writer.close();
-        return true;
+    public static BufferedWriter getFileBufferedWriter(String name) throws IOException {
+        return new BufferedWriter(new FileWriter(getFile(name)));
     }
-
-    /**
-     * Writes a single string to the file
-     *
-     * @param filename Filename with extension where the string is being written into
-     * @param toWrite The string to write into the file
-     * @return true if operation completes
-     * @throws IOException Any error occurs
-     */
-    public static boolean writeStringToFile(String filename, String toWrite) throws IOException {
-        ArrayList<String> splitStr = new ArrayList<>(Arrays.asList(toWrite.split("\n")));
-        return writeStringToFile(filename, splitStr);
-    }
-
-    // TODO: Method to read and parse CSV
-    // TODO: Method to write CSV to file
 }

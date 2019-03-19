@@ -17,6 +17,10 @@ jar {
                 'Main-Class': 'sg.edu.ntu.scse.cz2002.MainApp'
         )
     }
+
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
 }
 
 repositories {
@@ -36,4 +40,5 @@ javadoc {
 
 dependencies {
     // Any project level dependencies will be located here
+    implementation 'com.opencsv:opencsv:4.0'
 }

@@ -1,11 +1,78 @@
 package sg.edu.ntu.scse.cz2002.objects.menuitem;
 
-public abstract class MenuItem {
+public class MenuItem {
 
+    protected int id;
     protected String name;
-    protected String desc;
+    protected String type;
+    protected String description;
     protected double price;
 
     public MenuItem() {}
 
+    public MenuItem(int id, String name, String type, String description, double price) {
+        this.id = id;
+        this.name = name;
+        this.type = type;
+        this.description = description;
+        this.price = price;
+    }
+
+    public MenuItem(String[] csv) {
+        this.id = Integer.parseInt(csv[0]);
+        this.name = csv[1];
+        this.type = csv[2];
+        this.price = Double.parseDouble(csv[3]);
+        this.description = csv[4];
+    }
+
+    public String[] toCsv() {
+        String[] s = new String[5];
+        s[0] = this.id + "";
+        s[1] = this.name;
+        s[2] = this.type;
+        s[3] = this.price + "";
+        s[4] = this.description;
+        return s;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
 }
