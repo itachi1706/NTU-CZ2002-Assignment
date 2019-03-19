@@ -17,6 +17,10 @@ jar {
                 'Main-Class': 'sg.edu.ntu.scse.cz2002.MainApp'
         )
     }
+
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
 }
 
 repositories {
