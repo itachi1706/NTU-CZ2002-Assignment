@@ -47,3 +47,4 @@ bin/.gitignore
 .classpath
 .project
 html/
+.settings/
