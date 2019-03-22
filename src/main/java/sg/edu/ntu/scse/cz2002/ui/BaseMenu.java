@@ -11,6 +11,7 @@ import java.util.stream.Stream;
  * @version 1.0
  * @since 2019-03-22
  */
+@SuppressWarnings("WeakerAccess")
 public abstract class BaseMenu {
 
     /**
@@ -68,6 +69,7 @@ public abstract class BaseMenu {
      * @param specialEscape A special option that will be used for special operations like exiting the program
      * @return The menu option selected by the user
      */
+    @SuppressWarnings("SameParameterValue")
     protected static int doMenuChoice(int max, int specialEscape) {
         Scanner input = new Scanner(System.in);
         int selection;
