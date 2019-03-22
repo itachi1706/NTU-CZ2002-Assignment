@@ -63,7 +63,9 @@ public class MainApp {
 
     /**
      * The application main menu
+     * @deprecated To convert to a {@link sg.edu.ntu.scse.cz2002.ui.BaseMenu} object
      */
+    @Deprecated
     private static void generateMainMenu() {
         while (true) {
             printHeader("Main Menu");
@@ -120,8 +122,10 @@ public class MainApp {
     // TODO: Discuss if we should move this to respective classes for OO or leave them hear
     /**
      * The Food Menu Items Management Menu
+     * @deprecated To convert to a {@link sg.edu.ntu.scse.cz2002.ui.BaseMenu} object
      * @return Exit Code. Return true to exit the program
      */
+    @Deprecated
     private static boolean generateFoodMenuItemMenu() {
         while (true) {
             printHeader("Menu Items Management");
@@ -152,8 +156,10 @@ public class MainApp {
 
     /**
      * The Promotion Management Menu
+     * @deprecated To convert to a {@link sg.edu.ntu.scse.cz2002.ui.BaseMenu} object
      * @return Exit Code. Return true to exit the program
      */
+    @Deprecated
     private static boolean generatePromotionMenu() {
         while (true) {
             printHeader("Promotion Management");
@@ -184,8 +190,10 @@ public class MainApp {
 
     /**
      * The Order Management Menu
+     * @deprecated To convert to a {@link sg.edu.ntu.scse.cz2002.ui.BaseMenu} object
      * @return Exit Code. Return true to exit the program
      */
+    @Deprecated
     private static boolean generateOrderMenu() {
         while (true) {
             printHeader("Order Management");
@@ -219,8 +227,10 @@ public class MainApp {
 
     /**
      * The Reservation Management Menu
+     * @deprecated To convert to a {@link sg.edu.ntu.scse.cz2002.ui.BaseMenu} object
      * @return Exit Code. Return true to exit the program
      */
+    @Deprecated
     private static boolean generateReservationMenu() {
         while (true) {
             printHeader("Reservation Booking Management");
@@ -254,7 +264,9 @@ public class MainApp {
     /**
      * Helper method to print the header of a menu
      * @param headerName Name of the menu
+     * @deprecated Migrated to another class. See {@link sg.edu.ntu.scse.cz2002.ui.BaseMenu}
      */
+    @Deprecated
     public static void printHeader(String headerName) {
         printBreaks();
         // Do fancy parsing of header to center it (size 40)
@@ -267,7 +279,9 @@ public class MainApp {
     /**
      * Helper method to create a menu separator
      * (e.g -----------)
+     * @deprecated Migrated to another class. See {@link sg.edu.ntu.scse.cz2002.ui.BaseMenu}
      */
+    @Deprecated
     public static void printBreaks() {
         Stream.generate(() -> "-").limit(PRINT_WINDOW_MAX_SIZE).forEach(System.out::print);
         System.out.println();
@@ -279,7 +293,9 @@ public class MainApp {
      * @param max The max option a user can select
      * @param specialEscape A special option that will be used for special operations like exiting the program
      * @return The menu option selected by the user
+     * @deprecated Migrated to another class. See {@link sg.edu.ntu.scse.cz2002.ui.BaseMenu}
      */
+    @Deprecated
     public static int doMenuChoice(int max, int specialEscape) {
         Scanner input = new Scanner(System.in);
         int selection;
