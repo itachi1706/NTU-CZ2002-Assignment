@@ -1,11 +1,18 @@
 package sg.edu.ntu.scse.cz2002.ui;
 
 /**
- * Created by Kenneth on 22/3/2019.
- * for sg.edu.ntu.scse.cz2002.ui in assignment-fsp6-grp2
+ * The Promotion Menu UI
+ *
+ * @author Kenneth Soh
+ * @version 1.0
+ * @since 2019-03-22
  */
 public class PromotionMenuUI extends BaseMenu {
 
+    /**
+     * The Promotion Management Menu
+     * @return Exit Code. Return 1 to exit the program and -1 to exit to main menu
+     */
     @Override
     protected int generateMenuScreen() {
         printHeader("Promotion Management");

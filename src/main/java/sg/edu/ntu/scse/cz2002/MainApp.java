@@ -23,6 +23,9 @@ public class MainApp {
      */
     private static final int PRINT_WINDOW_MAX_SIZE = 40;
 
+    /**
+     * The list of menuitems loaded into the program
+     */
     public static ArrayList<MenuItem> menuItems;
 
     /**
