@@ -1,45 +1,45 @@
-﻿ID,Name,Type,Price,Description
-1,Chicken Borobudur Rice,Main,8.9,Down Orchard Road
-2,Oregano Tomato Bean Stew (Chicken Sausage),Main,8.9,Bypass Mandarin
-3,Mexican Cheesy Fried Rice (Chicken),Main,8.9,To Centrepoint
-4,Oriental Macaroni (Chicken),Main,8.9,Where we had lunch
-5,Lor Mee (Chicken),Main,7.9,At McDonalds
-6,Braised Peanut Rice with Chicken,Main,7.9,We had fillet
-7,Red Bean Dumpling with Chicken,Main,7.9,And an apple pie
-8,Noodle in Sweet Sesame Sauce (Chicken),Main,7.9,We shared a cup
-9,Teriyaki Chicken Pasta,Main,8.9,Of lemon lime
-10,Creamy Bean with Chicken,Main,8.9,Holding her hands
-11,Tomato Lentil Rice (Chicken Sausage),Main,8.9,Looked into her eyes
-12,Sweet & Sour Chicken Noodle,Main,7.9,I asked her to
-13,Hainanese Chicken Rice,Main,7.9,Be my future wife
-14,Indian Style Fried Noodle (Chicken Sausage),Main,7.9,There was one night
-15,Chicken Channa Dhali Stew,Main,7.9,There was no light
-16,Thai Style Stir Fried Noodle (Chicken),Main,7.9,So we used torchlight
-17,Carribean Curry Pasta,Main,8.9,Torchlight no light
-18,Makhani Bean Stew,Main,7.9,So we used star light
-19,Malay Style Tomato Rice,Main,8.9,Star light not bright
-20,Curry Potato Stew (Chicken),Main,7.9,So we used purple light
-21,Nata De Coco Dessert,Dessert,5,Poor man's coconut.
-22,Red Bean with Orange Peel,Dessert,5,Basically Mr. Bean with minutemaid
-23,Lemongrass Barley,Dessert,5,"The only edible dessert in this list, to be honest."
-24,Honey Red Bean,Dessert,5,A favorite of bees.
-25,Soya Peanut,Dessert,5,Drives people nuts.
-26,Red Bean Nata De Coco,Dessert,5,Mr. Bean but native endian.
-27,Green Bean Barley,Dessert,5,Mr. Bean with matcha.
-28,Red Bean Milk with Yam,Dessert,5,How does the milk not expire.
-29,Sweet Potato Soup with Barley,Dessert,5,Not really sweet.
-30,Mixed Bean Longan,Dessert,5,"Mr. Bean, but ang moh."
-31,Milo 3-in-1,Drink,3,Not as good as it used to be.
-32,Ovaltine 3-in-1,Drink,3,The better milo.
-33,Horlick 3-in-1,Drink,3,Throwback Thursday.
-34,Lemon Tea,Drink,4,A favorite of ants.
-35,Peach Tea,Drink,4,The taste of 4 seasons.
-36,Orange Drink,Drink,4,Hourmaid.
-37,Mango Drink,Drink,4,Definitely not Marigold.
-38,Red Date,Drink,3,Red Flavor.
-39,Longan Tea,Drink,3,Drained tea.
-40,Honeyed Chrysanthemum Tea,Drink,3,"Contrary to popular belief, it is packed with sugar."
-41,Vanilla Cereal Mix,Drink,6,Definitely not NTR.
-42,Chocolate Cereal Mix,Drink,6,Definitely not Coco Crunch.
-43,Pocari Sweat,Drink,3,Doesn't taste like sweat.
-44,OCS Milo,Sedative,6.9,Also a laxative.
+﻿ID|||Name|||Type|||Price|||Description
+1|||Chicken Borobudur Rice|||Main|||8.9|||Down Orchard Road
+2|||Oregano Tomato Bean Stew (Chicken Sausage)|||Main|||8.9|||Bypass Mandarin
+3|||Mexican Cheesy Fried Rice (Chicken)|||Main|||8.9|||To Centrepoint
+4|||Oriental Macaroni (Chicken)|||Main|||8.9|||Where we had lunch
+5|||Lor Mee (Chicken)|||Main|||7.9|||At McDonalds
+6|||Braised Peanut Rice with Chicken|||Main|||7.9|||We had fillet
+7|||Red Bean Dumpling with Chicken|||Main|||7.9|||And an apple pie
+8|||Noodle in Sweet Sesame Sauce (Chicken)|||Main|||7.9|||We shared a cup
+9|||Teriyaki Chicken Pasta|||Main|||8.9|||Of lemon lime
+10|||Creamy Bean with Chicken|||Main|||8.9|||Holding her hands
+11|||Tomato Lentil Rice (Chicken Sausage)|||Main|||8.9|||Looked into her eyes
+12|||Sweet & Sour Chicken Noodle|||Main|||7.9|||I asked her to
+13|||Hainanese Chicken Rice|||Main|||7.9|||Be my future wife
+14|||Indian Style Fried Noodle (Chicken Sausage)|||Main|||7.9|||There was one night
+15|||Chicken Channa Dhali Stew|||Main|||7.9|||There was no light
+16|||Thai Style Stir Fried Noodle (Chicken)|||Main|||7.9|||So we used torchlight
+17|||Carribean Curry Pasta|||Main|||8.9|||Torchlight no light
+18|||Makhani Bean Stew|||Main|||7.9|||So we used star light
+19|||Malay Style Tomato Rice|||Main|||8.9|||Star light not bright
+20|||Curry Potato Stew (Chicken)|||Main|||7.9|||So we used purple light
+21|||Nata De Coco Dessert|||Dessert|||5.0|||Poor man's coconut.
+22|||Red Bean with Orange Peel|||Dessert|||5.0|||Basically Mr. Bean with minutemaid
+23|||Lemongrass Barley|||Dessert|||5.0|||The only edible dessert in this list, to be honest.
+24|||Honey Red Bean|||Dessert|||5.0|||A favorite of bees.
+25|||Soya Peanut|||Dessert|||5.0|||Drives people nuts.
+26|||Red Bean Nata De Coco|||Dessert|||5.0|||Mr. Bean but native endian.
+27|||Green Bean Barley|||Dessert|||5.0|||Mr. Bean with matcha.
+28|||Red Bean Milk with Yam|||Dessert|||5.0|||How does the milk not expire.
+29|||Sweet Potato Soup with Barley|||Dessert|||5.0|||Not really sweet.
+30|||Mixed Bean Longan|||Dessert|||5.0|||Mr. Bean, but ang moh.
+31|||Milo 3-in-1|||Drink|||3.0|||Not as good as it used to be.
+32|||Ovaltine 3-in-1|||Drink|||3.0|||The better milo.
+33|||Horlick 3-in-1|||Drink|||3.0|||Throwback Thursday.
+34|||Lemon Tea|||Drink|||4.0|||A favorite of ants.
+35|||Peach Tea|||Drink|||4.0|||The taste of 4 seasons.
+36|||Orange Drink|||Drink|||4.0|||Hourmaid.
+37|||Mango Drink|||Drink|||4.0|||Definitely not Marigold.
+38|||Red Date|||Drink|||3.0|||Red Flavor.
+39|||Longan Tea|||Drink|||3.0|||Drained tea.
+40|||Honeyed Chrysanthemum Tea|||Drink|||3.0|||Contrary to popular belief, it is packed with sugar.
+41|||Vanilla Cereal Mix|||Drink|||6.0|||Definitely not NTR.
+42|||Chocolate Cereal Mix|||Drink|||6.0|||Definitely not Coco Crunch.
+43|||Pocari Sweat|||Drink|||3.0|||Doesn't taste like sweat.
+44|||OCS Milo|||Sedative|||6.9|||Also a laxative.
