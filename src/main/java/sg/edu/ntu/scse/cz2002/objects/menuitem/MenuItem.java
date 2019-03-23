@@ -18,6 +18,11 @@ public class MenuItem {
         this.price = price;
     }
 
+    /**
+     * A method to read from a CSV string to convert to an object instance
+     * This needs to be overridden if you need to retrieve CSV data from file
+     * @param csv A string array of the CSV file
+     */
     public MenuItem(String[] csv) {
         this.id = Integer.parseInt(csv[0]);
         this.name = csv[1];
@@ -26,6 +31,11 @@ public class MenuItem {
         this.description = csv[4];
     }
 
+    /**
+     * A method to convert to CSV
+     * This needs to be overridden if you need to save files to CSV
+     * @return A String array of the CSV file
+     */
     public String[] toCsv() {
         String[] s = new String[5];
         s[0] = this.id + "";
