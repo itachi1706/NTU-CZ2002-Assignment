@@ -30,7 +30,7 @@ public class MainApp {
         MenuItemCSVHelper menuItemCsv = new MenuItemCSVHelper("menu.csv");
         try {
             System.out.println("Loading Menu Items from file...");
-            menuItems = menuItemCsv.readFromCsv();
+            menuItems = menuItemCsv.readFromCsvNew();
             System.out.println(menuItems.size() + " menu items loaded from file");
         } catch (IOException e) {
             //e.printStackTrace();
@@ -47,7 +47,7 @@ public class MainApp {
         MenuItemCSVHelper menuItemCSVHelper = new MenuItemCSVHelper("menu.csv");
         try {
             System.out.println("Saving current menu item list to file...");
-            menuItemCSVHelper.writeToCsv(menuItems);
+            menuItemCSVHelper.writeToCsvNew(menuItems);
             System.out.println("Menu Item List Saved!");
         } catch (IOException e) {
             //e.printStackTrace();
