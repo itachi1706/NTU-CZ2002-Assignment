@@ -6,6 +6,7 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
  * Base Helper where all CSV I/O files should extend from
@@ -25,10 +26,7 @@ public class CSVBaseHelper {
      */
     protected List<String[]> readAll(BufferedReader reader, int skip) {
         List<String> tmp = reader.lines().collect(Collectors.toList());
-        while (skip > 0) {
-            tmp.remove(0);
-            skip--; // Skip said lines
-        }
+        IntStream.range(0, skip).forEach((i) -> tmp.remove(0));
         List<String[]> result = new ArrayList<>();
         tmp.forEach((s) -> result.add(s.split("\\|\\|\\|")));
         return result;
