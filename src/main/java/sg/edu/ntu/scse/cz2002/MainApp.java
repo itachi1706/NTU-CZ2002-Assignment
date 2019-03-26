@@ -2,10 +2,14 @@ package sg.edu.ntu.scse.cz2002;
 
 import sg.edu.ntu.scse.cz2002.objects.menuitem.MenuItem;
 import sg.edu.ntu.scse.cz2002.ui.MainMenuUI;
+import sg.edu.ntu.scse.cz2002.util.FileIOHelper;
 import sg.edu.ntu.scse.cz2002.util.MenuItemCSVHelper;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Main Application Class
@@ -20,6 +24,11 @@ public class MainApp {
      * The list of menuitems loaded into the program
      */
     public static ArrayList<MenuItem> menuItems;
+
+    /**
+     * Enable debug mode
+     */
+    private static final boolean DEBUG = false;
 
     /**
      * Initializes all of the necessary items of the application
@@ -37,6 +46,9 @@ public class MainApp {
             System.out.println("[ERROR] Failed to read CSV from data folder. (" + e.getLocalizedMessage() + ")");
         }
         System.out.println("Initializing Program...");
+
+        // Print welcome art
+        printWelcomeAscii();
     }
 
     /**
@@ -65,5 +77,19 @@ public class MainApp {
         init();
         new MainMenuUI().startMainMenu();
         shutdown();
+    }
+
+    /**
+     * Print welcome ascii art/message from data/ascii_welcome.txt
+     */
+    private static void printWelcomeAscii() {
+        try {
+            BufferedReader reader = FileIOHelper.getFileBufferedReader("ascii_welcome.txt");
+            List<String> ascii = reader.lines().collect(Collectors.toList());
+            ascii.forEach(System.out::println);
+        } catch (IOException e) {
+            System.out.println("Failed to load ASCII Welcome Art!");
+            if (DEBUG) System.out.println("Exception: " + e.getLocalizedMessage());
+        }
     }
 }
