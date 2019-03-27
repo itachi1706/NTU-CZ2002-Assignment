@@ -12,11 +12,10 @@ And view the Projects/Issues tab to see roughly where we are in terms of progres
 
 #### Pull Request Notice  
 Should you find one of the checks being hanged (stuck at "Waiting for status to be reported"), do a force push of your 
-commit again. Launch the Console in git and run the following commands
+commit again. Launch the Console in git and run the following 2 commands
 
 ```bash
-git commit --amend
-# Just exit the editor (Ctrl+X)
+git commit --amend --no-edit
 git push -f
 ```
 
