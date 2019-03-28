@@ -75,6 +75,7 @@ public class MainApp {
      */
     public static void main(String... args) {
         init();
+        // TODO: Staff login (move if necessary) This is placed here in case we want to "login" to a staff here. If we are not doing so remove this
         new MainMenuUI().startMainMenu();
         shutdown();
     }
