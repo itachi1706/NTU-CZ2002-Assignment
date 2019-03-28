@@ -23,11 +23,12 @@ public class MainMenuUI extends BaseMenu {
         System.out.println("5) Check Table Availability");
         System.out.println("6) Print Bill Invoice");
         System.out.println("7) Print sale revenue report");
+        System.out.println("8) Staff Management");
         System.out.println("0) Exit");
         printBreaks();
 
         // Process Choice
-        int choice = doMenuChoice(7, 0);
+        int choice = doMenuChoice(8, 0);
         switch (choice) {
             case 1:
                 if (new FoodMenuUI().startMainMenu()) return 1;
@@ -49,6 +50,9 @@ public class MainMenuUI extends BaseMenu {
                 break;
             case 7:
                 // TODO: To Implement
+                break;
+            case 8:
+                if (new StaffMgmtMenuUI().startMainMenu()) return 1;
                 break;
             case 0:
                 return 1; // Shutdown
