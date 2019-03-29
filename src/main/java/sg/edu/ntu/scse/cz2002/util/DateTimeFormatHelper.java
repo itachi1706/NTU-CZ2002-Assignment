@@ -29,7 +29,7 @@ public class DateTimeFormatHelper {
         year = date.get(Calendar.YEAR);
         month = date.get(Calendar.MONTH) + 1;
         day = date.get(Calendar.DATE);
-        hour = date.get(Calendar.HOUR);
+        hour = date.get(Calendar.HOUR_OF_DAY);
         minute = date.get(Calendar.MINUTE);
         String formatDate = day + "/" + month + "/" + year + " " + hour + ":" + minute;
         return formatDate;
@@ -52,7 +52,7 @@ public class DateTimeFormatHelper {
         int yr = today.get(Calendar.YEAR);
         int mth = today.get(Calendar.MONTH)+1;
         int day = today.get(Calendar.DATE);
-        int hr = today.get(Calendar.HOUR);
+        int hr = today.get(Calendar.HOUR_OF_DAY);
         int min = today.get(Calendar.MINUTE);
         int sec = today.get(Calendar.SECOND);
         return day + "/" + mth + "/" + yr + " at " + hr + ":" + min + ":" + sec;
@@ -82,7 +82,7 @@ public class DateTimeFormatHelper {
      * @throws ParseException When an incorrect format of date and time String has been passed in
      */
      public static Calendar formatToCalendarDate(String dateTime) throws ParseException {
-         SimpleDateFormat sdf = new SimpleDateFormat("DD/MM/YYYY HH:MM");
+         SimpleDateFormat sdf = new SimpleDateFormat("d/M/yyyy HH:mm");
          Calendar cal = Calendar.getInstance();
          cal.setTime(sdf.parse(dateTime));
          return cal;
