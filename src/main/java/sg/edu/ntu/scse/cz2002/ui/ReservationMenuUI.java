@@ -26,7 +26,7 @@ public class ReservationMenuUI extends BaseMenu {
         System.out.println("0) Exit Application");
         printBreaks();
 
-        int choice = doMenuChoice(4, 0);
+        int choice = doMenuChoice(5, 0);
         switch (choice) {
             case 1:
                 this.createReservationBooking();

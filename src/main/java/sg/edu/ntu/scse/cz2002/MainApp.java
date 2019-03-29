@@ -52,6 +52,7 @@ public class MainApp {
         // TODO: Init Items
         MenuItemCSVHelper menuItemCsv = new MenuItemCSVHelper("menu.csv");
         ReservationCSVHelper reservationCsv = new ReservationCSVHelper("reservation.csv");
+        // TODO: Init tables from csv
         try {
             System.out.println("Loading Menu Items from file...");
             menuItems = menuItemCsv.readFromCsv();
