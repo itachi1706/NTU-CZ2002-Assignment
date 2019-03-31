@@ -16,19 +16,41 @@ import java.util.List;
  * @version 1.0
  * @since 2019-03-29
  */
+@SuppressWarnings("Duplicates")
 public class ReservationCSVHelper extends CSVBaseHelper {
 
     /**
-     * Path to Menu Items CSV File in the data folder
+     * Path to Menu Items CSV File in the data folder. Defaults to reservation.csv
      */
-    private String reservationCsv;
+    private String reservationCsv = "reservation.csv";
+
+    /**
+     * Singleton instance of this class
+     */
+    private static ReservationCSVHelper mInstance;
+
+    /**
+     * Default Constructor to initialize this class with reservation.csv as the CSV file
+     */
+    private ReservationCSVHelper() {}
 
     /**
      * Initialize the Helper object
+     * @deprecated Call {@link ReservationCSVHelper#getInstance()} instead
      * @param filename Path to MenuItems CSV File
      */
+    @Deprecated
     public ReservationCSVHelper(String filename) {
         this.reservationCsv = filename;
+    }
+
+    /**
+     * Gets the singleton instance of MenuItemCSVHelper that reads from menu.csv
+     * @return Instance of this class
+     */
+    public static ReservationCSVHelper getInstance() {
+        if (mInstance == null) mInstance = new ReservationCSVHelper();
+        return mInstance;
     }
 
     /**

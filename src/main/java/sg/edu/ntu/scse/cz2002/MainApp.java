@@ -10,7 +10,6 @@ import sg.edu.ntu.scse.cz2002.util.ReservationCSVHelper;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.sql.SQLOutput;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
@@ -50,8 +49,8 @@ public class MainApp {
      */
     private static void init() {
         // TODO: Init Items
-        MenuItemCSVHelper menuItemCsv = new MenuItemCSVHelper("menu.csv");
-        ReservationCSVHelper reservationCsv = new ReservationCSVHelper("reservation.csv");
+        MenuItemCSVHelper menuItemCsv = MenuItemCSVHelper.getInstance();
+        ReservationCSVHelper reservationCsv = ReservationCSVHelper.getInstance();
         // TODO: Init tables from csv
         try {
             System.out.println("Loading Menu Items from file...");
@@ -80,8 +79,8 @@ public class MainApp {
      */
     private static void shutdown() {
         // TODO: Do pre shutdown items
-        MenuItemCSVHelper menuItemCSVHelper = new MenuItemCSVHelper("menu.csv");
-        ReservationCSVHelper reservationCsvHelper = new ReservationCSVHelper("reservation.csv");
+        MenuItemCSVHelper menuItemCSVHelper = MenuItemCSVHelper.getInstance();
+        ReservationCSVHelper reservationCsvHelper = ReservationCSVHelper.getInstance();
         try {
             System.out.println("Saving current menu item list to file...");
             menuItemCSVHelper.writeToCsv(menuItems);
