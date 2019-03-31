@@ -81,7 +81,6 @@ public class MainApp {
         // TODO: Do pre shutdown items
         saveAll();
         System.out.println("Shutting down program...");
-        System.exit(0);
     }
 
     /**
@@ -112,11 +111,11 @@ public class MainApp {
      * @param args Any console arguments entered by the user
      */
     public static void main(String... args) {
-        
+        Runtime.getRuntime().addShutdownHook(new Thread(MainApp::shutdown));
         init();
         // TODO: Staff login (move if necessary) This is placed here in case we want to "login" to a staff here. If we are not doing so remove this
         new MainMenuUI().startMainMenu();
-        shutdown();
+        System.exit(0);
     }
 
     /**
