@@ -75,10 +75,10 @@ public class MainApp {
     }
 
     /**
-     * Pre-exit actions to be executed here
+     * Saves all data into its relevant CSV files on disk
+     * @return true if successful, false otherwise
      */
-    private static void shutdown() {
-        // TODO: Do pre shutdown items
+    public static boolean saveAll() {
         MenuItemCSVHelper menuItemCSVHelper = MenuItemCSVHelper.getInstance();
         ReservationCSVHelper reservationCsvHelper = ReservationCSVHelper.getInstance();
         try {
@@ -92,9 +92,9 @@ public class MainApp {
         } catch (IOException e) {
             //e.printStackTrace();
             System.out.println("[ERROR] Failed to save items to file. (" + e.getLocalizedMessage() + ")");
+            return false;
         }
-        System.out.println("Shutting down program...");
-        System.exit(0);
+        return true;
     }
 
     /**
@@ -102,10 +102,15 @@ public class MainApp {
      * @param args Any console arguments entered by the user
      */
     public static void main(String... args) {
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            // TODO: Do pre shutdown items
+            saveAll();
+            System.out.println("Shutting down program...");
+        }));
         init();
         // TODO: Staff login (move if necessary) This is placed here in case we want to "login" to a staff here. If we are not doing so remove this
         new MainMenuUI().startMainMenu();
-        shutdown();
+        System.exit(0);
     }
 
     /**
