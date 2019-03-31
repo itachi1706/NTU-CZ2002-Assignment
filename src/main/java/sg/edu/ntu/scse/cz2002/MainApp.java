@@ -75,15 +75,6 @@ public class MainApp {
     }
 
     /**
-     * Pre-exit actions to be executed here
-     */
-    private static void shutdown() {
-        // TODO: Do pre shutdown items
-        saveAll();
-        System.out.println("Shutting down program...");
-    }
-
-    /**
      * Saves all data into its relevant CSV files on disk
      * @return true if successful, false otherwise
      */
@@ -111,7 +102,11 @@ public class MainApp {
      * @param args Any console arguments entered by the user
      */
     public static void main(String... args) {
-        Runtime.getRuntime().addShutdownHook(new Thread(MainApp::shutdown));
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            // TODO: Do pre shutdown items
+            saveAll();
+            System.out.println("Shutting down program...");
+        }));
         init();
         // TODO: Staff login (move if necessary) This is placed here in case we want to "login" to a staff here. If we are not doing so remove this
         new MainMenuUI().startMainMenu();
