@@ -90,7 +90,13 @@ public class Reservation {
         return s;
     }
 
+    public int getResvId() {
+        return resvId;
+    }
 
+    public void setResvId(int resvId) {
+        this.resvId = resvId;
+    }
 
     public Calendar getResvDateTime() {
         return resvDateTime;
@@ -138,14 +144,13 @@ public class Reservation {
      * @param tbl The Table object that is involved in the reservation
      * @return An integer value depicting success or failure of reservation creation.
      * Return value of 1 indicates success, 0 indicates error
-     */
     private int makeReservation(Table tbl)
     {
         if (!tbl.checkReserved()) {
 
         }
         return 0;
-    }
+    }*/
 
     private boolean checkTableReserved (Table tbl) {
         return tbl.checkReserved();
