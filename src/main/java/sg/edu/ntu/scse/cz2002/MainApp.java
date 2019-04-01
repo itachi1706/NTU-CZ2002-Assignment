@@ -7,6 +7,7 @@ import sg.edu.ntu.scse.cz2002.ui.MainMenuUI;
 import sg.edu.ntu.scse.cz2002.util.FileIOHelper;
 import sg.edu.ntu.scse.cz2002.util.MenuItemCSVHelper;
 import sg.edu.ntu.scse.cz2002.util.ReservationCSVHelper;
+import sg.edu.ntu.scse.cz2002.util.TableCSVHelper;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -51,7 +52,7 @@ public class MainApp {
         // TODO: Init Items
         MenuItemCSVHelper menuItemCsv = MenuItemCSVHelper.getInstance();
         ReservationCSVHelper reservationCsv = ReservationCSVHelper.getInstance();
-        // TODO: Init tables from csv
+        TableCSVHelper tableCsv = TableCSVHelper.getInstance();
         try {
             System.out.println("Loading Menu Items from file...");
             menuItems = menuItemCsv.readFromCsv();
@@ -60,6 +61,10 @@ public class MainApp {
             System.out.println("Loading Reservations from file...");
             reservations = reservationCsv.readFromCsv();
             System.out.println(reservations.size() + " existing reservations loaded successfully.");
+
+            System.out.println("Loading Table states from file...");
+            tables = tableCsv.readFromCsv();
+            System.out.println(tables.size() + " tables loaded successfully.");
 
         } catch (IOException e) {
             //e.printStackTrace();
@@ -81,6 +86,7 @@ public class MainApp {
     public static boolean saveAll() {
         MenuItemCSVHelper menuItemCSVHelper = MenuItemCSVHelper.getInstance();
         ReservationCSVHelper reservationCsvHelper = ReservationCSVHelper.getInstance();
+        TableCSVHelper tableCsvHelper = TableCSVHelper.getInstance();
         try {
             System.out.println("Saving current menu item list to file...");
             menuItemCSVHelper.writeToCsv(menuItems);
@@ -89,6 +95,10 @@ public class MainApp {
             System.out.println("Saving current reservation list to file...");
             reservationCsvHelper.writeToCsv(reservations);
             System.out.println("Reservation List Saved!");
+
+            System.out.println("Saving current tables to file...");
+            tableCsvHelper.writeToCsv(tables);
+            System.out.println("Table List Saved!");
         } catch (IOException e) {
             //e.printStackTrace();
             System.out.println("[ERROR] Failed to save items to file. (" + e.getLocalizedMessage() + ")");

@@ -3,7 +3,6 @@ package sg.edu.ntu.scse.cz2002.util;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 
 /**
@@ -12,8 +11,8 @@ import java.util.GregorianCalendar;
  * Helper class also contains validation methods for validating whether a certain date is valid
  *
  * @author Francis Lim
- * @version 1.0
- * @since 2019-03-29
+ * @version 1.1
+ * @since 2019-04-01
  */
 
 public class DateTimeFormatHelper {
@@ -59,11 +58,18 @@ public class DateTimeFormatHelper {
     }
 
     /**
-     * Method to get today's date and time
+     * Method to get date in Calendar object
+     * @param getNextMonth boolean variable to determine if getting today's date or date one month from now
      * @return Date object containing today's date and time value
      */
-    public static Date getTodayDate() {
-        return Calendar.getInstance().getTime();
+    public static Calendar getDate(boolean getNextMonth) {
+        if (!getNextMonth)
+            return Calendar.getInstance();
+        else {
+            Calendar c = Calendar.getInstance();
+            c.add(Calendar.DATE, 30);
+            return c;
+        }
     }
 
     /**
