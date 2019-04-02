@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * Helper class for CSV I/O of Menu Items
  *
- * @author Kenneth
+ * @author Arthur Koh, Kenneth Soh
  * @version 1.1
  * @since 2019-03-19
  */
@@ -117,8 +117,11 @@ public class MenuItemCSVHelper extends CSVBaseHelper {
 	/**
 	 * Adds a new item to the CSV file Menu @ Arthur
 	 * (uses "readfromCsv" AND "writeToCsv" to facilitate IO operations)
+	 * @params newItemName <description of parameter>
+	 * @params newItemType 
+	 * @params  
+	 * 
 	 */
-	
 	public void addNewMenuItem(String newItemName, String newItemType, String newItemDescription, double newItemPrice) {
 		
 		try {
