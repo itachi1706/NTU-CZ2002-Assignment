@@ -1,5 +1,9 @@
 package sg.edu.ntu.scse.cz2002.ui;
 
+import sg.edu.ntu.scse.cz2002.util.ScannerHelper;
+
+import java.util.Scanner;
+
 /**
  * The Order Menu UI
  *
@@ -17,28 +21,24 @@ public class OrderMenuUI extends BaseMenu {
     protected int generateMenuScreen() {
         printHeader("Order Management");
         System.out.println("1) Create a new order");
-        System.out.println("2) View order");
-        System.out.println("3) Add item to order");
-        System.out.println("4) Remove item from order");
-        System.out.println("5) Back to main menu");
+        System.out.println("2) View orders");
+        System.out.println("3) Edit order");
+        System.out.println("4) Back to main menu");
         System.out.println("0) Exit Application");
         printBreaks();
 
-        int choice = doMenuChoice(5, 0);
+        int choice = doMenuChoice(4, 0);
         switch (choice) {
             case 1:
-                // TODO: To Implement
+                createOrder();
                 break;
             case 2:
-                // TODO: To Implement
+                viewOrder();
                 break;
             case 3:
-                // TODO: To Implement
+                editOrder();
                 break;
             case 4:
-                // TODO: To Implement
-                break;
-            case 5:
                 return -1;
             case 0:
                 return 1;
@@ -46,5 +46,54 @@ public class OrderMenuUI extends BaseMenu {
                 throw new IllegalStateException("Invalid Choice (Order Menu)");
         }
         return 0;
+    }
+
+    private boolean editOrderMenuScreen(int orderNumber) {
+        // TODO: Code Stub
+        // TODO: Update this. This will run after progress is done
+        while (true) {
+            printHeader("Order #" + orderNumber);
+            System.out.println("1) View items in order");
+            System.out.println("2) Add item to order");
+            System.out.println("3) Remove item from order");
+            System.out.println("4) Save order");
+            System.out.println("0) Exit without saving");
+            printBreaks();
+
+            int choice = doMenuChoice(4, 0);
+            switch (choice) {
+                case 1:
+                    // TODO: To Implement
+                    break;
+                case 2:
+                    // TODO: To Implement
+                    break;
+                case 3:
+                    // TODO: To Implement
+                    break;
+                case 4:
+                    // TODO: To Implement
+                    return true;
+                case 0:
+                    return false;
+                default:
+                    throw new IllegalStateException("Invalid Choice (Order Edit Menu)");
+            }
+        }
+    }
+
+    private void createOrder() {
+        // TODO: Code Stub
+    }
+
+    private void viewOrder() {
+        // TODO: Code Stub
+        
+    }
+
+    private void editOrder() {
+        // TODO: Code Stub
+        Scanner in = new Scanner(System.in);
+        int orderNo = ScannerHelper.getIntegerInput(in, "Enter Order Number: ");
     }
 }
