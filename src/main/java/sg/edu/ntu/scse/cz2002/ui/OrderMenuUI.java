@@ -62,12 +62,12 @@ public class OrderMenuUI extends BaseMenu {
 
     private void editOrderMenuScreen(final int orderNumber) {
         // TODO: Code Stub
-        // TODO: Update this. This will run after progress is done
         while (true) {
             printHeader("Order #" + orderNumber);
             System.out.println("1) View items in order");
             System.out.println("2) Add item to order");
-            System.out.println("3) Remove item from order");
+            System.out.println("3) Change item quantity in order");
+            System.out.println("4) Remove item from order");
             System.out.println("0) Exit Order Editing Screen");
             printBreaks();
 
@@ -80,6 +80,9 @@ public class OrderMenuUI extends BaseMenu {
                     // TODO: To Implement
                     break;
                 case 3:
+                    // TODO: To Implement
+                    break;
+                case 4:
                     // TODO: To Implement
                     break;
                 case 0:
@@ -106,7 +109,6 @@ public class OrderMenuUI extends BaseMenu {
 
     // View Order List
     private void viewOrder() {
-        // TODO: Code Stub
         // Check view completed or view others
         System.out.println("Choose any of the following options");
         System.out.println("1) View Paid Orders");
@@ -190,9 +192,10 @@ public class OrderMenuUI extends BaseMenu {
     }
 
     private void editOrder() {
-        // TODO: Code Stub
         Scanner in = new Scanner(System.in);
         int orderNo = ScannerHelper.getIntegerInput(in, "Enter Order Number: ");
-         // TODO: Check if order exists
+        Order o = findOrder(orderNo, false);
+        if (o == null) System.out.println("Unable to find order. Note that orders that are paid for cannot be edited");
+        else editOrderMenuScreen(orderNo);
     }
 }
