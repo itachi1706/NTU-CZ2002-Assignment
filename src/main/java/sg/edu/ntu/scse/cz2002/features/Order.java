@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Order {
 
-    public enum OrderState {ORDER_PAID, ORDER_UNPAID     }
+    public enum OrderState {ORDER_PAID, ORDER_UNPAID }
 
     private int orderID;
     private ArrayList<OrderItem> orderItems;

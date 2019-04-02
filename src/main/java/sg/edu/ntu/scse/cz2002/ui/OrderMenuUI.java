@@ -129,12 +129,47 @@ public class OrderMenuUI extends BaseMenu {
                 printOrderList(consolidate, "All");
                 break;
             case 4:
-                // TODO: View specific order id
+                int orderid = ScannerHelper.getIntegerInput(new Scanner(System.in), "Enter Order ID: ");
+                Order o = findOrder(orderid, true); // Attempt to find order
+                if (o == null)
+                    System.out.println("No Orders found");
+                else
+                    printOrderDetails(o);
                 break;
             case 0:
                 return;
             default: throw new IllegalStateException("Invalid Choice (View Order Sub Menu)");
         }
+    }
+
+    private void printOrderDetails(Order o) {
+        printHeader("Order #" + o.getOrderID() + " Details");
+        System.out.println("Order ID: " + o.getOrderID());
+        System.out.println("Order State: " + ((o.getOrderState() == Order.OrderState.ORDER_PAID) ? "Paid" : "Unpaid"));
+        System.out.println("Order Items");
+        printBreaks();
+        if (o.getOrderItems().size() == 0) System.out.println("No Items in Order");
+        else {
+            // TODO: Print Order Items
+        }
+        printBreaks();
+        System.out.println("Order Subtotal: " + o.getSubtotal());
+        printBreaks();
+        System.out.println("\n");
+    }
+
+    private Order findOrder(int id, boolean allowFromPaid) {
+        // Find from incomplete orders first
+        for (Order o : incompleteOrders) {
+            if (o.getOrderID() == id) return o;
+        }
+        if (allowFromPaid) {
+            // Check completed orders
+            for (Order o : MainApp.completedOrders) {
+                if (o.getOrderID() == id) return o;
+            }
+        }
+        return null; // Cannot find
     }
 
     private void printOrderList(ArrayList<Order> orders, String tag) {
