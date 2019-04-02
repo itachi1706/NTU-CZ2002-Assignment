@@ -40,4 +40,5 @@ javadoc {
 
 dependencies {
     // Any project level dependencies will be located here
+    implementation 'org.jetbrains:annotations:17.0.0'
 }
