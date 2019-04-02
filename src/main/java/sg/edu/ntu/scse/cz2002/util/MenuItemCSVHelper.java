@@ -15,19 +15,41 @@ import java.util.List;
  * @version 1.1
  * @since 2019-03-19
  */
+@SuppressWarnings("Duplicates")
 public class MenuItemCSVHelper extends CSVBaseHelper {
 
     /**
-     * Path to Menu Items CSV File in the data folder
+     * Path to Menu Items CSV File in the data folder. Defaults to menu.csv
      */
-    private String menuItemCsv;
+    private String menuItemCsv = "menu.csv";
+
+    /**
+     * Singleton instance of this class
+     */
+    private static MenuItemCSVHelper mInstance;
+
+    /**
+     * Default Constructor to initialize this class with menu.csv as the CSV file
+     */
+    private MenuItemCSVHelper() {}
 
     /**
      * Initialize the Helper object
+     * @deprecated Call {@link MenuItemCSVHelper#getInstance()} instead
      * @param filename Path to MenuItems CSV File
      */
+    @Deprecated
     public MenuItemCSVHelper(String filename) {
         this.menuItemCsv = filename;
+    }
+
+    /**
+     * Gets the singleton instance of MenuItemCSVHelper that reads from menu.csv
+     * @return Instance of this class
+     */
+    public static MenuItemCSVHelper getInstance() {
+        if (mInstance == null) mInstance = new MenuItemCSVHelper();
+        return mInstance;
     }
 
     /**

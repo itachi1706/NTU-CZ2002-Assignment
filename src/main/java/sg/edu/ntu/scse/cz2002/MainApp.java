@@ -7,10 +7,10 @@ import sg.edu.ntu.scse.cz2002.ui.MainMenuUI;
 import sg.edu.ntu.scse.cz2002.util.FileIOHelper;
 import sg.edu.ntu.scse.cz2002.util.MenuItemCSVHelper;
 import sg.edu.ntu.scse.cz2002.util.ReservationCSVHelper;
+import sg.edu.ntu.scse.cz2002.util.TableCSVHelper;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.sql.SQLOutput;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
@@ -50,9 +50,9 @@ public class MainApp {
      */
     private static void init() {
         // TODO: Init Items
-        MenuItemCSVHelper menuItemCsv = new MenuItemCSVHelper("menu.csv");
-        ReservationCSVHelper reservationCsv = new ReservationCSVHelper("reservation.csv");
-        // TODO: Init tables from csv
+        MenuItemCSVHelper menuItemCsv = MenuItemCSVHelper.getInstance();
+        ReservationCSVHelper reservationCsv = ReservationCSVHelper.getInstance();
+        TableCSVHelper tableCsv = TableCSVHelper.getInstance();
         try {
             System.out.println("Loading Menu Items from file...");
             menuItems = menuItemCsv.readFromCsv();
@@ -61,6 +61,10 @@ public class MainApp {
             System.out.println("Loading Reservations from file...");
             reservations = reservationCsv.readFromCsv();
             System.out.println(reservations.size() + " existing reservations loaded successfully.");
+
+            System.out.println("Loading Table states from file...");
+            tables = tableCsv.readFromCsv();
+            System.out.println(tables.size() + " tables loaded successfully.");
 
         } catch (IOException e) {
             //e.printStackTrace();
@@ -76,12 +80,13 @@ public class MainApp {
     }
 
     /**
-     * Pre-exit actions to be executed here
+     * Saves all data into its relevant CSV files on disk
+     * @return true if successful, false otherwise
      */
-    private static void shutdown() {
-        // TODO: Do pre shutdown items
-        MenuItemCSVHelper menuItemCSVHelper = new MenuItemCSVHelper("menu.csv");
-        ReservationCSVHelper reservationCsvHelper = new ReservationCSVHelper("reservation.csv");
+    public static boolean saveAll() {
+        MenuItemCSVHelper menuItemCSVHelper = MenuItemCSVHelper.getInstance();
+        ReservationCSVHelper reservationCsvHelper = ReservationCSVHelper.getInstance();
+        TableCSVHelper tableCsvHelper = TableCSVHelper.getInstance();
         try {
             System.out.println("Saving current menu item list to file...");
             menuItemCSVHelper.writeToCsv(menuItems);
@@ -90,12 +95,16 @@ public class MainApp {
             System.out.println("Saving current reservation list to file...");
             reservationCsvHelper.writeToCsv(reservations);
             System.out.println("Reservation List Saved!");
+
+            System.out.println("Saving current tables to file...");
+            tableCsvHelper.writeToCsv(tables);
+            System.out.println("Table List Saved!");
         } catch (IOException e) {
             //e.printStackTrace();
             System.out.println("[ERROR] Failed to save items to file. (" + e.getLocalizedMessage() + ")");
+            return false;
         }
-        System.out.println("Shutting down program...");
-        System.exit(0);
+        return true;
     }
 
     /**
@@ -103,10 +112,15 @@ public class MainApp {
      * @param args Any console arguments entered by the user
      */
     public static void main(String... args) {
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            // TODO: Do pre shutdown items
+            saveAll();
+            System.out.println("Shutting down program...");
+        }));
         init();
         // TODO: Staff login (move if necessary) This is placed here in case we want to "login" to a staff here. If we are not doing so remove this
         new MainMenuUI().startMainMenu();
-        shutdown();
+        System.exit(0);
     }
 
     /**
