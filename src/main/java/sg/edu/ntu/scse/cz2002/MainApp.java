@@ -11,7 +11,10 @@ import sg.edu.ntu.scse.cz2002.util.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.text.ParseException;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,8 +28,8 @@ import java.util.stream.Collectors;
 public class MainApp {
 
     /**
-    * The list of tables available in the restaurant
-    */
+     * The list of tables available in the restaurant
+     */
     public static ArrayList<Table> tables;
     /**
      * The list of menuitems loaded into the program
@@ -42,7 +45,7 @@ public class MainApp {
      * The list of reservations loaded into the program
      */
     public static ArrayList<Reservation> reservations;
-    
+
     /**
      * The list of reservations loaded into the program
      */
@@ -76,7 +79,7 @@ public class MainApp {
             System.out.println("Loading Table states from file...");
             tables = tableCsv.readFromCsv();
             System.out.println(tables.size() + " tables loaded successfully.");
-            
+
             System.out.println("Loading Staff states from file...");
             staffs = staffCsv.readFromCsv();
             System.out.println(staffs.size() + " staffs loaded successfully.");
@@ -85,7 +88,7 @@ public class MainApp {
             completedOrders = orderCsv.readFromCsv();
             System.out.println(completedOrders.size() + " completed orders loaded successfully.");
 
-            checkTodayReservations();
+            System.out.println(checkTodayReservations() + " reservations have since expired, and deleted from the system.");
         } catch (IOException e) {
             //e.printStackTrace();
             System.out.println("[ERROR] Failed to read CSV from data folder. (" + e.getLocalizedMessage() + ")");
@@ -101,6 +104,7 @@ public class MainApp {
 
     /**
      * Saves all data into its relevant CSV files on disk
+     *
      * @return true if successful, false otherwise
      */
     public static boolean saveAll() {
@@ -121,7 +125,7 @@ public class MainApp {
             System.out.println("Saving current tables to file...");
             tableCsvHelper.writeToCsv(tables);
             System.out.println("Table List Saved!");
-            
+
             System.out.println("Saving current staffs to file...");
             staffCsvHelper.writeToCsv(staffs);
             System.out.println("Staff List Saved!");
@@ -139,6 +143,7 @@ public class MainApp {
 
     /**
      * The main application entry point
+     *
      * @param args Any console arguments entered by the user
      */
     public static void main(String... args) {
@@ -169,13 +174,28 @@ public class MainApp {
 
     /**
      * Part of initialising to check for today's reservations
+     * Includes checking for expired reservations by calling checkExpiredReservations()
      * If found reservation that matches today's date, set the table to reserved.
      */
-    private static void checkTodayReservations() {
-        for (Reservation r : reservations) {
-            //System.out.println(r.getResvDateTime().get(Calendar.));
-
+    private static int checkTodayReservations() {
+        int expiredCount = 0;
+        Reservation r;
+        Iterator i = reservations.iterator();
+        while (i.hasNext()) {
+            r = (Reservation) i.next();
+            if (r.getResvDate().equals(LocalDate.now())) {
+                if (DateTimeFormatHelper.getTimeDifferenceMinutes(r.getResvTime(), LocalTime.now()) <= 0) {
+                    reservations.remove(r);
+                    expiredCount++;
+                }
+                for (Table t : tables) {
+                    if (r.getTableNum() == t.getTableNum()) {
+                        t.setReserved(true);
+                    }
+                }
+            }
         }
-
+        return expiredCount;
     }
+
 }
