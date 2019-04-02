@@ -59,7 +59,7 @@ public class OrderMenuUI extends BaseMenu {
         return 0;
     }
 
-    private boolean editOrderMenuScreen(final int orderNumber) {
+    private void editOrderMenuScreen(final int orderNumber) {
         // TODO: Code Stub
         // TODO: Update this. This will run after progress is done
         while (true) {
@@ -67,11 +67,10 @@ public class OrderMenuUI extends BaseMenu {
             System.out.println("1) View items in order");
             System.out.println("2) Add item to order");
             System.out.println("3) Remove item from order");
-            System.out.println("4) Save order");
-            System.out.println("0) Exit without saving");
+            System.out.println("0) Exit Order Editing Screen");
             printBreaks();
 
-            int choice = doMenuChoice(4, 0);
+            int choice = doMenuChoice(3, 0);
             switch (choice) {
                 case 1:
                     // TODO: To Implement
@@ -82,11 +81,8 @@ public class OrderMenuUI extends BaseMenu {
                 case 3:
                     // TODO: To Implement
                     break;
-                case 4:
-                    // TODO: To Implement
-                    return true;
                 case 0:
-                    return false;
+                    return;
                 default:
                     throw new IllegalStateException("Invalid Choice (Order Edit Menu)");
             }
