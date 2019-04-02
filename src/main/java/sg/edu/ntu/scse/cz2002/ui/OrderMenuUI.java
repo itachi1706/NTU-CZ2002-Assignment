@@ -2,6 +2,7 @@ package sg.edu.ntu.scse.cz2002.ui;
 
 import sg.edu.ntu.scse.cz2002.MainApp;
 import sg.edu.ntu.scse.cz2002.features.Order;
+import sg.edu.ntu.scse.cz2002.util.DateTimeFormatHelper;
 import sg.edu.ntu.scse.cz2002.util.ScannerHelper;
 
 import java.util.ArrayList;
@@ -146,6 +147,8 @@ public class OrderMenuUI extends BaseMenu {
         printHeader("Order #" + o.getOrderID() + " Details");
         System.out.println("Order ID: " + o.getOrderID());
         System.out.println("Order State: " + ((o.getOrderState() == Order.OrderState.ORDER_PAID) ? "Paid" : "Unpaid"));
+        System.out.println("Order Started On: " + DateTimeFormatHelper.formatMillisToDateTime(o.getCreatedAt()));
+        if (o.getOrderState() == Order.OrderState.ORDER_PAID) System.out.println("Order Completed On: " + DateTimeFormatHelper.formatMillisToDateTime(o.getCompletedAt()));
         System.out.println("Order Items");
         printBreaks();
         if (o.getOrderItems().size() == 0) System.out.println("No Items in Order");
@@ -173,15 +176,17 @@ public class OrderMenuUI extends BaseMenu {
     }
 
     private void printOrderList(ArrayList<Order> orders, String tag) {
-        printHeader("Order List (" + tag + ")", 80);
+        printHeader("Order List (" + tag + ")", 100);
         if (orders.size() == 0) System.out.println("No orders found");
         else orders.forEach(o -> {
-            String date = ""; // TODO: Get datetime string of order
+            String date = DateTimeFormatHelper.formatMillisToDateTime(o.getCreatedAt());
             String state = (o.getOrderState() == Order.OrderState.ORDER_PAID) ? "Paid" : "Unpaid";
             System.out.print("Order #" + o.getOrderID() + ", No of Unique items: " + o.getOrderItems().size() + ", Created On: " + date + ", Status: " + state);
+            if (o.getOrderState() == Order.OrderState.ORDER_PAID)
+                System.out.print(", Paid On: " + DateTimeFormatHelper.formatMillisToDateTime(o.getCompletedAt()));
             System.out.printf(", Subtotal: %.2f\n", o.getSubtotal());
         });
-        printBreaks(80);
+        printBreaks(100);
     }
 
     private void editOrder() {

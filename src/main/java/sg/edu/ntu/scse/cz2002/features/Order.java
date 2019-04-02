@@ -10,12 +10,16 @@ public class Order {
     private ArrayList<OrderItem> orderItems;
     private double subtotal;
     private OrderState orderState;
+    private long createdAt;
+    private long completedAt;
 
     public Order(int orderID) {
         this.subtotal = 0;
         this.orderItems = new ArrayList<>();
         this.orderState = OrderState.ORDER_UNPAID;
         this.orderID = orderID;
+        this.completedAt = -1;
+        this.createdAt = System.currentTimeMillis(); // Current Time
     }
 
     /**
@@ -33,6 +37,8 @@ public class Order {
         }
         this.subtotal = Double.parseDouble(csv[2]);
         this.orderState = (csv[3].equals("1")) ? OrderState.ORDER_PAID : OrderState.ORDER_UNPAID;
+        this.createdAt = Long.parseLong(csv[4]);
+        this.completedAt = Long.parseLong(csv[5]);
     }
 
     /**
@@ -41,7 +47,7 @@ public class Order {
      * @return A String array of the CSV file
      */
     public String[] toCsv() {
-        String[] s = new String[4];
+        String[] s = new String[6];
         s[0] = this.orderID + "";
         StringBuilder b = new StringBuilder();
         for (OrderItem i : this.orderItems) {
@@ -50,6 +56,8 @@ public class Order {
         s[1] = b.toString().replaceAll(", $", ""); // Remove the comma
         s[2] = this.subtotal + "";
         s[3] = (this.orderState == OrderState.ORDER_PAID) ? "1" : "0";
+        s[4] = this.createdAt + "";
+        s[5] = this.completedAt + "";
         return s;
     }
 
@@ -83,5 +91,14 @@ public class Order {
 
     public void markPaid() {
         this.orderState = OrderState.ORDER_PAID;
+        this.completedAt = System.currentTimeMillis();
+    }
+
+    public long getCreatedAt() {
+        return createdAt;
+    }
+
+    public long getCompletedAt() {
+        return completedAt;
     }
 }

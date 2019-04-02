@@ -1,11 +1,13 @@
 package sg.edu.ntu.scse.cz2002.util;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 
 /**
@@ -140,6 +142,11 @@ public class DateTimeFormatHelper {
             //All validations have been passed, date has no errors.
         else
             return true;
+    }
+
+    public static String formatMillisToDateTime(long millis) {
+        SimpleDateFormat sdf = new SimpleDateFormat("d/M/yyyy HH:mm");
+        return sdf.format(new Date(millis));
     }
 
 
