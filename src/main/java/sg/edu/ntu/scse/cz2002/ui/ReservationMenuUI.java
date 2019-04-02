@@ -8,6 +8,8 @@ import sg.edu.ntu.scse.cz2002.util.DateTimeFormatHelper;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeParseException;
+import java.util.InputMismatchException;
+import java.util.Iterator;
 import java.util.Scanner;
 
 /**
@@ -71,6 +73,7 @@ public class ReservationMenuUI extends BaseMenu {
         int numPax, tableNum = 0;
         LocalDate resvDate;
         LocalTime resvTime;
+        char resvSession;
 
         Reservation r = null;
 
@@ -98,7 +101,17 @@ public class ReservationMenuUI extends BaseMenu {
             System.out.print("Your input: ");
             resvTime = DateTimeFormatHelper.formatToLocalTime(input.nextLine());
 
-            //resvDateTime = DateTimeFormatHelper.formatToLocalDate(resvDate + " " + resvTime);
+            //TODO: Find a better code for the if fragment below
+            if (DateTimeFormatHelper.checkResvTimeSession
+                    (resvTime, LocalTime.of(11,0), LocalTime.of(15,0)))
+                resvSession = 'A';
+            else if (DateTimeFormatHelper.checkResvTimeSession
+                    (resvTime, LocalTime.of(18,0), LocalTime.of(22,0)))
+                resvSession = 'P';
+            else {
+                System.out.println("The restaurant is not in operation at the time you entered.");
+                return;
+            }
 
             System.out.print("Enter pax amount (table for how many?): ");
             numPax = input.nextInt();
@@ -147,7 +160,7 @@ public class ReservationMenuUI extends BaseMenu {
 
             //Conditional loop to determine is available table is found.
             if (tableNum > 0) {
-                r = new Reservation(MainApp.reservations.size() + 1, resvDate, resvTime, custTelNo, custName, numPax, tableNum);
+                r = new Reservation(MainApp.reservations.size() + 1, resvDate, resvTime, resvSession, custTelNo, custName, numPax, tableNum);
                 MainApp.reservations.add(r);
 
                 System.out.println("Your reservation has been successfully recorded! Your assigned table is " + tableNum + ".");
@@ -159,7 +172,7 @@ public class ReservationMenuUI extends BaseMenu {
         } catch (DateTimeParseException e) {
             //Only thrown for failure to parse Date and Time in custom format
             System.out.println("[ERROR] Input date or time format is wrong. (" + e.getLocalizedMessage() + ")");
-        } catch (NumberFormatException e) {
+        } catch (InputMismatchException e) {
             //Only thrown for failure to parse String to int
             System.out.println("[ERROR] Please input a valid number of pax. (" + e.getLocalizedMessage() + "}");
         }
@@ -170,12 +183,13 @@ public class ReservationMenuUI extends BaseMenu {
      */
     private void listReservations() {
         printHeader("List of all Reservations");
-        System.out.printf("%-4s %-20s %-10s %-10s %-15s %-3s %-9s\n", "ID", "Date", "Time", "Tel. No", "Name", "Pax", "Table No.");
+        System.out.printf("%-4s %-15s %-10s %-10s %-10s %-20s %-3s %-9s\n", "ID", "Date", "Session", "Time", "Tel. No", "Name", "Pax", "Table No.");
         printBreaks();
         for (Reservation r : MainApp.reservations) {
-            System.out.printf("%-4d %-20s %-10s %-10s %-15s %-3d %-9d\n",
+            System.out.printf("%-4d %-15s %-10s %-10s %-10s %-20s %-3d %-9d\n",
                     r.getResvId(),
                     DateTimeFormatHelper.formatToStringDate(r.getResvDate()),
+                    r.getResvSession() == Reservation.ReservationSession.AM_SESSION ? 'A' : 'P',
                     DateTimeFormatHelper.formatToStringTime(r.getResvTime()),
                     r.getCustTelNo(),
                     r.getCustName(),
@@ -191,14 +205,16 @@ public class ReservationMenuUI extends BaseMenu {
      */
     private static void checkExpiredReservations() {
         int expiredCount = 0;
-
-        for (Reservation r : MainApp.reservations)
+        Reservation r;
+        Iterator i = MainApp.reservations.iterator();
+        while (i.hasNext()) {
+            r = (Reservation) i.next();
             if (r.getResvDate().equals(LocalDate.now()))
                 if (DateTimeFormatHelper.getTimeDifferenceMinutes(r.getResvTime(), LocalTime.now()) <= 0) {
                     MainApp.reservations.remove(r);
                     expiredCount++;
-            }
-
+                }
+        }
         System.out.println(expiredCount + " reservations have since expired, and deleted from the system.");
 
     }

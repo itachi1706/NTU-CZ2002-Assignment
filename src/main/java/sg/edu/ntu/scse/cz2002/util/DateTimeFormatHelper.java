@@ -157,6 +157,16 @@ public class DateTimeFormatHelper {
         return sdf.format(new Date(millis));
     }
 
+    /**
+     * Checks if resv time is between any of the AM or PM sessions
+     * @param resvTime User input reservation time formatted in HH:mm to LocalTime
+     * @return boolean variable determining whether the resvTime falls between either session
+     */
+    public static boolean checkResvTimeSession(LocalTime resvTime, LocalTime sessionStart, LocalTime sessionEnd) {
+        return ((resvTime.isAfter(sessionStart) && resvTime.isBefore(sessionEnd)) ||
+                resvTime.equals(sessionStart) || resvTime.equals(sessionEnd));
+    }
+
 
     /**
      * Method for formatting Calendar values for current date/time into formatted String

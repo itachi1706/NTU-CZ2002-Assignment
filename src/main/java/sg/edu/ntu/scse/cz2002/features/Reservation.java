@@ -6,7 +6,6 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeParseException;
 
-
 /**
  * The Reservation Class
  *
@@ -16,6 +15,10 @@ import java.time.format.DateTimeParseException;
  */
 
 public class Reservation {
+    /**
+     * The sessions enum of the reservation, AM or PM
+     */
+    public enum ReservationSession {AM_SESSION, PM_SESSION};
 
     /**
      * Serial number of the reservation, for sorting purposes
@@ -31,6 +34,11 @@ public class Reservation {
      * The reservation date and time. Uses Date library from java.util.
      */
     private LocalTime resvTime;
+
+    /**
+     * Session of reservation, AM or PM
+     */
+    private ReservationSession resvSession;
 
     /**
      * The customer's telephone number, and candidate key in determining reservation.
@@ -56,10 +64,12 @@ public class Reservation {
     /**
      * Constructor for Reservation object
      */
-    public Reservation(int id, LocalDate rd, LocalTime rt, String telNo, String name, int pax, int t) {
+    public Reservation(int id, LocalDate rd, LocalTime rt, char sess, String telNo, String name, int pax, int t) {
         this.resvId = id;
         this.resvDate = rd;
         this.resvTime = rt;
+        this.resvSession = sess == 'A' ?
+                ReservationSession.AM_SESSION : ReservationSession.PM_SESSION;
         this.custTelNo = telNo;
         this.custName = name;
         this.numPax = pax;
@@ -80,7 +90,9 @@ public class Reservation {
         this.numPax = Integer.parseInt(csv[3]);
         this.resvDate = DateTimeFormatHelper.formatToLocalDate(csv[4]);
         this.resvTime = DateTimeFormatHelper.formatToLocalTime(csv[5]);
-        this.tableNum = Integer.parseInt(csv[6]);
+        this.resvSession = csv[6].charAt(0) == 'A' ?
+                ReservationSession.AM_SESSION : ReservationSession.PM_SESSION;
+        this.tableNum = Integer.parseInt(csv[7]);
     }
 
     /**
@@ -89,14 +101,15 @@ public class Reservation {
      * @return A String array of the CSV file
      */
     public String[] toCsv() {
-        String[] s = new String[7];
+        String[] s = new String[8];
         s[0] = this.resvId + "";
         s[1] = this.custName;
         s[2] = this.custTelNo;
         s[3] = this.numPax + "";
         s[4] = DateTimeFormatHelper.formatToStringDate(this.resvDate) + "";
         s[5] = DateTimeFormatHelper.formatToStringTime(this.resvTime) + "";
-        s[6] = this.tableNum + "";
+        s[6] = (this.resvSession == ReservationSession.AM_SESSION ? 'A' : 'P') + "";
+        s[7] = this.tableNum + "";
         return s;
     }
 
@@ -122,6 +135,14 @@ public class Reservation {
 
     public void setResvTime(LocalTime resvTime) {
         this.resvTime = resvTime;
+    }
+
+    public ReservationSession getResvSession() {
+        return resvSession;
+    }
+
+    public void setResvSession(ReservationSession resvSession) {
+        this.resvSession = resvSession;
     }
 
     public int getNumPax() {

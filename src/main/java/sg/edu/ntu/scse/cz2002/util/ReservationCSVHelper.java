@@ -79,7 +79,7 @@ public class ReservationCSVHelper extends CSVBaseHelper {
      * @throws IOException Unable to write to file
      */
     public void writeToCsv(ArrayList<Reservation> reservations) throws IOException {
-        String[] header = {"ID", "Name", "TelNo", "NumPax", "ResvDate", "ResvTime", "TableNum" };
+        String[] header = {"ID", "Name", "TelNo", "NumPax", "ResvDate", "ResvTime", "ResvSession", "TableNum" };
         BufferedWriter csvFile = FileIOHelper.getFileBufferedWriter(this.reservationCsv);
         ArrayList<String[]> toWrite = new ArrayList<>();
         toWrite.add(header);
