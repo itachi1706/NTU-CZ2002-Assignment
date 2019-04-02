@@ -58,6 +58,7 @@ public class MenuItemCSVHelper extends CSVBaseHelper {
      * @throws IOException Unable to read from file
      */
     public ArrayList<MenuItem> readFromCsv() throws IOException {
+        if (!FileIOHelper.exists(this.menuItemCsv)) return new ArrayList<>(); // Empty array list
         BufferedReader csvFile = FileIOHelper.getFileBufferedReader(this.menuItemCsv);
         List<String[]> csvLines = readAll(csvFile, 1);
         ArrayList<MenuItem> items = new ArrayList<>();

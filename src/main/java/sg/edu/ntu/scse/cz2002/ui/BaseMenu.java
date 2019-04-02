@@ -45,12 +45,31 @@ public abstract class BaseMenu {
      * @param headerName Name of the menu
      */
     protected static void printHeader(String headerName) {
-        printBreaks();
+        printHeader(headerName, PRINT_WINDOW_MAX_SIZE);
+    }
+
+    /**
+     * Helper method to print the header of a menu
+     * @param headerName Name of the menu
+     * @param length Length of the header
+     */
+    protected static void printHeader(String headerName, int length) {
+        printBreaks(length);
         // Do fancy parsing of header to center it (size 40)
-        int noOfSpaces = (PRINT_WINDOW_MAX_SIZE - headerName.length()) / 2;
+        int noOfSpaces = (length - headerName.length()) / 2;
         Stream.generate(() -> " ").limit(noOfSpaces).forEach(System.out::print);
         System.out.println(headerName);
-        printBreaks();
+        printBreaks(length);
+    }
+
+    /**
+     * Helper method to create a menu separator
+     * (e.g -----------)
+     * @param length How many dashes to append
+     */
+    protected static void printBreaks(int length) {
+        Stream.generate(() -> "-").limit(length).forEach(System.out::print);
+        System.out.println();
     }
 
     /**
@@ -58,8 +77,7 @@ public abstract class BaseMenu {
      * (e.g -----------)
      */
     protected static void printBreaks() {
-        Stream.generate(() -> "-").limit(PRINT_WINDOW_MAX_SIZE).forEach(System.out::print);
-        System.out.println();
+        printBreaks(PRINT_WINDOW_MAX_SIZE);
     }
 
     /**

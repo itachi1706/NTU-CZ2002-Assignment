@@ -1,11 +1,13 @@
 package sg.edu.ntu.scse.cz2002.util;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 
 /**
@@ -13,8 +15,8 @@ import java.util.GregorianCalendar;
  *
  * Helper class also contains validation methods for validating whether a certain date is valid
  *
- * @author Francis Lim
- * @version 1.1
+ * @author Francis Lim, Kenneth Soh
+ * @version 1.2
  * @since 2019-04-01
  */
 
@@ -140,6 +142,16 @@ public class DateTimeFormatHelper {
             //All validations have been passed, date has no errors.
         else
             return true;
+    }
+
+    /**
+     * Formats time since Unix Epoch (1/1/2017 00:00:00) to a DateTime String
+     * @param millis time in milliseconds since Epoch
+     * @return Formatted DateTime String
+     */
+    public static String formatMillisToDateTime(long millis) {
+        SimpleDateFormat sdf = new SimpleDateFormat("d/M/yyyy HH:mm");
+        return sdf.format(new Date(millis));
     }
 
 

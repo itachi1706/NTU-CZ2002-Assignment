@@ -56,9 +56,9 @@ public class StaffCSVHelper extends CSVBaseHelper {
      * Reads the CSV file and parse it into an array list of menu item objects
      * @return ArrayList of Menu Item Objects
      * @throws IOException Unable to read from file
-     * @throws ParseException Wrong format of date time passed in
      */
     public ArrayList<Staff> readFromCsv() throws IOException{
+        if (!FileIOHelper.exists(this.staffCsv)) return new ArrayList<>(); // Empty array list
         BufferedReader csvFile = FileIOHelper.getFileBufferedReader(this.staffCsv);
         List<String[]> csvLines = readAll(csvFile, 1);
         ArrayList<Staff> staffs = new ArrayList<>();

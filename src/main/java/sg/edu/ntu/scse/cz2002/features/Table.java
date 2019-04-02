@@ -1,7 +1,5 @@
 package sg.edu.ntu.scse.cz2002.features;
 
-import sg.edu.ntu.scse.cz2002.util.DateTimeFormatHelper;
-
 import java.text.ParseException;
 
 /**
@@ -17,12 +15,12 @@ public class Table {
     /**
      * The states of the table, whether it has been reserved, occupied or vacated.
      */
-    public enum TableState {TABLE_VACATED, TABLE_OCCUPIED, TABLE_RESERVED, TABLE_STATE_UNKNOWN};
+    public enum TableState {TABLE_VACATED, TABLE_OCCUPIED, TABLE_RESERVED, TABLE_STATE_UNKNOWN}
 
     /**
      * The varying number of seats at different tables
      */
-    public enum TableSeats {TEN_SEATER, EIGHT_SEATER, FOUR_SEATER, TWO_SEATER, UNKNOWN_SEATER};
+    public enum TableSeats {TEN_SEATER, EIGHT_SEATER, FOUR_SEATER, TWO_SEATER, UNKNOWN_SEATER}
 
     /**
      * The number that is allocated to the table.

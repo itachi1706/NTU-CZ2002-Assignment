@@ -1,21 +1,17 @@
 package sg.edu.ntu.scse.cz2002;
 
+import sg.edu.ntu.scse.cz2002.features.Order;
 import sg.edu.ntu.scse.cz2002.features.Reservation;
 import sg.edu.ntu.scse.cz2002.features.Table;
 import sg.edu.ntu.scse.cz2002.objects.menuitem.MenuItem;
 import sg.edu.ntu.scse.cz2002.objects.person.Staff;
 import sg.edu.ntu.scse.cz2002.ui.MainMenuUI;
-import sg.edu.ntu.scse.cz2002.util.FileIOHelper;
-import sg.edu.ntu.scse.cz2002.util.MenuItemCSVHelper;
-import sg.edu.ntu.scse.cz2002.util.ReservationCSVHelper;
-import sg.edu.ntu.scse.cz2002.util.StaffCSVHelper;
-import sg.edu.ntu.scse.cz2002.util.TableCSVHelper;
+import sg.edu.ntu.scse.cz2002.util.*;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,6 +32,11 @@ public class MainApp {
      * The list of menuitems loaded into the program
      */
     public static ArrayList<MenuItem> menuItems;
+
+    /**
+     * List of completed orders (to be saved to CSV)
+     */
+    public static ArrayList<Order> completedOrders;
 
     /**
      * The list of reservations loaded into the program
@@ -62,7 +63,7 @@ public class MainApp {
         ReservationCSVHelper reservationCsv = ReservationCSVHelper.getInstance();
         TableCSVHelper tableCsv = TableCSVHelper.getInstance();
         StaffCSVHelper staffCsv = StaffCSVHelper.getInstance();
-        
+        OrderCSVHelper orderCsv = OrderCSVHelper.getInstance();
         try {
             System.out.println("Loading Menu Items from file...");
             menuItems = menuItemCsv.readFromCsv();
@@ -80,8 +81,11 @@ public class MainApp {
             staffs = staffCsv.readFromCsv();
             System.out.println(staffs.size() + " staffs loaded successfully.");
 
-            checkTodayReservations();
+            System.out.println("Loading Completed Orders from file...");
+            completedOrders = orderCsv.readFromCsv();
+            System.out.println(completedOrders.size() + " completed orders loaded successfully.");
 
+            checkTodayReservations();
         } catch (IOException e) {
             //e.printStackTrace();
             System.out.println("[ERROR] Failed to read CSV from data folder. (" + e.getLocalizedMessage() + ")");
@@ -104,6 +108,7 @@ public class MainApp {
         ReservationCSVHelper reservationCsvHelper = ReservationCSVHelper.getInstance();
         TableCSVHelper tableCsvHelper = TableCSVHelper.getInstance();
         StaffCSVHelper staffCsvHelper = StaffCSVHelper.getInstance();
+        OrderCSVHelper orderCSVHelper = OrderCSVHelper.getInstance();
         try {
             System.out.println("Saving current menu item list to file...");
             menuItemCSVHelper.writeToCsv(menuItems);
@@ -120,6 +125,10 @@ public class MainApp {
             System.out.println("Saving current staffs to file...");
             staffCsvHelper.writeToCsv(staffs);
             System.out.println("Staff List Saved!");
+
+            System.out.println("Saving completed orders to file...");
+            orderCSVHelper.writeToCsv(completedOrders);
+            System.out.println("Completed Orders List Saved!");
         } catch (IOException e) {
             //e.printStackTrace();
             System.out.println("[ERROR] Failed to save items to file. (" + e.getLocalizedMessage() + ")");
