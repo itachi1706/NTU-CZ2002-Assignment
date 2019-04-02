@@ -106,8 +106,47 @@ public class OrderMenuUI extends BaseMenu {
     // View Order List
     private void viewOrder() {
         // TODO: Code Stub
+        // Check view completed or view others
+        System.out.println("Choose any of the following options");
+        System.out.println("1) View Paid Orders");
+        System.out.println("2) View Unpaid Orders");
+        System.out.println("3) View All");
+        System.out.println("4) View Specific Order Details");
+        System.out.println("0) Cancel");
 
+        int choice = doMenuChoice(4, 0);
+        switch (choice) {
+            case 1:
+                printOrderList(MainApp.completedOrders, "Paid");
+                break;
+            case 2:
+                printOrderList(incompleteOrders, "Unpaid");
+                break;
+            case 3:
+                ArrayList<Order> consolidate = new ArrayList<>();
+                consolidate.addAll(MainApp.completedOrders);
+                consolidate.addAll(incompleteOrders);
+                printOrderList(consolidate, "All");
+                break;
+            case 4:
+                // TODO: View specific order id
+                break;
+            case 0:
+                return;
+            default: throw new IllegalStateException("Invalid Choice (View Order Sub Menu)");
+        }
+    }
 
+    private void printOrderList(ArrayList<Order> orders, String tag) {
+        printHeader("Order List (" + tag + ")", 80);
+        if (orders.size() == 0) System.out.println("No orders found");
+        else orders.forEach(o -> {
+            String date = ""; // TODO: Get datetime string of order
+            String state = (o.getOrderState() == Order.OrderState.ORDER_PAID) ? "Paid" : "Unpaid";
+            System.out.print("Order #" + o.getOrderID() + ", No of Unique items: " + o.getOrderItems().size() + ", Created On: " + date + ", Status: " + state);
+            System.out.printf(", Subtotal: %.2f\n", o.getSubtotal());
+        });
+        printBreaks(80);
     }
 
     private void editOrder() {

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Order {
 
-    public enum OrderState { ORDER_COMPLETE, ORDER_INCOMPLETE }
+    public enum OrderState {ORDER_PAID, ORDER_UNPAID     }
 
     private int orderID;
     private ArrayList<OrderItem> orderItems;
@@ -14,7 +14,7 @@ public class Order {
     public Order(int orderID) {
         this.subtotal = 0;
         this.orderItems = new ArrayList<>();
-        this.orderState = OrderState.ORDER_INCOMPLETE;
+        this.orderState = OrderState.ORDER_UNPAID;
         this.orderID = orderID;
     }
 
@@ -32,7 +32,7 @@ public class Order {
             this.orderItems.add(new OrderItem(mItem));
         }
         this.subtotal = Double.parseDouble(csv[2]);
-        this.orderState = (csv[3].equals("1")) ? OrderState.ORDER_COMPLETE : OrderState.ORDER_INCOMPLETE;
+        this.orderState = (csv[3].equals("1")) ? OrderState.ORDER_PAID : OrderState.ORDER_UNPAID;
     }
 
     /**
@@ -49,7 +49,7 @@ public class Order {
         }
         s[1] = b.toString().replaceAll(", $", ""); // Remove the comma
         s[2] = this.subtotal + "";
-        s[3] = (this.orderState == OrderState.ORDER_COMPLETE) ? "1" : "0";
+        s[3] = (this.orderState == OrderState.ORDER_PAID) ? "1" : "0";
         return s;
     }
 
@@ -82,6 +82,6 @@ public class Order {
     }
 
     public void markPaid() {
-        this.orderState = OrderState.ORDER_COMPLETE;
+        this.orderState = OrderState.ORDER_PAID;
     }
 }
