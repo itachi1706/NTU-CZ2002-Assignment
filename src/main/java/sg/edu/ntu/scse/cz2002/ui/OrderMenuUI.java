@@ -1,5 +1,6 @@
 package sg.edu.ntu.scse.cz2002.ui;
 
+import com.sun.istack.internal.Nullable;
 import sg.edu.ntu.scse.cz2002.MainApp;
 import sg.edu.ntu.scse.cz2002.features.Order;
 import sg.edu.ntu.scse.cz2002.util.DateTimeFormatHelper;
@@ -60,6 +61,10 @@ public class OrderMenuUI extends BaseMenu {
         return 0;
     }
 
+    /**
+     * Edit Order Menu UI
+     * @param orderNumber Order Number of the order currently being edited
+     */
     private void editOrderMenuScreen(final int orderNumber) {
         // TODO: Code Stub
         while (true) {
@@ -93,6 +98,9 @@ public class OrderMenuUI extends BaseMenu {
         }
     }
 
+    /**
+     * Creates an order and send you to the edit order UI at {@link OrderMenuUI#editOrderMenuScreen(int)}
+     */
     private void createOrder() {
         // Create a new order (completed + incompleted check and get ID after)
         int newId = 1;
@@ -107,7 +115,10 @@ public class OrderMenuUI extends BaseMenu {
         editOrderMenuScreen(o.getOrderID()); // Bring user to the order item edit screen
     }
 
-    // View Order List
+    /**
+     * View options for Orders
+     * You are able to view paid orders, unpaid orders, all orders and specific orders
+     */
     private void viewOrder() {
         // Check view completed or view others
         System.out.println("Choose any of the following options");
@@ -145,6 +156,10 @@ public class OrderMenuUI extends BaseMenu {
         }
     }
 
+    /**
+     * Print specific order details
+     * @param o Order object to print details of
+     */
     private void printOrderDetails(Order o) {
         printHeader("Order #" + o.getOrderID() + " Details");
         System.out.println("Order ID: " + o.getOrderID());
@@ -163,6 +178,13 @@ public class OrderMenuUI extends BaseMenu {
         System.out.println("\n");
     }
 
+    /**
+     * Finds an order from its Order ID
+     * @param id Order ID to find
+     * @param allowFromPaid Whether to check from the Paid Orders. Note that those orders cannot be edited
+     * @return An order object if found, null otherwise
+     */
+    @Nullable
     private Order findOrder(int id, boolean allowFromPaid) {
         // Find from incomplete orders first
         for (Order o : incompleteOrders) {
@@ -177,6 +199,11 @@ public class OrderMenuUI extends BaseMenu {
         return null; // Cannot find
     }
 
+    /**
+     * Prints the list of Orders
+     * @param orders A list of order
+     * @param tag A tag to append to the header
+     */
     private void printOrderList(ArrayList<Order> orders, String tag) {
         printHeader("Order List (" + tag + ")", 100);
         if (orders.size() == 0) System.out.println("No orders found");
@@ -191,6 +218,11 @@ public class OrderMenuUI extends BaseMenu {
         printBreaks(100);
     }
 
+    /**
+     * Edit Order option
+     * This method will request an order number and provide you the relevant edit order page if available
+     * If the order is already paid or does not exist, an error message will appear and you will exit back to the Order Menu
+     */
     private void editOrder() {
         Scanner in = new Scanner(System.in);
         int orderNo = ScannerHelper.getIntegerInput(in, "Enter Order Number: ");

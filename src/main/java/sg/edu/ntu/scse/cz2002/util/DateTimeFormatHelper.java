@@ -15,8 +15,8 @@ import java.util.GregorianCalendar;
  *
  * Helper class also contains validation methods for validating whether a certain date is valid
  *
- * @author Francis Lim
- * @version 1.1
+ * @author Francis Lim, Kenneth Soh
+ * @version 1.2
  * @since 2019-04-01
  */
 
@@ -144,6 +144,11 @@ public class DateTimeFormatHelper {
             return true;
     }
 
+    /**
+     * Formats time since Unix Epoch (1/1/2017 00:00:00) to a DateTime String
+     * @param millis time in milliseconds since Epoch
+     * @return Formatted DateTime String
+     */
     public static String formatMillisToDateTime(long millis) {
         SimpleDateFormat sdf = new SimpleDateFormat("d/M/yyyy HH:mm");
         return sdf.format(new Date(millis));

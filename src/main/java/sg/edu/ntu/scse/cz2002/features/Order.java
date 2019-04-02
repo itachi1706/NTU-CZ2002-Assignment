@@ -2,17 +2,49 @@ package sg.edu.ntu.scse.cz2002.features;
 
 import java.util.ArrayList;
 
+/**
+ * Order Object
+ *
+ * @author Kenneth Soh
+ * @version 1.0
+ * @since 2019-04-03
+ */
 public class Order {
 
+    /**
+     * Enum of the order states
+     */
     public enum OrderState {ORDER_PAID, ORDER_UNPAID }
 
+    /**
+     * Order ID
+     */
     private int orderID;
+    /**
+     * List of items in the order
+     */
     private ArrayList<OrderItem> orderItems;
+    /**
+     * Order subtotal (before taxes etc)
+     */
     private double subtotal;
+    /**
+     * State of the order
+     */
     private OrderState orderState;
+    /**
+     * Time of order creation
+     */
     private long createdAt;
+    /**
+     * Time when the order is paid
+     */
     private long completedAt;
 
+    /**
+     * Create a new order object
+     * @param orderID Order ID to set this new order as
+     */
     public Order(int orderID) {
         this.subtotal = 0;
         this.orderItems = new ArrayList<>();
@@ -61,43 +93,78 @@ public class Order {
         return s;
     }
 
+    /**
+     * Gets the order ID
+     * @return Order ID
+     */
     public int getOrderID() {
         return orderID;
     }
 
-    public void setOrderID(int orderID) {
-        this.orderID = orderID;
-    }
-
+    /**
+     * Gets the list of order items in the order
+     * @return ArrayList of Order Items
+     */
     public ArrayList<OrderItem> getOrderItems() {
         return orderItems;
     }
 
+    /**
+     * Updates the list of order items in the order
+     * @param orderItems New ArrayList of Order Items
+     */
     public void setOrderItems(ArrayList<OrderItem> orderItems) {
         this.orderItems = orderItems;
     }
 
+    /**
+     * Gets the subtotal of the order (before taxes)
+     * @return Order Subtotal
+     */
     public double getSubtotal() {
         return subtotal;
     }
 
+    /**
+     * Calculates the subtotal of the order based on the order items
+     * This subtotal does not include taxes
+     */
     public void calculateSubtotal() {
         // TODO: Calculate subtotal
     }
 
+    /**
+     * Gets the state of the order
+     * @return Order State
+     */
     public OrderState getOrderState() {
         return orderState;
     }
 
+    /**
+     * Sets the order as paid. THIS IS NOT REVERSIBLE
+     * What this will do is to mark the order as paid and update the time of payment to the current datetime
+     * This will not move the item from any object, it is the role of the calling method to move the order from the incomplete
+     * orders to complete orders arraylist and persist the data into storage
+     */
     public void markPaid() {
         this.orderState = OrderState.ORDER_PAID;
         this.completedAt = System.currentTimeMillis();
     }
 
+    /**
+     * Gets the time where this order is created
+     * @return Time in milliseconds since Epoch when this order is created
+     */
     public long getCreatedAt() {
         return createdAt;
     }
 
+    /**
+     * Gets the time where this order has been paid and completed
+     * Note that if the order is incomplete, this will return -1 instead
+     * @return Time in milliseconds since Epoch when this order is completed, or -1 of the order has not been completed (paid)
+     */
     public long getCompletedAt() {
         return completedAt;
     }

@@ -1,13 +1,35 @@
 package sg.edu.ntu.scse.cz2002.features;
 
+/**
+ * Order Item Object
+ *
+ * @author Kenneth Soh
+ * @version 1.0
+ * @since 2019-04-03
+ */
 public class OrderItem {
 
-    public enum OrderMenuItemType { TYPE_MENU, TYPE_PROMO }
+    /**
+     * Enums for type of order item
+     */
+    public enum OrderItemType { TYPE_MENU, TYPE_PROMO }
 
+    /**
+     * Item ID (Menu/Promotion Set)
+     */
     private int itemId;
+    /**
+     * Quantity of items in the order
+     */
     private int quantity;
+    /**
+     * Total sum of the items in the order
+     */
     private double itemTotal;
-    private OrderMenuItemType itemType;
+    /**
+     * Item type
+     */
+    private OrderItemType itemType;
 
     /**
      * A method to read from a CSV string to convert to an object instance
@@ -18,7 +40,7 @@ public class OrderItem {
         this.itemId = Integer.parseInt(otherData[0]);
         this.quantity = Integer.parseInt(otherData[1]);
         this.itemTotal = Double.parseDouble(otherData[2]);
-        this.itemType = (otherData[3].equals("M")) ? OrderMenuItemType.TYPE_MENU : OrderMenuItemType.TYPE_PROMO;
+        this.itemType = (otherData[3].equals("M")) ? OrderItemType.TYPE_MENU : OrderItemType.TYPE_PROMO;
     }
 
     /**
@@ -27,6 +49,6 @@ public class OrderItem {
      * @return A String array of the CSV file
      */
     public String toCompiledString() {
-        return this.itemId + ":" + this.quantity + ":" + this.itemTotal + ((this.itemType == OrderMenuItemType.TYPE_MENU) ? "M" : "P");
+        return this.itemId + ":" + this.quantity + ":" + this.itemTotal + ((this.itemType == OrderItemType.TYPE_MENU) ? "M" : "P");
     }
 }
