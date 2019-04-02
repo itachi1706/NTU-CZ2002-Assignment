@@ -1,5 +1,6 @@
 package sg.edu.ntu.scse.cz2002.ui;
 
+import sg.edu.ntu.scse.cz2002.MainApp;
 import sg.edu.ntu.scse.cz2002.features.Order;
 import sg.edu.ntu.scse.cz2002.util.ScannerHelper;
 
@@ -58,7 +59,7 @@ public class OrderMenuUI extends BaseMenu {
         return 0;
     }
 
-    private boolean editOrderMenuScreen(int orderNumber) {
+    private boolean editOrderMenuScreen(final int orderNumber) {
         // TODO: Code Stub
         // TODO: Update this. This will run after progress is done
         while (true) {
@@ -93,11 +94,23 @@ public class OrderMenuUI extends BaseMenu {
     }
 
     private void createOrder() {
-        // TODO: Code Stub
+        // Create a new order (completed + incompleted check and get ID after)
+        int newId = 1;
+        if (incompleteOrders.size() > 0) {
+            newId = incompleteOrders.get(incompleteOrders.size() - 1).getOrderID() + 1;
+        } else if (MainApp.completedOrders.size() > 0) {
+            newId = MainApp.completedOrders.get(MainApp.completedOrders.size() - 1).getOrderID() + 1;
+        }
+        Order o = new Order(newId);
+        incompleteOrders.add(o);
+        System.out.println("New Order #" + o.getOrderID() + " created!");
+        editOrderMenuScreen(o.getOrderID()); // Bring user to the order item edit screen
     }
 
+    // View Order List
     private void viewOrder() {
         // TODO: Code Stub
+
 
     }
 

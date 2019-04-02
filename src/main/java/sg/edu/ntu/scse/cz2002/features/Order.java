@@ -11,6 +11,13 @@ public class Order {
     private double subtotal;
     private OrderState orderState;
 
+    public Order(int orderID) {
+        this.subtotal = 0;
+        this.orderItems = new ArrayList<>();
+        this.orderState = OrderState.ORDER_INCOMPLETE;
+        this.orderID = orderID;
+    }
+
     /**
      * A method to read from a CSV string to convert to an object instance
      * This needs to be overridden if you need to retrieve CSV data from file
