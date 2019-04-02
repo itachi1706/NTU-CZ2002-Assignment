@@ -1,6 +1,5 @@
 package sg.edu.ntu.scse.cz2002.ui;
 
-import com.sun.istack.internal.Nullable;
 import sg.edu.ntu.scse.cz2002.MainApp;
 import sg.edu.ntu.scse.cz2002.features.Order;
 import sg.edu.ntu.scse.cz2002.util.DateTimeFormatHelper;
@@ -184,7 +183,6 @@ public class OrderMenuUI extends BaseMenu {
      * @param allowFromPaid Whether to check from the Paid Orders. Note that those orders cannot be edited
      * @return An order object if found, null otherwise
      */
-    @Nullable
     private Order findOrder(int id, boolean allowFromPaid) {
         // Find from incomplete orders first
         for (Order o : incompleteOrders) {

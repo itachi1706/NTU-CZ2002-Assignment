@@ -1,5 +1,5 @@
 package sg.edu.ntu.scse.cz2002.ui;
-import com.sun.istack.internal.Nullable;
+
 import sg.edu.ntu.scse.cz2002.MainApp;
 import sg.edu.ntu.scse.cz2002.objects.menuitem.MenuItem;
 import sg.edu.ntu.scse.cz2002.util.MenuItemCSVHelper;
@@ -310,7 +310,6 @@ public class FoodMenuUI extends BaseMenu {
 	 * @params targetItemID <ID of the menu item object to be retrieved.>
 	 * @return menuItemObj <Object containing menu item attributes.> 
 	 */
-	@Nullable
 	public MenuItem retrieveMenuItem(int targetItemID) throws IOException {
 		
 		for (int i=0; i<(MainApp.menuItems.size()); i++) {
