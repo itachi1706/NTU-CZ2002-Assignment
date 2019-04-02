@@ -29,7 +29,7 @@ public class CSVBaseHelper {
         IntStream.range(0, skip).forEach((i) -> tmp.remove(0));
         List<String[]> result = new ArrayList<>();
         tmp.forEach((s) -> {
-            if (s.trim().isEmpty()) return; // Ignore this
+            if (s.trim().isEmpty()) return; // Ignore this line
             result.add(s.split("\\|\\|\\|"));
         });
         return result;
