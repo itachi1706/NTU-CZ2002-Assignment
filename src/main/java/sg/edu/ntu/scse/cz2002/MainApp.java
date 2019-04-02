@@ -11,6 +11,8 @@ import sg.edu.ntu.scse.cz2002.util.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.text.ParseException;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -84,6 +86,8 @@ public class MainApp {
             System.out.println("Loading Completed Orders from file...");
             completedOrders = orderCsv.readFromCsv();
             System.out.println(completedOrders.size() + " completed orders loaded successfully.");
+
+            System.out.println(checkTodayReservations() + " reservations have since expired, and deleted from the system.");
 
             checkTodayReservations();
         } catch (IOException e) {
@@ -169,13 +173,25 @@ public class MainApp {
 
     /**
      * Part of initialising to check for today's reservations
+     * Includes checking for expired reservations by calling checkExpiredReservations()
      * If found reservation that matches today's date, set the table to reserved.
      */
-    private static void checkTodayReservations() {
+    private static int checkTodayReservations() {
+        int expiredCount = 0;
         for (Reservation r : reservations) {
-            //System.out.println(r.getResvDateTime().get(Calendar.));
-
+            if (r.getResvDate().equals(LocalDate.now())) {
+                if (DateTimeFormatHelper.getTimeDifferenceMinutes(r.getResvTime(), LocalTime.now()) <= 0) {
+                    reservations.remove(r);
+                    expiredCount++;
+                }
+                for (Table t : tables) {
+                    if (r.getTableNum() == t.getTableNum()) {
+                        t.setReserved(true);
+                    }
+                }
+            }
         }
-
+        return expiredCount;
     }
+
 }

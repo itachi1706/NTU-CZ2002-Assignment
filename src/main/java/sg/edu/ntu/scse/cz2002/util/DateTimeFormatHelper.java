@@ -1,11 +1,11 @@
 package sg.edu.ntu.scse.cz2002.util;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -56,7 +56,7 @@ public class DateTimeFormatHelper {
      * The String must strictly follow a given format: DD/MM/YYYY
      * @param date String containing date in the specified format
      * @return A LocalDate variable
-     * @throws ParseException When an incorrect format of date and time String has been passed in
+     * @throws DateTimeParseException When an incorrect format of date and time String has been passed in
      */
     public static LocalDate formatToLocalDate(String date) throws DateTimeParseException {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy");
@@ -72,7 +72,7 @@ public class DateTimeFormatHelper {
      * The String must strictly follow a given format: HH:MM
      * @param time String containing  time in the specified format
      * @return A LocalTime variable
-     * @throws ParseException When an incorrect format of date and time String has been passed in
+     * @throws DateTimeParseException When an incorrect format of date and time String has been passed in
      */
     public static LocalTime formatToLocalTime(String time) throws DateTimeParseException {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
@@ -86,7 +86,7 @@ public class DateTimeFormatHelper {
     /**
      * Method to get date in Calendar object
      * @param getNextMonth boolean variable to determine if getting today's date or date one month from now
-     * @return Date object containing today's date and time value
+     * @return LocalDate object containing today's date and time value
      */
     public static LocalDate getDate(boolean getNextMonth) {
         if (!getNextMonth)
@@ -97,6 +97,9 @@ public class DateTimeFormatHelper {
         }
     }
 
+    public static long getTimeDifferenceMinutes(LocalTime time1, LocalTime time2) {
+        return time1.until(time2, ChronoUnit.MINUTES);
+    }
     /**
      * Method for comparing if input date is after current date/time.
      * @return True is input date is after today, false if is same or before today.

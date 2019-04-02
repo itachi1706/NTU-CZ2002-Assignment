@@ -5,7 +5,6 @@ import sg.edu.ntu.scse.cz2002.features.Reservation;
 import sg.edu.ntu.scse.cz2002.features.Table;
 import sg.edu.ntu.scse.cz2002.util.DateTimeFormatHelper;
 
-import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeParseException;
@@ -31,11 +30,12 @@ public class ReservationMenuUI extends BaseMenu {
         System.out.println("2) Check reservation booking");
         System.out.println("3) Remove reservation booking");
         System.out.println("4) List all current reservations");
-        System.out.println("5) Back to main menu");
+        System.out.println("5) Check for expired reservations");
+        System.out.println("6) Back to main menu");
         System.out.println("0) Exit Application");
         printBreaks();
 
-        int choice = doMenuChoice(5, 0);
+        int choice = doMenuChoice(6, 0);
         switch (choice) {
             case 1:
                 this.createReservationBooking();
@@ -51,6 +51,8 @@ public class ReservationMenuUI extends BaseMenu {
                 this.listReservations();
                 break;
             case 5:
+                this.checkExpiredReservations();
+            case 6:
                 return -1;
             case 0:
                 return 1;
@@ -156,7 +158,7 @@ public class ReservationMenuUI extends BaseMenu {
             //TODO: Further validation
         } catch (DateTimeParseException e) {
             //Only thrown for failure to parse Date and Time in custom format
-            System.out.println("[ERROR] Input date format is wrong. (" + e.getLocalizedMessage() + ")");
+            System.out.println("[ERROR] Input date or time format is wrong. (" + e.getLocalizedMessage() + ")");
         } catch (NumberFormatException e) {
             //Only thrown for failure to parse String to int
             System.out.println("[ERROR] Please input a valid number of pax. (" + e.getLocalizedMessage() + "}");
@@ -181,5 +183,23 @@ public class ReservationMenuUI extends BaseMenu {
                     r.getTableNum());
 
         }
+    }
+
+    /**
+     * Checks if the current Reservation object has expired
+     * Expiry applies if reservation's date is today, and the time now is 30 minutes or more past the reservation time
+     */
+    private static void checkExpiredReservations() {
+        int expiredCount = 0;
+
+        for (Reservation r : MainApp.reservations)
+            if (r.getResvDate().equals(LocalDate.now()))
+                if (DateTimeFormatHelper.getTimeDifferenceMinutes(r.getResvTime(), LocalTime.now()) <= 0) {
+                    MainApp.reservations.remove(r);
+                    expiredCount++;
+            }
+
+        System.out.println(expiredCount + " reservations have since expired, and deleted from the system.");
+
     }
 }

@@ -2,11 +2,10 @@ package sg.edu.ntu.scse.cz2002.features;
 
 import sg.edu.ntu.scse.cz2002.util.DateTimeFormatHelper;
 
-import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeParseException;
-import java.util.Calendar;
+
 
 /**
  * The Reservation Class
@@ -71,7 +70,7 @@ public class Reservation {
      * A method to read from a CSV string to convert to an object instance
      * This needs to be overridden if you need to retrieve CSV data from file
      * @param csv A string array of the CSV file
-     * @throws ParseException When the date time provided from the CSV file has an invalid format,
+     * @throws DateTimeParseException When the date time provided from the CSV file has an invalid format,
      * which is unlikely to happen unless CSV file was modified outside of program.
      */
     public Reservation(String[] csv) throws DateTimeParseException {
