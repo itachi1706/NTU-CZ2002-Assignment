@@ -1,7 +1,9 @@
 package sg.edu.ntu.scse.cz2002.ui;
 
+import sg.edu.ntu.scse.cz2002.features.Order;
 import sg.edu.ntu.scse.cz2002.util.ScannerHelper;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
@@ -14,11 +16,19 @@ import java.util.Scanner;
 public class OrderMenuUI extends BaseMenu {
 
     /**
+     * Incomplete Orders that has not printed receipt yet
+     * These orders will not be saved should the system crash
+     */
+    public static ArrayList<Order> incompleteOrders = null;
+
+    /**
      * The Order Management Menu
      * @return Exit Code. Return 1 to exit the program and -1 to exit to main menu
      */
     @Override
     protected int generateMenuScreen() {
+        // Init
+        if (incompleteOrders == null) incompleteOrders = new ArrayList<>();
         printHeader("Order Management");
         System.out.println("1) Create a new order");
         System.out.println("2) View orders");
@@ -88,12 +98,13 @@ public class OrderMenuUI extends BaseMenu {
 
     private void viewOrder() {
         // TODO: Code Stub
-        
+
     }
 
     private void editOrder() {
         // TODO: Code Stub
         Scanner in = new Scanner(System.in);
         int orderNo = ScannerHelper.getIntegerInput(in, "Enter Order Number: ");
+         // TODO: Check if order exists
     }
 }
