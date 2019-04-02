@@ -13,6 +13,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -65,6 +66,8 @@ public class MainApp {
             System.out.println("Loading Table states from file...");
             tables = tableCsv.readFromCsv();
             System.out.println(tables.size() + " tables loaded successfully.");
+
+            checkTodayReservations();
 
         } catch (IOException e) {
             //e.printStackTrace();
@@ -135,5 +138,17 @@ public class MainApp {
             System.out.println("Failed to load ASCII Welcome Art!");
             if (DEBUG) System.out.println("Exception: " + e.getLocalizedMessage());
         }
+    }
+
+    /**
+     * Part of initialising to check for today's reservations
+     * If found reservation that matches today's date, set the table to reserved.
+     */
+    private static void checkTodayReservations() {
+        for (Reservation r : reservations) {
+            //System.out.println(r.getResvDateTime().get(Calendar.));
+
+        }
+
     }
 }

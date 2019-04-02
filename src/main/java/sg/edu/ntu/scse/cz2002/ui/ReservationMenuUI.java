@@ -5,9 +5,10 @@ import sg.edu.ntu.scse.cz2002.features.Reservation;
 import sg.edu.ntu.scse.cz2002.features.Table;
 import sg.edu.ntu.scse.cz2002.util.DateTimeFormatHelper;
 
-import java.sql.SQLOutput;
 import java.text.ParseException;
-import java.util.Calendar;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 
 /**
@@ -64,9 +65,13 @@ public class ReservationMenuUI extends BaseMenu {
      */
     private void createReservationBooking() {
         String custName, custTelNo;
+        //String resvDate, resvTime = "";
         int numPax, tableNum = 0;
+        LocalDate resvDate;
+        LocalTime resvTime;
+
         Reservation r = null;
-        Calendar resvDate = null;
+
         String nextMonthDate = DateTimeFormatHelper.formatToStringDate(DateTimeFormatHelper.getDate(true));
 
         printHeader("Create Reservation Booking");
@@ -79,11 +84,19 @@ public class ReservationMenuUI extends BaseMenu {
             System.out.print("Enter the contact number (this will be used tp identify your reservation upon arrival): ");
             custTelNo = input.nextLine();
 
-            System.out.println("Enter reservation date and time (note that date must be "
-                    + nextMonthDate + " or later)");
-            System.out.println("<Note the date and 24-hour time format of dd/mm/yyyy hh:mm>");
+            System.out.println("Enter reservation date (note that date must be "
+                    + nextMonthDate + " or earlier)");
+            System.out.println("<Note the date format of dd/mm/yyyy>");
             System.out.print("Your input: ");
-            resvDate = DateTimeFormatHelper.formatToCalendarDate(input.nextLine());
+            resvDate = DateTimeFormatHelper.formatToLocalDate(input.nextLine());
+
+            System.out.println("Enter reservation time (restaurant operates in 2 sessions: " +
+                    "\n11:00 to 15:00, and 18:00 to 22:00)");
+            System.out.println("<Note the 24-hour time format of hh:mm>");
+            System.out.print("Your input: ");
+            resvTime = DateTimeFormatHelper.formatToLocalTime(input.nextLine());
+
+            //resvDateTime = DateTimeFormatHelper.formatToLocalDate(resvDate + " " + resvTime);
 
             System.out.print("Enter pax amount (table for how many?): ");
             numPax = input.nextInt();
@@ -130,8 +143,9 @@ public class ReservationMenuUI extends BaseMenu {
                 System.out.println("Sorry! The restaurant's maximum seating is 10 people.");
             }
 
+            //Conditional loop to determine is available table is found.
             if (tableNum > 0) {
-                r = new Reservation(MainApp.reservations.size() + 1, resvDate, custTelNo, custName, numPax, tableNum);
+                r = new Reservation(MainApp.reservations.size() + 1, resvDate, resvTime, custTelNo, custName, numPax, tableNum);
                 MainApp.reservations.add(r);
 
                 System.out.println("Your reservation has been successfully recorded! Your assigned table is " + tableNum + ".");
@@ -140,19 +154,27 @@ public class ReservationMenuUI extends BaseMenu {
             }
 
             //TODO: Further validation
-        } catch (ParseException e) {
+        } catch (DateTimeParseException e) {
+            //Only thrown for failure to parse Date and Time in custom format
             System.out.println("[ERROR] Input date format is wrong. (" + e.getLocalizedMessage() + ")");
+        } catch (NumberFormatException e) {
+            //Only thrown for failure to parse String to int
+            System.out.println("[ERROR] Please input a valid number of pax. (" + e.getLocalizedMessage() + "}");
         }
     }
 
+    /**
+     * Method for listing all reservations made by customers, in ascending order of Reservation ID.
+     */
     private void listReservations() {
         printHeader("List of all Reservations");
-        System.out.printf("%-4s %-30s %-10s %-15s %-3s %-9s\n", "ID", "Date/Time", "Tel. No", "Name", "Pax", "Table No.");
+        System.out.printf("%-4s %-20s %-10s %-10s %-15s %-3s %-9s\n", "ID", "Date", "Time", "Tel. No", "Name", "Pax", "Table No.");
         printBreaks();
         for (Reservation r : MainApp.reservations) {
-            System.out.printf("%-4d %-30s %-10s %-15s %-3d %-9d\n",
+            System.out.printf("%-4d %-20s %-10s %-10s %-15s %-3d %-9d\n",
                     r.getResvId(),
-                    DateTimeFormatHelper.formatToStringDate(r.getResvDateTime()),
+                    DateTimeFormatHelper.formatToStringDate(r.getResvDate()),
+                    DateTimeFormatHelper.formatToStringTime(r.getResvTime()),
                     r.getCustTelNo(),
                     r.getCustName(),
                     r.getNumPax(),

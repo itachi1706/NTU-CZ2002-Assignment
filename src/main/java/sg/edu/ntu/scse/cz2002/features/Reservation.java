@@ -3,6 +3,9 @@ package sg.edu.ntu.scse.cz2002.features;
 import sg.edu.ntu.scse.cz2002.util.DateTimeFormatHelper;
 
 import java.text.ParseException;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeParseException;
 import java.util.Calendar;
 
 /**
@@ -23,7 +26,12 @@ public class Reservation {
     /**
      * The reservation date and time. Uses Date library from java.util.
      */
-    private Calendar resvDateTime;
+    private LocalDate resvDate;
+
+    /**
+     * The reservation date and time. Uses Date library from java.util.
+     */
+    private LocalTime resvTime;
 
     /**
      * The customer's telephone number, and candidate key in determining reservation.
@@ -49,9 +57,10 @@ public class Reservation {
     /**
      * Constructor for Reservation object
      */
-    public Reservation(int id, Calendar rdt, String telNo, String name, int pax, int t) {
+    public Reservation(int id, LocalDate rd, LocalTime rt, String telNo, String name, int pax, int t) {
         this.resvId = id;
-        this.resvDateTime = rdt;
+        this.resvDate = rd;
+        this.resvTime = rt;
         this.custTelNo = telNo;
         this.custName = name;
         this.numPax = pax;
@@ -65,13 +74,14 @@ public class Reservation {
      * @throws ParseException When the date time provided from the CSV file has an invalid format,
      * which is unlikely to happen unless CSV file was modified outside of program.
      */
-    public Reservation(String[] csv) throws ParseException {
+    public Reservation(String[] csv) throws DateTimeParseException {
         this.resvId= Integer.parseInt(csv[0]);
         this.custName = csv[1];
         this.custTelNo = csv[2];
         this.numPax = Integer.parseInt(csv[3]);
-        this.resvDateTime = DateTimeFormatHelper.formatToCalendarDate(csv[4]);
-        this.tableNum = Integer.parseInt(csv[5]);
+        this.resvDate = DateTimeFormatHelper.formatToLocalDate(csv[4]);
+        this.resvTime = DateTimeFormatHelper.formatToLocalTime(csv[5]);
+        this.tableNum = Integer.parseInt(csv[6]);
     }
 
     /**
@@ -80,13 +90,14 @@ public class Reservation {
      * @return A String array of the CSV file
      */
     public String[] toCsv() {
-        String[] s = new String[6];
+        String[] s = new String[7];
         s[0] = this.resvId + "";
         s[1] = this.custName;
         s[2] = this.custTelNo;
         s[3] = this.numPax + "";
-        s[4] = DateTimeFormatHelper.formatToStringDate(this.resvDateTime) + "";
-        s[5] = this.tableNum + "";
+        s[4] = DateTimeFormatHelper.formatToStringDate(this.resvDate) + "";
+        s[5] = DateTimeFormatHelper.formatToStringTime(this.resvTime) + "";
+        s[6] = this.tableNum + "";
         return s;
     }
 
@@ -98,12 +109,20 @@ public class Reservation {
         this.resvId = resvId;
     }
 
-    public Calendar getResvDateTime() {
-        return resvDateTime;
+    public LocalDate getResvDate() {
+        return resvDate;
     }
 
-    public void setResvDateTime(Calendar resvDateTime) {
-        this.resvDateTime = resvDateTime;
+    public void setResvDate(LocalDate resvDate) {
+        this.resvDate = resvDate;
+    }
+
+    public LocalTime getResvTime() {
+        return resvTime;
+    }
+
+    public void setResvTime(LocalTime resvTime) {
+        this.resvTime = resvTime;
     }
 
     public int getNumPax() {

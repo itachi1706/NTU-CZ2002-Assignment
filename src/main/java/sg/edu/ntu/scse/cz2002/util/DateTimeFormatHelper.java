@@ -1,7 +1,10 @@
 package sg.edu.ntu.scse.cz2002.util;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
@@ -18,43 +21,64 @@ import java.util.GregorianCalendar;
 public class DateTimeFormatHelper {
 
     /**
-     * Method for formatting Calendar values into formatted String
-     * @param date Calendar object date
-     * @return String of date formatted in DD/MM/YYYYY.
+     * Method for formatting LocalDate values into formatted String
+     * @param date LocalDate object date
+     * @return String of date formatted in d/MM/yyyy.
      */
-    public static String formatToStringDate(Calendar date)
+    public static String formatToStringDate(LocalDate date)
     {
-        int day, month, year, hour, minute = 0;
-        year = date.get(Calendar.YEAR);
-        month = date.get(Calendar.MONTH) + 1;
-        day = date.get(Calendar.DATE);
-        hour = date.get(Calendar.HOUR_OF_DAY);
-        minute = date.get(Calendar.MINUTE);
-        String formatDate = day + "/" + month + "/" + year + " " + hour + ":" + minute;
+        String day, month, year;
+        year = date.getYear() + "";
+        month = date.getMonthValue() + "";
+        day = date.getDayOfMonth() + "";
+        String formatDate = day + "/" + month + "/" + year;
         return formatDate;
     }
 
     /**
-     * Method for formatting Calendar values for current date/time into formatted String
-     * Note that "today" is a GregorianCalendar date.
-     *
-     * Method provides the same function as getting today's date, albeit in a String object
-     * as compared to a Calendar object.
-     *
-     * To get today's date as a calendar object, call getTodayDate()
-     *
-     * @return String of date and time formatted in DD/MM/YYYYY and HH:MM:SS.
+     * Method for formatting LocalTime values into formatted String
+     * @param time LocalTime object date
+     * @return String of time formatted in HH:mm
      */
-    public static String formatToStringTodayDateTime()
+    public static String formatToStringTime(LocalTime time)
     {
-        Calendar today = new GregorianCalendar();
-        int yr = today.get(Calendar.YEAR);
-        int mth = today.get(Calendar.MONTH)+1;
-        int day = today.get(Calendar.DATE);
-        int hr = today.get(Calendar.HOUR_OF_DAY);
-        int min = today.get(Calendar.MINUTE);
-        int sec = today.get(Calendar.SECOND);
-        return day + "/" + mth + "/" + yr + " at " + hr + ":" + min + ":" + sec;
+        String hour, minute;
+        hour = time.getHour() + "";
+        minute = ((time.getMinute() == 0) ? "00" : time.getMinute()) + "";
+        String formatTime = hour + ":" + minute;
+        return formatTime;
+    }
+
+    /**
+     * Formats a passed in String to a LocalDate object
+     * The String must strictly follow a given format: DD/MM/YYYY
+     * @param date String containing date in the specified format
+     * @return A LocalDate variable
+     * @throws ParseException When an incorrect format of date and time String has been passed in
+     */
+    public static LocalDate formatToLocalDate(String date) throws DateTimeParseException {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy");
+        //SimpleDateFormat sdf = new SimpleDateFormat("d/M/yyyy HH:mm");
+        LocalDate ld = LocalDate.parse(date, formatter);
+        //alendar cal = Calendar.getInstance();
+        //cal.setTime(sdf.parse(date));
+        return ld;
+    }
+
+    /**
+     * Formats a passed in String to a LocalTime object
+     * The String must strictly follow a given format: HH:MM
+     * @param time String containing  time in the specified format
+     * @return A LocalTime variable
+     * @throws ParseException When an incorrect format of date and time String has been passed in
+     */
+    public static LocalTime formatToLocalTime(String time) throws DateTimeParseException {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+        //SimpleDateFormat sdf = new SimpleDateFormat("d/M/yyyy HH:mm");
+        LocalTime lt = LocalTime.parse(time, formatter);
+        //alendar cal = Calendar.getInstance();
+        //cal.setTime(sdf.parse(date));
+        return lt;
     }
 
     /**
@@ -62,13 +86,12 @@ public class DateTimeFormatHelper {
      * @param getNextMonth boolean variable to determine if getting today's date or date one month from now
      * @return Date object containing today's date and time value
      */
-    public static Calendar getDate(boolean getNextMonth) {
+    public static LocalDate getDate(boolean getNextMonth) {
         if (!getNextMonth)
-            return Calendar.getInstance();
+            return LocalDate.now();
         else {
-            Calendar c = Calendar.getInstance();
-            c.add(Calendar.DATE, 30);
-            return c;
+            LocalDate l = LocalDate.now();
+            return l.plusDays(30);
         }
     }
 
@@ -76,23 +99,11 @@ public class DateTimeFormatHelper {
      * Method for comparing if input date is after current date/time.
      * @return True is input date is after today, false if is same or before today.
      */
-    public static boolean compareToday(Calendar inputDate){
-        return inputDate.after(Calendar.getInstance().getTime());
+    public static boolean compareToday(LocalDate inputDate){
+        return inputDate.isAfter(LocalDate.now());
     }
 
-    /**
-     * Formats a passed in String to a Calendar object
-     * The String must strictly follow a given format: DD/MM/YYYY HH:MM
-     * @param dateTime String containing date time in the specified format
-     * @return A Calendar variable
-     * @throws ParseException When an incorrect format of date and time String has been passed in
-     */
-     public static Calendar formatToCalendarDate(String dateTime) throws ParseException {
-         SimpleDateFormat sdf = new SimpleDateFormat("d/M/yyyy HH:mm");
-         Calendar cal = Calendar.getInstance();
-         cal.setTime(sdf.parse(dateTime));
-         return cal;
-     }
+
 
     /**
      * Method for validating whether a user-input date is valid
@@ -109,7 +120,6 @@ public class DateTimeFormatHelper {
      * @param y Integer value containing YEAR value
      * @return Boolean value determining if the date is valid or invalid
      */
-
     public static boolean validateDate(int d, int m, int y)
     {
         //Validate non-31 days months.
@@ -130,5 +140,30 @@ public class DateTimeFormatHelper {
             //All validations have been passed, date has no errors.
         else
             return true;
+    }
+
+
+    /**
+     * Method for formatting Calendar values for current date/time into formatted String
+     * Note that "today" is a GregorianCalendar date.
+     *
+     * Method provides the same function as getting today's date, albeit in a String object
+     * as compared to a Calendar object.
+     *
+     * To get today's date as a calendar object, call getTodayDate()
+     *
+     * @return String of date and time formatted in DD/MM/YYYYY and HH:MM:SS.
+     */
+    @Deprecated
+    public static String formatToStringTodayDateTime()
+    {
+        Calendar today = new GregorianCalendar();
+        int yr = today.get(Calendar.YEAR);
+        int mth = today.get(Calendar.MONTH)+1;
+        int day = today.get(Calendar.DATE);
+        int hr = today.get(Calendar.HOUR_OF_DAY);
+        int min = today.get(Calendar.MINUTE);
+        int sec = today.get(Calendar.SECOND);
+        return day + "/" + mth + "/" + yr + " at " + hr + ":" + min + ":" + sec;
     }
 }
