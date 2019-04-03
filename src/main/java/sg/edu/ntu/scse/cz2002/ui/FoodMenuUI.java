@@ -37,20 +37,12 @@ public class FoodMenuUI extends BaseMenu {
         
         int choice = doMenuChoice(5, 0);
         switch (choice) {
-        
-        	//////////////////////////
-        	// Prints existing menu //
-        	//////////////////////////
-            case 1:
+            case 1: // Prints menu
         		System.out.println("This is the current menu:");
         		//calls print function from below
             	printMenu();
                 break;
-		                
-            ////////////////////////////
-		  	// Create a new menu item //
-		  	////////////////////////////
-            case 2:
+            case 2: // Create new menu item
 				String newItemName;
 				String newItemType;
 				String newItemDescription;
@@ -72,11 +64,7 @@ public class FoodMenuUI extends BaseMenu {
 				System.out.println(newItemName+" has been successfully added.");
 				
                 break;
-                
-            //////////////////////////////////////////
-		  	// Edit an existing menu item's details //
-		  	//////////////////////////////////////////
-            case 3:
+            case 3: // Edit an existing menu item
 				int editItemID;
 				String editItemName;
 				String editItemType;
@@ -97,10 +85,13 @@ public class FoodMenuUI extends BaseMenu {
 				//e.g. Enter "SCS Ovaltine's new name:"
 				System.out.println("Enter new item name: ");
 				editItemName = sc.nextLine();
+				
 				System.out.println("Enter new item type: ");
 				editItemType = sc.nextLine();
+				
 				System.out.println("Enter new item description: ");
 				editItemDescription = sc.nextLine();
+				
 				System.out.println("Enter new item price: ");
 				editItemPrice = sc.nextDouble();
 				sc.nextLine(); //need to clear buffer for Int, Float or Double
@@ -111,11 +102,7 @@ public class FoodMenuUI extends BaseMenu {
 				System.out.println("Item has been successfully edited.");
 				
                 break;
-                
-            //////////////////////////////////
-		  	// Delete an existing menu item //
-		  	//////////////////////////////////
-            case 4:
+            case 4: // Delete an existing menu item
 				int targetItemID;
 				
 				System.out.println("Enter the ID of the menu item to be deleted: ");
@@ -128,16 +115,8 @@ public class FoodMenuUI extends BaseMenu {
 				System.out.println("The menu item has been successfully deleted.");
 				
                 break;
-                
-            ///////////////////////////////
-		  	// Returns back to main menu //
-		  	///////////////////////////////
             case 5:
                 return -1;
-                
-            ///////////////////////////////
-		  	// Returns back to main menu //
-		  	///////////////////////////////
             case 0:
                 return 1;
                 
@@ -147,11 +126,10 @@ public class FoodMenuUI extends BaseMenu {
         return 0;
     }
 		
-    //////////////////////////////////////
-  	// Function to print all menu items //
-  	//////////////////////////////////////
+	
+	
 	/**
-	 * Prints the CSV File Menu @ Arthur
+	 * Prints the CSV File Menu. @ Arthur
 	 * (uses the globally defined "menuItems" ArrayList from MainApp)
 	 */
 	public void printMenu() {
@@ -167,9 +145,6 @@ public class FoodMenuUI extends BaseMenu {
 	}
 	//eventually do an if else to print either all, drinks, food, or etc respectively***
 	
-    ///////////////////////////////////
-  	// Function to add new menu item //
-  	///////////////////////////////////
 	/**
 	 * Adds a new menu item. @ Arthur
 	 * (uses "writeToCsv" to facilitate I/O operations from MenuItemCSVHelper.)
@@ -208,17 +183,14 @@ public class FoodMenuUI extends BaseMenu {
 	//maybe also do an if-else case to input enum data types, e.g. 1 for Drink, 2 for food***
 	//eventually do a handler for double, in particular for newItemPrice***
 
-    ////////////////////////////////////////////
-  	// Function to edit an existing menu item //
-  	////////////////////////////////////////////
 	/**
 	 * Edits an existing item. @ Arthur
 	 * (uses "writeToCsv" AND "retrieveMenuItem" to facilitate I/O operations)
-	 * @params targetItemID <ID of the new menu item to be edited.>
-	 * @params newItemName <Name of the new menu item to be edited.>
-	 * @params newItemType <Type of the new menu item to be edited. Can only be defined as the following enum values: Drink, Main or Dessert.>
-	 * @params newItemDescription <Description of the new menu item to be edited.>
-	 * @params newItemPrice <Price of the new menu item to be edited.>
+	 * @params targetItemID <ID of the existing menu item to be edited.>
+	 * @params editItemName <Name of the existing menu item to be edited.>
+	 * @params editItemType <Type of the existing menu item to be edited. Can only be defined as the following enum values: Drink, Main or Dessert.>
+	 * @params editItemDescription <Description of the existing menu item to be edited.>
+	 * @params editItemPrice <Price of the existing menu item to be edited.>
 	 */
 	public void editMenuItem(int targetItemID, String editItemName, String editItemType, String editItemDescription, double editItemPrice) {
 
@@ -252,13 +224,10 @@ public class FoodMenuUI extends BaseMenu {
 		return;		
 	}	
 	
-    ///////////////////////////////////////////
-  	// Function to delete existing menu item //
-  	///////////////////////////////////////////
 	/**
 	 * Deletes an existing item. @ Arthur
 	 * (uses "writeToCsv" to facilitate I/O operations)
-	 * @params targetItemID <ID of the new menu item to be deleted.>
+	 * @params targetItemID <ID of the menu item to be deleted.>
 	 */
 	public void deleteMenuItem(int targetItemID) {
 
@@ -301,15 +270,12 @@ public class FoodMenuUI extends BaseMenu {
 		return;		
 	}
 
-    /////////////////////////////////////////////////////
-  	// Function to return an object using menu item id //
-  	/////////////////////////////////////////////////////
 	/**
 	 * Returns a MenuItem object that matches the input targetItemID. @ Arthur
 	 * @params targetItemID <ID of the menu item object to be retrieved.>
 	 * @return menuItemObj <Object containing menu item attributes.> 
 	 */
-	public MenuItem retrieveMenuItem(int targetItemID) throws IOException {
+	public static MenuItem retrieveMenuItem(int targetItemID) throws IOException {
 		
 		for (int i=0; i<(MainApp.menuItems.size()); i++) {
 			

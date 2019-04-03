@@ -3,9 +3,11 @@ package sg.edu.ntu.scse.cz2002;
 import sg.edu.ntu.scse.cz2002.features.Reservation;
 import sg.edu.ntu.scse.cz2002.features.Table;
 import sg.edu.ntu.scse.cz2002.objects.menuitem.MenuItem;
+import sg.edu.ntu.scse.cz2002.objects.menuitem.Promotion;
 import sg.edu.ntu.scse.cz2002.ui.MainMenuUI;
 import sg.edu.ntu.scse.cz2002.util.FileIOHelper;
 import sg.edu.ntu.scse.cz2002.util.MenuItemCSVHelper;
+import sg.edu.ntu.scse.cz2002.util.PromoCSVHelper;
 import sg.edu.ntu.scse.cz2002.util.ReservationCSVHelper;
 import sg.edu.ntu.scse.cz2002.util.TableCSVHelper;
 
@@ -40,6 +42,12 @@ public class MainApp {
     public static ArrayList<Reservation> reservations;
 
     /**
+     * The list of promotions loaded into the program
+     */
+    public static ArrayList<Promotion> promotions;
+    
+    
+    /**
      * Enable debug mode
      */
     private static final boolean DEBUG = false;
@@ -51,6 +59,7 @@ public class MainApp {
     private static void init() {
         // TODO: Init Items
         MenuItemCSVHelper menuItemCsv = MenuItemCSVHelper.getInstance();
+        PromoCSVHelper promotionCsv = PromoCSVHelper.getInstance();
         ReservationCSVHelper reservationCsv = ReservationCSVHelper.getInstance();
         TableCSVHelper tableCsv = TableCSVHelper.getInstance();
         try {
@@ -58,6 +67,10 @@ public class MainApp {
             menuItems = menuItemCsv.readFromCsv();
             System.out.println(menuItems.size() + " menu items loaded from file");
 
+            System.out.println("Loading Promotions from file...");
+            promotions = promotionCsv.readFromCsv();
+            System.out.println(promotions.size() + " promotions loaded from file.");
+            
             System.out.println("Loading Reservations from file...");
             reservations = reservationCsv.readFromCsv();
             System.out.println(reservations.size() + " existing reservations loaded successfully.");
