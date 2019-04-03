@@ -4,6 +4,7 @@ import sg.edu.ntu.scse.cz2002.MainApp;
 import sg.edu.ntu.scse.cz2002.features.Reservation;
 import sg.edu.ntu.scse.cz2002.features.Table;
 import sg.edu.ntu.scse.cz2002.util.DateTimeFormatHelper;
+import sg.edu.ntu.scse.cz2002.util.ScannerHelper;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -43,17 +44,17 @@ public class ReservationMenuUI extends BaseMenu {
                 this.createReservationBooking();
                 break;
             case 2:
-                // TODO: To Implement
+                this.checkReservationBooking();
                 break;
             case 3:
-                // TODO: To Implement
+                this.removeReservationBooking();
                 break;
             case 4:
-                // TODO: To Implement
                 this.listReservations();
                 break;
             case 5:
                 this.checkExpiredReservations();
+                break;
             case 6:
                 return -1;
             case 0:
@@ -160,7 +161,8 @@ public class ReservationMenuUI extends BaseMenu {
 
             //Conditional loop to determine is available table is found.
             if (tableNum > 0) {
-                r = new Reservation(MainApp.reservations.size() + 1, resvDate, resvTime, resvSession, custTelNo, custName, numPax, tableNum);
+                int lastNum = MainApp.reservations.get(MainApp.reservations.size()-1).getResvId() + 1;
+                r = new Reservation(lastNum, resvDate, resvTime, resvSession, custTelNo, custName, numPax, tableNum);
                 MainApp.reservations.add(r);
 
                 System.out.println("Your reservation has been successfully recorded! Your assigned table is " + tableNum + ".");
@@ -179,6 +181,84 @@ public class ReservationMenuUI extends BaseMenu {
     }
 
     /**
+     * Method to check reservation booking(s) under a user-input telephone number.
+     */
+    private void checkReservationBooking() {
+        int count = 0;
+        Scanner input = new Scanner(System.in);
+        printHeader("Checking of reservation booking");
+        System.out.print("Enter your telephone number linked to reservation(s): ");
+        String telNo = input.nextLine();
+
+        count = printReservationLine(telNo);
+        /*printHeader("Below are the reservations linked to the number " + telNo);
+        for(Reservation r : MainApp.reservations) {
+            if (telNo.equals(r.getCustTelNo())) {
+                printReservationLine(r);
+                count++ = true;
+            }
+        }
+*/
+        if (count == 0) {
+            System.out.println("There are no reservation bookings linked to the telephone number.");
+        }
+    }
+
+    /**
+     * Method to remove reservation booking.
+     * As the reservation is uniquely identified by telephone number,
+     * assume that the user inputs telephone number before deciding which reservation booking to delete.
+     */
+    private void removeReservationBooking() {
+        Scanner input = new Scanner(System.in);
+        int count = 0;
+        this.listReservations();
+        printHeader("Remove Reservation Booking");
+        System.out.print("Enter telephone number linked to the reservation to be deleted: ");
+        String telNo = input.nextLine();
+
+        count = printReservationLine(telNo);
+
+
+        if (count == 1) {
+            System.out.print("Are you sure you want to delete this reservation (Y/N)? ");
+            switch (Character.toUpperCase(input.nextLine().charAt(0))) {
+                case 'Y':
+                    Iterator<Reservation> i = MainApp.reservations.iterator();
+                    while (i.hasNext()) {
+                        Reservation r = i.next();
+                        if (r.getCustTelNo().equals(telNo))
+                            i.remove();
+                    }
+                    System.out.println("Reservation has been successfully removed.");
+                    break;
+                case 'N':
+                    break;
+                default:
+                    System.out.println("Invalid option. Returning Reservation Menu...");
+                    break;
+            }
+        } else if (count > 1) {
+            System.out.println("System has found " + count + " reservations under the telephone number " + telNo + ".");
+
+            int resvId = ScannerHelper.getIntegerInput(input, "\nEnter the Reservation ID that is to be deleted: ");
+            Iterator<Reservation> iter = MainApp.reservations.iterator();
+            while (iter.hasNext()) {
+                Reservation r = iter.next();
+                if (r.getCustTelNo().equals(telNo) && r.getResvId() == resvId) {
+                    iter.remove();
+                    break;
+                }
+            }
+            System.out.println("Reservation ID " + resvId +
+                    " under telephone number " + telNo + " has been successfully removed.");
+        }
+        else
+            System.out.println("There are no reservation bookings linked to the telephone number.");
+
+
+    }
+    /**
      * Method for listing all reservations made by customers, in ascending order of Reservation ID.
      */
     private void listReservations() {
@@ -186,16 +266,7 @@ public class ReservationMenuUI extends BaseMenu {
         System.out.printf("%-4s %-15s %-10s %-10s %-10s %-20s %-3s %-9s\n", "ID", "Date", "Session", "Time", "Tel. No", "Name", "Pax", "Table No.");
         printBreaks();
         for (Reservation r : MainApp.reservations) {
-            System.out.printf("%-4d %-15s %-10s %-10s %-10s %-20s %-3d %-9d\n",
-                    r.getResvId(),
-                    DateTimeFormatHelper.formatToStringDate(r.getResvDate()),
-                    r.getResvSession() == Reservation.ReservationSession.AM_SESSION ? 'A' : 'P',
-                    DateTimeFormatHelper.formatToStringTime(r.getResvTime()),
-                    r.getCustTelNo(),
-                    r.getCustName(),
-                    r.getNumPax(),
-                    r.getTableNum());
-
+            printReservationLine(r);
         }
     }
 
@@ -203,19 +274,52 @@ public class ReservationMenuUI extends BaseMenu {
      * Checks if the current Reservation object has expired
      * Expiry applies if reservation's date is today, and the time now is 30 minutes or more past the reservation time
      */
-    private static void checkExpiredReservations() {
+    private void checkExpiredReservations() {
         int expiredCount = 0;
         Reservation r;
-        Iterator i = MainApp.reservations.iterator();
-        while (i.hasNext()) {
-            r = (Reservation) i.next();
+        Iterator<Reservation> iter = MainApp.reservations.iterator();
+        while (iter.hasNext()) {
+            r = iter.next();
             if (r.getResvDate().equals(LocalDate.now()))
                 if (DateTimeFormatHelper.getTimeDifferenceMinutes(r.getResvTime(), LocalTime.now()) <= 0) {
-                    MainApp.reservations.remove(r);
+                    iter.remove();
                     expiredCount++;
                 }
         }
         System.out.println(expiredCount + " reservations have since expired, and deleted from the system.");
 
     }
+
+    private int printReservationLine(String telNo)
+    {
+        int count = 0;
+        System.out.println("Below are the reservations linked to the number " + telNo);
+        System.out.printf("%-4s %-15s %-10s %-10s %-10s %-20s %-3s %-9s\n", "ID", "Date", "Session", "Time", "Tel. No", "Name", "Pax", "Table No.");
+        printBreaks();
+        for(Reservation r : MainApp.reservations) {
+            if (telNo.equals(r.getCustTelNo())) {
+                printReservationLine(r);
+                count++;
+            }
+        }
+        return count;
+    }
+
+    /**
+     * Method to print details of a single reservation
+     * @param r Reservation object
+     */
+    private void printReservationLine(Reservation r) {
+        System.out.printf("%-4d %-15s %-10s %-10s %-10s %-20s %-3d %-9d\n",
+                r.getResvId(),
+                DateTimeFormatHelper.formatToStringDate(r.getResvDate()),
+                r.getResvSession() == Reservation.ReservationSession.AM_SESSION ? 'A' : 'P',
+                DateTimeFormatHelper.formatToStringTime(r.getResvTime()),
+                r.getCustTelNo(),
+                r.getCustName(),
+                r.getNumPax(),
+                r.getTableNum());
+    }
+
+
 }

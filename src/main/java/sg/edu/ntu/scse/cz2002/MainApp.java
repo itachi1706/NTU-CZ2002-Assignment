@@ -174,26 +174,42 @@ public class MainApp {
 
     /**
      * Part of initialising to check for today's reservations
-     * Includes checking for expired reservations by calling checkExpiredReservations()
+     * Includes checking for expired reservations
      * If found reservation that matches today's date, set the table to reserved.
+     * This function will init the session's (AM or PM) table status according to
+     * available reservations
+     * @return An integer containing the amount of expired reservations.
      */
     private static int checkTodayReservations() {
         int expiredCount = 0;
+        boolean removed = false;
         Reservation r;
-        Iterator i = reservations.iterator();
-        while (i.hasNext()) {
-            r = (Reservation) i.next();
+        Iterator<Reservation> iter = reservations.iterator();
+        while (iter.hasNext()) {
+            r = iter.next();
+
+            if (LocalDate.now().isAfter(r.getResvDate())) {
+                iter.remove();
+                expiredCount++;
+                continue;
+            }
+
             if (r.getResvDate().equals(LocalDate.now())) {
-                if (DateTimeFormatHelper.getTimeDifferenceMinutes(r.getResvTime(), LocalTime.now()) <= 0) {
-                    reservations.remove(r);
+                if (DateTimeFormatHelper.getTimeDifferenceMinutes(LocalTime.now(), r.getResvTime()) <= -30) {
+                    iter.remove();
+                    removed = true;
                     expiredCount++;
+
                 }
                 for (Table t : tables) {
                     if (r.getTableNum() == t.getTableNum()) {
-                        t.setReserved(true);
+                        t.setReserved(!removed);
+                        break;
                     }
                 }
+
             }
+            removed = false;
         }
         return expiredCount;
     }

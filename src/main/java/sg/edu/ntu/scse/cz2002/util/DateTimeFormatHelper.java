@@ -23,6 +23,11 @@ import java.util.GregorianCalendar;
 public class DateTimeFormatHelper {
 
     /**
+     * Constant attribute determining the factor to convert milliseconds to days
+     */
+    private final static long MILLIS_TO_DAYS = 1000*60*60*24;
+
+    /**
      * Method for formatting LocalDate values into formatted String
      * @param date LocalDate object date
      * @return String of date formatted in d/MM/yyyy.
@@ -60,10 +65,7 @@ public class DateTimeFormatHelper {
      */
     public static LocalDate formatToLocalDate(String date) throws DateTimeParseException {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy");
-        //SimpleDateFormat sdf = new SimpleDateFormat("d/M/yyyy HH:mm");
         LocalDate ld = LocalDate.parse(date, formatter);
-        //alendar cal = Calendar.getInstance();
-        //cal.setTime(sdf.parse(date));
         return ld;
     }
 
@@ -76,10 +78,7 @@ public class DateTimeFormatHelper {
      */
     public static LocalTime formatToLocalTime(String time) throws DateTimeParseException {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
-        //SimpleDateFormat sdf = new SimpleDateFormat("d/M/yyyy HH:mm");
         LocalTime lt = LocalTime.parse(time, formatter);
-        //alendar cal = Calendar.getInstance();
-        //cal.setTime(sdf.parse(date));
         return lt;
     }
 
@@ -90,61 +89,30 @@ public class DateTimeFormatHelper {
      */
     public static LocalDate getDate(boolean getNextMonth) {
         if (!getNextMonth)
-            return LocalDate.now();
+            return LocalDate.ofEpochDay(System.currentTimeMillis()/MILLIS_TO_DAYS);
         else {
-            LocalDate l = LocalDate.now();
-            return l.plusDays(30);
+            return LocalDate.ofEpochDay(System.currentTimeMillis()/MILLIS_TO_DAYS + 30);
         }
     }
 
+    /**
+     * Method to compare between two times, determining how much time left until the desired time
+     * @param time1 first LocalTime attribute
+     * @param time2 second LocalTime attribute
+     * @return long variable determining the time in minutesremaining from time1 until time2
+     */
     public static long getTimeDifferenceMinutes(LocalTime time1, LocalTime time2) {
         return time1.until(time2, ChronoUnit.MINUTES);
     }
+
     /**
      * Method for comparing if input date is after current date/time.
+     * @param inputDate LocalDate variable to be compared
      * @return True is input date is after today, false if is same or before today.
      */
     public static boolean compareToday(LocalDate inputDate){
-        return inputDate.isAfter(LocalDate.now());
-    }
 
-
-
-    /**
-     * Method for validating whether a user-input date is valid
-     *
-     * Method validates for the following:
-     * i) Months that only have 30 days
-     * ii) Years that are not leap-years.
-     * iii) For years that are leap-years, validate the date
-     * iv) Validates if month is valid
-     * v) Validates if the date is valid
-     *
-     * @param d Integer value containing 2-digit DATE
-     * @param m Integer value containing 2-digit MONTH
-     * @param y Integer value containing YEAR value
-     * @return Boolean value determining if the date is valid or invalid
-     */
-    public static boolean validateDate(int d, int m, int y)
-    {
-        //Validate non-31 days months.
-        if ( (((m == 4) || (m == 6)) || ((m == 9) || (m == 11))) && (d >= 31))
-            return false;
-            //Validate non-leap years.
-        else if (( (y % 4 != 0) || ( (y % 100 == 0) && (y % 400 != 0) )) && ( (m == 2) && (d >= 29) ))
-            return false;
-            //Validate leap years invalid date.
-        else if (( (y % 4 == 0) || ( (y % 100 == 0) && (y % 400 == 0) )) && ( (m == 2) && (d >= 30) ))
-            return false;
-            //Validate invalid month.
-        else if (m < 1 || m > 12)
-            return false;
-            //Validate invalid date.
-        else if (d < 1 || d > 31)
-            return false;
-            //All validations have been passed, date has no errors.
-        else
-            return true;
+        return inputDate.isAfter(LocalDate.ofEpochDay(System.currentTimeMillis()/MILLIS_TO_DAYS));
     }
 
     /**
@@ -156,6 +124,7 @@ public class DateTimeFormatHelper {
         SimpleDateFormat sdf = new SimpleDateFormat("d/M/yyyy HH:mm");
         return sdf.format(new Date(millis));
     }
+
 
     /**
      * Checks if resv time is between any of the AM or PM sessions
@@ -190,5 +159,43 @@ public class DateTimeFormatHelper {
         int min = today.get(Calendar.MINUTE);
         int sec = today.get(Calendar.SECOND);
         return day + "/" + mth + "/" + yr + " at " + hr + ":" + min + ":" + sec;
+    }
+
+    /**
+     * Method for validating whether a user-input date is valid
+     *
+     * Method validates for the following:
+     * i) Months that only have 30 days
+     * ii) Years that are not leap-years.
+     * iii) For years that are leap-years, validate the date
+     * iv) Validates if month is valid
+     * v) Validates if the date is valid
+     *
+     * @param d Integer value containing 2-digit DATE
+     * @param m Integer value containing 2-digit MONTH
+     * @param y Integer value containing YEAR value
+     * @return Boolean value determining if the date is valid or invalid
+     */
+    @Deprecated
+    public static boolean validateDate(int d, int m, int y)
+    {
+        //Validate non-31 days months.
+        if ( (((m == 4) || (m == 6)) || ((m == 9) || (m == 11))) && (d >= 31))
+            return false;
+            //Validate non-leap years.
+        else if (( (y % 4 != 0) || ( (y % 100 == 0) && (y % 400 != 0) )) && ( (m == 2) && (d >= 29) ))
+            return false;
+            //Validate leap years invalid date.
+        else if (( (y % 4 == 0) || ( (y % 100 == 0) && (y % 400 == 0) )) && ( (m == 2) && (d >= 30) ))
+            return false;
+            //Validate invalid month.
+        else if (m < 1 || m > 12)
+            return false;
+            //Validate invalid date.
+        else if (d < 1 || d > 31)
+            return false;
+            //All validations have been passed, date has no errors.
+        else
+            return true;
     }
 }
