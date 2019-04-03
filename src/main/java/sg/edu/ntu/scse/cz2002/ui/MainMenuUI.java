@@ -17,7 +17,7 @@ public class MainMenuUI extends BaseMenu {
     protected int generateMenuScreen() {
         printHeader("Main Menu");
         System.out.println("1) Menu Items Management");
-        System.out.println("2) Promotion Items Management");
+        System.out.println("2) Promotions Management");
         System.out.println("3) Order Management");
         System.out.println("4) Reservation Manangement");
         System.out.println("5) Check Table Availability");
