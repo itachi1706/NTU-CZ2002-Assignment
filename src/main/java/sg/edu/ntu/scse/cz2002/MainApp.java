@@ -126,6 +126,7 @@ public class MainApp {
      */
     public static boolean saveAll() {
         MenuItemCSVHelper menuItemCSVHelper = MenuItemCSVHelper.getInstance();
+        PromoCSVHelper promoCSVHelper = PromoCSVHelper.getInstance();
         ReservationCSVHelper reservationCsvHelper = ReservationCSVHelper.getInstance();
         TableCSVHelper tableCsvHelper = TableCSVHelper.getInstance();
         StaffCSVHelper staffCsvHelper = StaffCSVHelper.getInstance();
@@ -134,7 +135,11 @@ public class MainApp {
             System.out.println("Saving current menu item list to file...");
             menuItemCSVHelper.writeToCsv(menuItems);
             System.out.println("Menu Item List Saved!");
-
+            
+            System.out.println("Saving current promotion list to file...");
+            promoCSVHelper.writeToCsv(promotions);
+            System.out.println("Promotion List Saved!");
+            
             System.out.println("Saving current reservation list to file...");
             reservationCsvHelper.writeToCsv(reservations);
             System.out.println("Reservation List Saved!");
