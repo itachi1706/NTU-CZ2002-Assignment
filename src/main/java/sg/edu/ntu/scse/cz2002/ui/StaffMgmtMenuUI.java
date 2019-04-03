@@ -1,11 +1,18 @@
 package sg.edu.ntu.scse.cz2002.ui;
 
+import sg.edu.ntu.scse.cz2002.MainApp;
+import sg.edu.ntu.scse.cz2002.features.Reservation;
+import sg.edu.ntu.scse.cz2002.objects.person.Staff;
+
+import java.util.Scanner;
+
+
 /**
  * The Staff Management UI
  *
- * @author Kenneth Soh
- * @version 1.0
- * @since 2019-03-28
+ * @author Kenneth Soh,  Weibin
+ * @version 1.1
+ * @since 2019-03-30
  */
 public class StaffMgmtMenuUI extends BaseMenu {
 
@@ -25,10 +32,10 @@ public class StaffMgmtMenuUI extends BaseMenu {
         System.out.println("0) Exit");
         printBreaks();
 
-        int choice = doMenuChoice(5, 0);
+        int choice = doMenuChoice(6, 0);
         switch (choice) {
             case 1:
-                // TODO: To Implement
+            	this.createNewStaff();
                 break;
             case 2:
                 // TODO: To Implement
@@ -47,8 +54,40 @@ public class StaffMgmtMenuUI extends BaseMenu {
             case 0:
                 return 1;
             default:
-                throw new IllegalStateException("Invalid Choice (Reservation Menu)");
+                throw new IllegalStateException("Invalid Choice (Staff Menu)");
         }
         return 0;
+    }
+    
+    /**
+     * Method for creating a new Staff
+     */
+    private void createNewStaff()
+    {
+    	int newId = 1001; //ID starts from 1001
+    	String name, title;
+    	char gender;
+    	Staff s = null;
+    	
+    	printHeader("Create New Staff");
+        Scanner input = new Scanner(System.in);
+        
+        System.out.print("Enter Staff's name: ");
+        name = input.nextLine();
+        System.out.print("Enter Staff's gender: ");
+        gender = input.nextLine().charAt(0);
+        System.out.print("Enter Staff's job title: ");
+        title = input.nextLine();
+        
+        for (Staff st : MainApp.staffs)
+        {
+        	if (st.getStaffId() == newId)
+        	{
+        		newId++;
+        	}
+        }
+        
+        s = new Staff(newId, name, gender, title);
+        MainApp.staffs.add(s);
     }
 }

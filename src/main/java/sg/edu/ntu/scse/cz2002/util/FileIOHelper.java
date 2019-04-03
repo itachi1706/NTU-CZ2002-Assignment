@@ -25,6 +25,16 @@ public class FileIOHelper {
     }
 
     /**
+     * Check if file exists
+     * @return true if exist
+     */
+    public static boolean exists(String name) {
+        File folder = init();
+        File f = new File(folder.getAbsolutePath() + File.separator + name);
+        return f.exists();
+    }
+
+    /**
      * Gets the file object in the data folder
      * @param name Filename with extension
      * @return File object if valid, null otherwise

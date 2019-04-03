@@ -6,6 +6,7 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.text.ParseException;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,7 +60,8 @@ public class ReservationCSVHelper extends CSVBaseHelper {
      * @throws IOException Unable to read from file
      * @throws ParseException Wrong format of date time passed in
      */
-    public ArrayList<Reservation> readFromCsv() throws IOException, ParseException{
+    public ArrayList<Reservation> readFromCsv() throws IOException, DateTimeParseException {
+        if (!FileIOHelper.exists(this.reservationCsv)) return new ArrayList<>(); // Empty array list
         BufferedReader csvFile = FileIOHelper.getFileBufferedReader(this.reservationCsv);
         List<String[]> csvLines = readAll(csvFile, 1);
         ArrayList<Reservation> reservations = new ArrayList<>();
@@ -77,7 +79,7 @@ public class ReservationCSVHelper extends CSVBaseHelper {
      * @throws IOException Unable to write to file
      */
     public void writeToCsv(ArrayList<Reservation> reservations) throws IOException {
-        String[] header = {"ID", "Name", "TelNo", "NumPax", "ResvDateTime", "TableNum" };
+        String[] header = {"ID", "Name", "TelNo", "NumPax", "ResvDate", "ResvTime", "ResvSession", "TableNum" };
         BufferedWriter csvFile = FileIOHelper.getFileBufferedWriter(this.reservationCsv);
         ArrayList<String[]> toWrite = new ArrayList<>();
         toWrite.add(header);

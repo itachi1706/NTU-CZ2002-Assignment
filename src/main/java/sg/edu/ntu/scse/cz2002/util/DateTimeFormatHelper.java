@@ -1,8 +1,13 @@
 package sg.edu.ntu.scse.cz2002.util;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 
 /**
@@ -10,29 +15,127 @@ import java.util.GregorianCalendar;
  *
  * Helper class also contains validation methods for validating whether a certain date is valid
  *
- * @author Francis Lim
- * @version 1.1
+ * @author Francis Lim, Kenneth Soh
+ * @version 1.2
  * @since 2019-04-01
  */
 
 public class DateTimeFormatHelper {
 
     /**
-     * Method for formatting Calendar values into formatted String
-     * @param date Calendar object date
-     * @return String of date formatted in DD/MM/YYYYY.
+     * Constant attribute determining the factor to convert milliseconds to days
      */
-    public static String formatToStringDate(Calendar date)
+    private final static long MILLIS_TO_DAYS = 1000*60*60*24;
+
+    /**
+     * Method for formatting LocalDate values into formatted String
+     * @param date LocalDate object date
+     * @return String of date formatted in d/MM/yyyy.
+     */
+    public static String formatToStringDate(LocalDate date)
     {
-        int day, month, year, hour, minute = 0;
-        year = date.get(Calendar.YEAR);
-        month = date.get(Calendar.MONTH) + 1;
-        day = date.get(Calendar.DATE);
-        hour = date.get(Calendar.HOUR_OF_DAY);
-        minute = date.get(Calendar.MINUTE);
-        String formatDate = day + "/" + month + "/" + year + " " + hour + ":" + minute;
+        String day, month, year;
+        year = date.getYear() + "";
+        month = date.getMonthValue() + "";
+        day = date.getDayOfMonth() + "";
+        String formatDate = day + "/" + month + "/" + year;
         return formatDate;
     }
+
+    /**
+     * Method for formatting LocalTime values into formatted String
+     * @param time LocalTime object date
+     * @return String of time formatted in HH:mm
+     */
+    public static String formatToStringTime(LocalTime time)
+    {
+        String hour, minute;
+        hour = time.getHour() + "";
+        minute = ((time.getMinute() == 0) ? "00" : time.getMinute()) + "";
+        String formatTime = hour + ":" + minute;
+        return formatTime;
+    }
+
+    /**
+     * Formats a passed in String to a LocalDate object
+     * The String must strictly follow a given format: DD/MM/YYYY
+     * @param date String containing date in the specified format
+     * @return A LocalDate variable
+     * @throws DateTimeParseException When an incorrect format of date and time String has been passed in
+     */
+    public static LocalDate formatToLocalDate(String date) throws DateTimeParseException {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy");
+        LocalDate ld = LocalDate.parse(date, formatter);
+        return ld;
+    }
+
+    /**
+     * Formats a passed in String to a LocalTime object
+     * The String must strictly follow a given format: HH:MM
+     * @param time String containing  time in the specified format
+     * @return A LocalTime variable
+     * @throws DateTimeParseException When an incorrect format of date and time String has been passed in
+     */
+    public static LocalTime formatToLocalTime(String time) throws DateTimeParseException {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+        LocalTime lt = LocalTime.parse(time, formatter);
+        return lt;
+    }
+
+    /**
+     * Method to get date in Calendar object
+     * @param getNextMonth boolean variable to determine if getting today's date or date one month from now
+     * @return LocalDate object containing today's date and time value
+     */
+    public static LocalDate getDate(boolean getNextMonth) {
+        if (!getNextMonth)
+            return LocalDate.ofEpochDay(System.currentTimeMillis()/MILLIS_TO_DAYS);
+        else {
+            return LocalDate.ofEpochDay(System.currentTimeMillis()/MILLIS_TO_DAYS + 30);
+        }
+    }
+
+    /**
+     * Method to compare between two times, determining how much time left until the desired time
+     * @param time1 first LocalTime attribute
+     * @param time2 second LocalTime attribute
+     * @return long variable determining the time in minutesremaining from time1 until time2
+     */
+    public static long getTimeDifferenceMinutes(LocalTime time1, LocalTime time2) {
+        return time1.until(time2, ChronoUnit.MINUTES);
+    }
+
+    /**
+     * Method for comparing if input date is after current date/time.
+     * @param inputDate LocalDate variable to be compared
+     * @return True is input date is after today, false if is same or before today.
+     */
+    public static boolean compareToday(LocalDate inputDate){
+
+        return inputDate.isAfter(LocalDate.ofEpochDay(System.currentTimeMillis()/MILLIS_TO_DAYS));
+    }
+
+    /**
+     * Formats time since Unix Epoch (1/1/2017 00:00:00) to a DateTime String
+     * @param millis time in milliseconds since Epoch
+     * @return Formatted DateTime String
+     */
+    public static String formatMillisToDateTime(long millis) {
+        SimpleDateFormat sdf = new SimpleDateFormat("d/M/yyyy HH:mm");
+        return sdf.format(new Date(millis));
+    }
+
+
+    /**
+     * Checks if resv time is between any of the AM or PM sessions
+     * @param resvTime User input reservation time formatted in HH:mm to LocalTime
+     * @return boolean variable determining whether the resvTime falls between either session
+     */
+    public static boolean checkResvTimeSession(LocalTime resvTime, LocalTime sessionStart, LocalTime sessionEnd) {
+        return ((resvTime.isAfter(sessionStart) && resvTime.isBefore(sessionEnd)) ||
+                resvTime.equals(sessionStart) || resvTime.equals(sessionEnd));
+    }
+
 
     /**
      * Method for formatting Calendar values for current date/time into formatted String
@@ -45,6 +148,7 @@ public class DateTimeFormatHelper {
      *
      * @return String of date and time formatted in DD/MM/YYYYY and HH:MM:SS.
      */
+    @Deprecated
     public static String formatToStringTodayDateTime()
     {
         Calendar today = new GregorianCalendar();
@@ -56,43 +160,6 @@ public class DateTimeFormatHelper {
         int sec = today.get(Calendar.SECOND);
         return day + "/" + mth + "/" + yr + " at " + hr + ":" + min + ":" + sec;
     }
-
-    /**
-     * Method to get date in Calendar object
-     * @param getNextMonth boolean variable to determine if getting today's date or date one month from now
-     * @return Date object containing today's date and time value
-     */
-    public static Calendar getDate(boolean getNextMonth) {
-        if (!getNextMonth)
-            return Calendar.getInstance();
-        else {
-            Calendar c = Calendar.getInstance();
-            c.add(Calendar.DATE, 30);
-            return c;
-        }
-    }
-
-    /**
-     * Method for comparing if input date is after current date/time.
-     * @return True is input date is after today, false if is same or before today.
-     */
-    public static boolean compareToday(Calendar inputDate){
-        return inputDate.after(Calendar.getInstance().getTime());
-    }
-
-    /**
-     * Formats a passed in String to a Calendar object
-     * The String must strictly follow a given format: DD/MM/YYYY HH:MM
-     * @param dateTime String containing date time in the specified format
-     * @return A Calendar variable
-     * @throws ParseException When an incorrect format of date and time String has been passed in
-     */
-     public static Calendar formatToCalendarDate(String dateTime) throws ParseException {
-         SimpleDateFormat sdf = new SimpleDateFormat("d/M/yyyy HH:mm");
-         Calendar cal = Calendar.getInstance();
-         cal.setTime(sdf.parse(dateTime));
-         return cal;
-     }
 
     /**
      * Method for validating whether a user-input date is valid
@@ -109,7 +176,7 @@ public class DateTimeFormatHelper {
      * @param y Integer value containing YEAR value
      * @return Boolean value determining if the date is valid or invalid
      */
-
+    @Deprecated
     public static boolean validateDate(int d, int m, int y)
     {
         //Validate non-31 days months.

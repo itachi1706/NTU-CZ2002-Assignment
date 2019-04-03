@@ -1,5 +1,6 @@
 package sg.edu.ntu.scse.cz2002;
 
+import sg.edu.ntu.scse.cz2002.features.Order;
 import sg.edu.ntu.scse.cz2002.features.Reservation;
 import sg.edu.ntu.scse.cz2002.features.Table;
 import sg.edu.ntu.scse.cz2002.objects.menuitem.MenuItem;
@@ -10,11 +11,17 @@ import sg.edu.ntu.scse.cz2002.util.MenuItemCSVHelper;
 import sg.edu.ntu.scse.cz2002.util.PromoCSVHelper;
 import sg.edu.ntu.scse.cz2002.util.ReservationCSVHelper;
 import sg.edu.ntu.scse.cz2002.util.TableCSVHelper;
+import sg.edu.ntu.scse.cz2002.objects.person.Staff;
+import sg.edu.ntu.scse.cz2002.ui.MainMenuUI;
+import sg.edu.ntu.scse.cz2002.util.*;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.text.ParseException;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,13 +35,18 @@ import java.util.stream.Collectors;
 public class MainApp {
 
     /**
-    * The list of tables available in the restaurant
-    */
+     * The list of tables available in the restaurant
+     */
     public static ArrayList<Table> tables;
     /**
      * The list of menuitems loaded into the program
      */
     public static ArrayList<MenuItem> menuItems;
+
+    /**
+     * List of completed orders (to be saved to CSV)
+     */
+    public static ArrayList<Order> completedOrders;
 
     /**
      * The list of reservations loaded into the program
@@ -46,7 +58,11 @@ public class MainApp {
      */
     public static ArrayList<Promotion> promotions;
     
-    
+    /**
+     * The list of reservations loaded into the program
+     */
+    public static ArrayList<Staff> staffs;
+
     /**
      * Enable debug mode
      */
@@ -62,6 +78,8 @@ public class MainApp {
         PromoCSVHelper promotionCsv = PromoCSVHelper.getInstance();
         ReservationCSVHelper reservationCsv = ReservationCSVHelper.getInstance();
         TableCSVHelper tableCsv = TableCSVHelper.getInstance();
+        StaffCSVHelper staffCsv = StaffCSVHelper.getInstance();
+        OrderCSVHelper orderCsv = OrderCSVHelper.getInstance();
         try {
             System.out.println("Loading Menu Items from file...");
             menuItems = menuItemCsv.readFromCsv();
@@ -79,6 +97,15 @@ public class MainApp {
             tables = tableCsv.readFromCsv();
             System.out.println(tables.size() + " tables loaded successfully.");
 
+            System.out.println("Loading Staff states from file...");
+            staffs = staffCsv.readFromCsv();
+            System.out.println(staffs.size() + " staffs loaded successfully.");
+
+            System.out.println("Loading Completed Orders from file...");
+            completedOrders = orderCsv.readFromCsv();
+            System.out.println(completedOrders.size() + " completed orders loaded successfully.");
+
+            System.out.println(checkTodayReservations() + " reservations have since expired, and deleted from the system.");
         } catch (IOException e) {
             //e.printStackTrace();
             System.out.println("[ERROR] Failed to read CSV from data folder. (" + e.getLocalizedMessage() + ")");
@@ -94,12 +121,15 @@ public class MainApp {
 
     /**
      * Saves all data into its relevant CSV files on disk
+     *
      * @return true if successful, false otherwise
      */
     public static boolean saveAll() {
         MenuItemCSVHelper menuItemCSVHelper = MenuItemCSVHelper.getInstance();
         ReservationCSVHelper reservationCsvHelper = ReservationCSVHelper.getInstance();
         TableCSVHelper tableCsvHelper = TableCSVHelper.getInstance();
+        StaffCSVHelper staffCsvHelper = StaffCSVHelper.getInstance();
+        OrderCSVHelper orderCSVHelper = OrderCSVHelper.getInstance();
         try {
             System.out.println("Saving current menu item list to file...");
             menuItemCSVHelper.writeToCsv(menuItems);
@@ -112,6 +142,14 @@ public class MainApp {
             System.out.println("Saving current tables to file...");
             tableCsvHelper.writeToCsv(tables);
             System.out.println("Table List Saved!");
+
+            System.out.println("Saving current staffs to file...");
+            staffCsvHelper.writeToCsv(staffs);
+            System.out.println("Staff List Saved!");
+
+            System.out.println("Saving completed orders to file...");
+            orderCSVHelper.writeToCsv(completedOrders);
+            System.out.println("Completed Orders List Saved!");
         } catch (IOException e) {
             //e.printStackTrace();
             System.out.println("[ERROR] Failed to save items to file. (" + e.getLocalizedMessage() + ")");
@@ -122,6 +160,7 @@ public class MainApp {
 
     /**
      * The main application entry point
+     *
      * @param args Any console arguments entered by the user
      */
     public static void main(String... args) {
@@ -149,4 +188,47 @@ public class MainApp {
             if (DEBUG) System.out.println("Exception: " + e.getLocalizedMessage());
         }
     }
+
+    /**
+     * Part of initialising to check for today's reservations
+     * Includes checking for expired reservations
+     * If found reservation that matches today's date, set the table to reserved.
+     * This function will init the session's (AM or PM) table status according to
+     * available reservations
+     * @return An integer containing the amount of expired reservations.
+     */
+    private static int checkTodayReservations() {
+        int expiredCount = 0;
+        boolean removed = false;
+        Reservation r;
+        Iterator<Reservation> iter = reservations.iterator();
+        while (iter.hasNext()) {
+            r = iter.next();
+
+            if (LocalDate.now().isAfter(r.getResvDate())) {
+                iter.remove();
+                expiredCount++;
+                continue;
+            }
+
+            if (r.getResvDate().equals(LocalDate.now())) {
+                if (DateTimeFormatHelper.getTimeDifferenceMinutes(LocalTime.now(), r.getResvTime()) <= -30) {
+                    iter.remove();
+                    removed = true;
+                    expiredCount++;
+
+                }
+                for (Table t : tables) {
+                    if (r.getTableNum() == t.getTableNum()) {
+                        t.setReserved(!removed);
+                        break;
+                    }
+                }
+
+            }
+            removed = false;
+        }
+        return expiredCount;
+    }
+
 }
