@@ -84,18 +84,10 @@ public class Staff
     }
 
     /**
-    * Changes the staff ID of this Staff.
-    * @param staffId This Staff's ID.
-    */
-    public void setStaffId(int staffId) {
-        this.staffId = staffId;
-    }
-
-    /**
      * Gets the name of this Staff.
      * @return this Staff's name.
      */
-    public String staffName() {
+    public String getStaffName() {
         return staffName;
     }
 
@@ -103,7 +95,7 @@ public class Staff
      * Changes the name of this Staff.
      * @param staffName This Staff's ID.
      */
-    public void staffName(String staffName) {
+    public void setStaffName(String staffName) {
         this.staffName = staffName;
     }
 
