@@ -182,7 +182,7 @@ public class OrderMenuUI extends BaseMenu {
                 printOrderList(consolidate, "All");
                 break;
             case 4:
-                int orderid = ScannerHelper.getIntegerInput(new Scanner(System.in), "Enter Order ID: ");
+                int orderid = ScannerHelper.getIntegerInput("Enter Order ID: ");
                 Order o = findOrder(orderid, true); // Attempt to find order
                 if (o == null)
                     System.out.println("No Orders found");
@@ -290,7 +290,7 @@ public class OrderMenuUI extends BaseMenu {
      */
     private void editOrder() {
         Scanner in = new Scanner(System.in);
-        int orderNo = ScannerHelper.getIntegerInput(in, "Enter Order Number: ");
+        int orderNo = ScannerHelper.getIntegerInput("Enter Order Number: ");
         Order o = findOrder(orderNo, false);
         if (o == null) System.out.println("Unable to find order. Note that orders that are paid for cannot be edited");
         else editOrderMenuScreen(orderNo);

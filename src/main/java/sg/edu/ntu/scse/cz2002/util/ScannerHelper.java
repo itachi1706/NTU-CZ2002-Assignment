@@ -13,19 +13,21 @@ import java.util.Scanner;
  */
 public class ScannerHelper {
 
+    public static Scanner instance;
+
     /**
      * Integer input with validation of invalid characters entered
-     * @param input Scanner object
      * @param prompt Text to prompt for the input, pass in empty string for no prompt
      * @return Integer input value
      */
-    public static int getIntegerInput(Scanner input, String prompt) {
+    public static int getIntegerInput(String prompt) {
+        Scanner input = getScannerInput();
         int val;
         while (true) {
             System.out.print(prompt);
             try {
-               val = input.nextInt();
-               break;
+                val = input.nextInt();
+                break;
             } catch (InputMismatchException e) {
                 System.out.println("Invalid Input. Please enter numbers only");
             } finally {
@@ -33,5 +35,13 @@ public class ScannerHelper {
             }
         }
         return val;
+    }
+    /**
+     * Get the Scanner instance object
+     * @return A scanner instance object with System.in as the InputStream
+     */
+    public static Scanner getScannerInput() {
+        if (instance == null) instance = new Scanner(System.in);
+        return new Scanner(System.in);
     }
 }

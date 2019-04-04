@@ -1,5 +1,7 @@
 package sg.edu.ntu.scse.cz2002.ui;
 
+import sg.edu.ntu.scse.cz2002.util.ScannerHelper;
+
 import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.stream.Stream;
@@ -89,7 +91,7 @@ public abstract class BaseMenu {
      */
     @SuppressWarnings("SameParameterValue")
     protected static int doMenuChoice(int max, int specialEscape) {
-        Scanner input = new Scanner(System.in);
+        Scanner input = ScannerHelper.getScannerInput();
         int selection;
         do {
             System.out.print("Enter menu option: ");
