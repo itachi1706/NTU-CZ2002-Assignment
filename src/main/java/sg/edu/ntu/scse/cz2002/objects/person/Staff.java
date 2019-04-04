@@ -1,5 +1,7 @@
 package sg.edu.ntu.scse.cz2002.objects.person;
 
+import sg.edu.ntu.scse.cz2002.util.ICsvSerializable;
+
 import java.text.ParseException;
 
 /**
@@ -9,7 +11,7 @@ import java.text.ParseException;
  * @version 1.0
  * @since 2019-03-30
  */
-public class Staff 
+public class Staff implements ICsvSerializable
 {
 	/**
 	 * Unique identifier for Staff 
@@ -66,6 +68,7 @@ public class Staff
      * This needs to be overridden if you need to save files to CSV
      * @return A String array of the CSV file
      */
+    @Override
     public String[] toCsv() {
         String[] s = new String[4];
         s[0] = this.staffId + "";

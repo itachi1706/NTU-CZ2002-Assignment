@@ -1,6 +1,7 @@
 package sg.edu.ntu.scse.cz2002.features;
 
 import sg.edu.ntu.scse.cz2002.util.DateTimeFormatHelper;
+import sg.edu.ntu.scse.cz2002.util.ICsvSerializable;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -14,7 +15,7 @@ import java.time.format.DateTimeParseException;
  * @since 2019-03-29
  */
 
-public class Reservation {
+public class Reservation implements ICsvSerializable {
     /**
      * The sessions enum of the reservation, AM or PM
      */
@@ -100,6 +101,7 @@ public class Reservation {
      * This needs to be overridden if you need to save files to CSV
      * @return A String array of the CSV file
      */
+    @Override
     public String[] toCsv() {
         String[] s = new String[8];
         s[0] = this.resvId + "";

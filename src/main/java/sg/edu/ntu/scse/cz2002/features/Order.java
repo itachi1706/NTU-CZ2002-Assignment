@@ -1,5 +1,7 @@
 package sg.edu.ntu.scse.cz2002.features;
 
+import sg.edu.ntu.scse.cz2002.util.ICsvSerializable;
+
 import java.util.ArrayList;
 
 /**
@@ -9,7 +11,7 @@ import java.util.ArrayList;
  * @version 1.0
  * @since 2019-04-03
  */
-public class Order {
+public class Order implements ICsvSerializable {
 
     /**
      * Enum of the order states
@@ -78,6 +80,7 @@ public class Order {
      * This needs to be overridden if you need to save files to CSV
      * @return A String array of the CSV file
      */
+    @Override
     public String[] toCsv() {
         String[] s = new String[6];
         s[0] = this.orderID + "";
