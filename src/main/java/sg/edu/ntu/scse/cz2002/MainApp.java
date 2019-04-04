@@ -189,7 +189,7 @@ public class MainApp {
             List<String> ascii = reader.lines().collect(Collectors.toList());
             ascii.forEach(System.out::println);
         } catch (IOException e) {
-            System.out.println("Failed to load ASCII Welcome Art!");
+            System.out.println("[ERROR] Failed to load ASCII Welcome Art!");
             if (DEBUG) System.out.println("Exception: " + e.getLocalizedMessage());
         }
     }

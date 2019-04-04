@@ -69,49 +69,119 @@ public class ReservationMenuUI extends BaseMenu {
      * Method for creating a new reservation booking
      */
     private void createReservationBooking() {
-        String custName, custTelNo;
-        //String resvDate, resvTime = "";
-        int numPax, tableNum = 0;
-        LocalDate resvDate;
-        LocalTime resvTime;
-        char resvSession;
-
+        //Variables required to create Reservation object using defined constructor
         Reservation r = null;
+        String custName, custTelNo;
+        int numPax, tableNum = 0;
+        LocalDate resvDate = LocalDate.now();
+        LocalTime resvTime = LocalTime.now();
+        char resvSession = ' ';
 
+        //Instanced variables used for this method
+        Scanner input = new Scanner(System.in);
+        String userDate = "";
+        boolean correctDate = false;
+        boolean correctTime = false;
+        boolean amAvail = false;
+        boolean pmAvail = false;
         String nextMonthDate = DateTimeFormatHelper.formatToStringDate(DateTimeFormatHelper.getDate(true));
 
         printHeader("Create Reservation Booking");
-        Scanner input = new Scanner(System.in);
+        try { //Start of try-catch
 
-        try {
-
+            //Customer name -- user input
             System.out.print("Enter the name you would like to reservation to be booked under: ");
             custName = input.nextLine();
-            System.out.print("Enter the contact number (this will be used tp identify your reservation upon arrival): ");
+
+            //Telephone number -- user input -- identification id
+            System.out.print("Enter the contact number (this will be used to identify your reservation upon arrival): ");
             custTelNo = input.nextLine();
 
-            System.out.println("Enter reservation date (note that date must be "
-                    + nextMonthDate + " or earlier)");
-            System.out.println("<Note the date format of dd/mm/yyyy>");
-            System.out.print("Your input: ");
-            resvDate = DateTimeFormatHelper.formatToLocalDate(input.nextLine());
+            //While loop to check for a valid date
+            while (!correctDate) {
+                System.out.println("Enter reservation date (note that date must be "
+                        + nextMonthDate + " or earlier)");
+                System.out.println("<Note the date format of dd/mm/yyyy>");
+                System.out.print("Your input (or enter 0 to exit): ");
+                userDate = input.nextLine();
 
-            System.out.println("Enter reservation time (restaurant operates in 2 sessions: " +
-                    "\n11:00 to 15:00, and 18:00 to 22:00)");
-            System.out.println("<Note the 24-hour time format of hh:mm>");
-            System.out.print("Your input: ");
-            resvTime = DateTimeFormatHelper.formatToLocalTime(input.nextLine());
+                //TODO: This is a premature return in a case of user wanting to exit infinite loop.
+                //TODO: To find some other better implementation code than this.
+                if (userDate.equals("0")) return;
 
-            //TODO: Find a better code for the if fragment below
-            if (DateTimeFormatHelper.checkResvTimeSession
-                    (resvTime, LocalTime.of(11,0), LocalTime.of(15,0)))
-                resvSession = 'A';
-            else if (DateTimeFormatHelper.checkResvTimeSession
-                    (resvTime, LocalTime.of(18,0), LocalTime.of(22,0)))
-                resvSession = 'P';
-            else {
-                System.out.println("The restaurant is not in operation at the time you entered.");
-                return;
+                correctDate = DateTimeFormatHelper.validateDate(userDate);
+
+                if (correctDate) {
+                    resvDate = DateTimeFormatHelper.formatToLocalDate(userDate);
+
+                    if (DateTimeFormatHelper.compareIfBeforeToday(resvDate)) {
+                        System.out.println("[ERROR] The date entered is already over.");
+                        correctDate = false;
+                    }
+                } else {
+                    System.out.println("[ERROR] Received invalid date input.");
+                }
+
+                if (correctDate) {
+                    /*
+                    Passing while loop assumes a valid date
+                    Check for available session on that date
+                    checkSessionAvailability(resvDate);
+                    TODO: Errorneous checking of availability: to check against all reservations to determine if there is availability.
+                    */
+                    amAvail = checkMorningSessionDate(resvDate);
+                    pmAvail = checkEveningSessionDate(resvDate);
+
+                    if (amAvail && pmAvail)
+                        System.out.println("AM and PM sessions are available on " +
+                                DateTimeFormatHelper.formatToStringDate(resvDate));
+                    else if (amAvail)
+                        System.out.println("Only the AM session is available on " +
+                                DateTimeFormatHelper.formatToStringDate(resvDate));
+                    else if (pmAvail)
+                        System.out.println("Only the PM session is available on " +
+                                DateTimeFormatHelper.formatToStringDate(resvDate));
+                    else {
+                        System.out.println("All sessions are booked on " + DateTimeFormatHelper.formatToStringDate(resvDate) + ". Please pick another date.");
+                        correctDate = false;
+                    }
+                }
+            }
+
+            while (!correctTime) {
+                System.out.print("Enter reservation time ");
+                if (amAvail && pmAvail)
+                    System.out.print("(Restaurant operates in 2 sessions: " +
+                            "\n11:00 to 15:00, and 18:00 to 22:00)");
+                else if (amAvail)
+                    System.out.print("(Restaurant in operation from 11:00 to 15:00)");
+                else if (pmAvail)
+                    System.out.print("(Restaurant in operation from 18:00 to 22:00)");
+
+                System.out.println("<Note the 24-hour time format of hh:mm>");
+                System.out.print("Your input: ");
+                resvTime = DateTimeFormatHelper.formatToLocalTime(input.nextLine());
+
+                //TODO: Find a better code for the if fragment below
+                if (!(DateTimeFormatHelper.getTimeDifferenceMinutes(LocalTime.now(), resvTime) <= 0)) {
+                    if (amAvail && DateTimeFormatHelper.checkResvTimeSession
+                            (resvTime, LocalTime.of(11, 0), LocalTime.of(15, 0))) {
+                        resvSession = 'A';
+                        correctTime = true;
+                    } else if (pmAvail && DateTimeFormatHelper.checkResvTimeSession
+                            (resvTime, LocalTime.of(18, 0), LocalTime.of(22, 0))) {
+                        resvSession = 'P';
+                        correctTime = true;
+                    }
+                    else {
+                        System.out.println("The restaurant is not in operation at the time you entered.");
+                        correctTime = false;
+                    }
+                }
+                else {
+                    System.out.println("The time entered is invalid. Current time is " + LocalTime.now() + ".");
+                    correctTime = false;
+                }
             }
 
             System.out.print("Enter pax amount (table for how many?): ");
@@ -191,14 +261,7 @@ public class ReservationMenuUI extends BaseMenu {
         String telNo = input.nextLine();
 
         count = printReservationLine(telNo);
-        /*printHeader("Below are the reservations linked to the number " + telNo);
-        for(Reservation r : MainApp.reservations) {
-            if (telNo.equals(r.getCustTelNo())) {
-                printReservationLine(r);
-                count++ = true;
-            }
-        }
-*/
+
         if (count == 0) {
             System.out.println("There are no reservation bookings linked to the telephone number.");
         }
@@ -281,7 +344,7 @@ public class ReservationMenuUI extends BaseMenu {
         while (iter.hasNext()) {
             r = iter.next();
             if (r.getResvDate().equals(LocalDate.now()))
-                if (DateTimeFormatHelper.getTimeDifferenceMinutes(r.getResvTime(), LocalTime.now()) <= 0) {
+                if (DateTimeFormatHelper.getTimeDifferenceMinutes(LocalTime.now(), r.getResvTime()) <= -30) {
                     iter.remove();
                     expiredCount++;
                 }
@@ -319,6 +382,38 @@ public class ReservationMenuUI extends BaseMenu {
                 r.getCustName(),
                 r.getNumPax(),
                 r.getTableNum());
+    }
+
+    /**
+     * Method to check if the restaurant is open to reservations for the morning session
+     * given the specified date
+     * @param date LocalDate variable
+     * @return True if available, false if slot is taken
+     */
+    private boolean checkMorningSessionDate (LocalDate date) {
+        for (Reservation r: MainApp.reservations) {
+            if (r.getResvDate().isEqual(date) &&
+                    r.getResvSession() == Reservation.ReservationSession.AM_SESSION)
+                return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Method to check if the restaurant is open to reservations for the evening session
+     * given the specified date
+     * @param date LocalDate variable
+     * @return True if available, false if slot is taken
+     */
+    private boolean checkEveningSessionDate (LocalDate date) {
+        for (Reservation r: MainApp.reservations) {
+            if (r.getResvDate().isEqual(date) &&
+                    r.getResvSession() == Reservation.ReservationSession.PM_SESSION)
+                return false;
+        }
+
+        return true;
     }
 
 
