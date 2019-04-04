@@ -304,7 +304,7 @@ public class ReservationMenuUI extends BaseMenu {
         } else if (count > 1) {
             System.out.println("System has found " + count + " reservations under the telephone number " + telNo + ".");
 
-            int resvId = ScannerHelper.getIntegerInput(input, "\nEnter the Reservation ID that is to be deleted: ");
+            int resvId = ScannerHelper.getIntegerInput("\nEnter the Reservation ID that is to be deleted: ");
             Iterator<Reservation> iter = MainApp.reservations.iterator();
             while (iter.hasNext()) {
                 Reservation r = iter.next();

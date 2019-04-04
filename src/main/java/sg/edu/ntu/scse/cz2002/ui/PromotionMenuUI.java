@@ -1,14 +1,13 @@
 package sg.edu.ntu.scse.cz2002.ui;
 
+import org.jetbrains.annotations.Nullable;
+import sg.edu.ntu.scse.cz2002.MainApp;
+import sg.edu.ntu.scse.cz2002.objects.menuitem.MenuItem;
+import sg.edu.ntu.scse.cz2002.objects.menuitem.Promotion;
+import sg.edu.ntu.scse.cz2002.util.PromoCSVHelper;
+
 import java.io.IOException;
 import java.util.Scanner;
-
-import sg.edu.ntu.scse.cz2002.MainApp;
-import sg.edu.ntu.scse.cz2002.objects.menuitem.Promotion;
-import sg.edu.ntu.scse.cz2002.objects.menuitem.MenuItem;
-import sg.edu.ntu.scse.cz2002.ui.FoodMenuUI;
-import sg.edu.ntu.scse.cz2002.util.MenuItemCSVHelper;
-import sg.edu.ntu.scse.cz2002.util.PromoCSVHelper;
 
 /**
  * The Promotion Menu UI
@@ -140,24 +139,19 @@ public class PromotionMenuUI extends BaseMenu {
 	 */
 	public void printPromotion() {
 		for (int i = 0; i < MainApp.promotions.size(); i++) {
-			Promotion promotion = (Promotion) MainApp.promotions.get(i);
+			Promotion promotion = MainApp.promotions.get(i);
 			
-			try {
-				MenuItem mainItem = FoodMenuUI.retrieveMenuItem(promotion.getPromoMain());
-				MenuItem dessertItem = FoodMenuUI.retrieveMenuItem(promotion.getPromoDessert());
-				MenuItem drinkItem = FoodMenuUI.retrieveMenuItem(promotion.getPromoDrink());
-				
-				System.out.println("|============================|");
-				System.out.println("Promotion ID: " + promotion.getPromoID());
-				System.out.println("Promotion Name: " + promotion.getPromoName());
-				System.out.println("Promotion Price: " + promotion.getPromoPrice());
-				System.out.println("Promotion Main: [" + promotion.getPromoMain() + "] "+ mainItem.getName());
-				System.out.println("Promotion Dessert: [" + promotion.getPromoDessert() + "] "+ dessertItem.getName());
-				System.out.println("Promotion Drink: [" + promotion.getPromoDrink() + "] "+ drinkItem.getName());
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			MenuItem mainItem = FoodMenuUI.retrieveMenuItem(promotion.getPromoMain());
+			MenuItem dessertItem = FoodMenuUI.retrieveMenuItem(promotion.getPromoDessert());
+			MenuItem drinkItem = FoodMenuUI.retrieveMenuItem(promotion.getPromoDrink());
+
+			System.out.println("|============================|");
+			System.out.println("Promotion ID: " + promotion.getPromoID());
+			System.out.println("Promotion Name: " + promotion.getPromoName());
+			System.out.println("Promotion Price: " + promotion.getPromoPrice());
+			System.out.println("Promotion Main: [" + promotion.getPromoMain() + "] "+ mainItem.getName());
+			System.out.println("Promotion Dessert: [" + promotion.getPromoDessert() + "] "+ dessertItem.getName());
+			System.out.println("Promotion Drink: [" + promotion.getPromoDrink() + "] "+ drinkItem.getName());
 			
 		}
 	}
@@ -263,8 +257,9 @@ public class PromotionMenuUI extends BaseMenu {
 	 * Returns a Promotion object that matches the input targetPromoID. @ Arthur
 	 * @params targetPromoID <ID of the promotion object to be retrieved.>
 	 * @return promoObj <Object containing a promotion's attributes.> 
-	 */	
-	public static Promotion retrievePromotion(int targetPromoID) throws IOException {
+	 */
+	@Nullable
+	public static Promotion retrievePromotion(int targetPromoID) {
 		
 		for (int i=0; i<(MainApp.promotions.size()); i++) {
 			
