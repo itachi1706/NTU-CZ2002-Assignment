@@ -276,9 +276,9 @@ public class FoodMenuUI extends BaseMenu {
 	 * Returns a MenuItem object that matches the input targetItemID. @ Arthur
 	 * @params targetItemID <ID of the menu item object to be retrieved.>
 	 * @return menuItemObj <Object containing menu item attributes.>
-	 * @throws IOException TODO: Fill this up
 	 */
-	public static MenuItem retrieveMenuItem(int targetItemID) throws IOException {
+	@Nullable
+	public static MenuItem retrieveMenuItem(int targetItemID) {
 		
 		for (int i=0; i<(MainApp.menuItems.size()); i++) {
 			
