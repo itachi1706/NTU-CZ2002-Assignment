@@ -1,5 +1,10 @@
 package sg.edu.ntu.scse.cz2002.features;
 
+import sg.edu.ntu.scse.cz2002.objects.menuitem.MenuItem;
+import sg.edu.ntu.scse.cz2002.objects.menuitem.Promotion;
+import sg.edu.ntu.scse.cz2002.ui.FoodMenuUI;
+import sg.edu.ntu.scse.cz2002.ui.PromotionMenuUI;
+
 /**
  * Order Item Object
  *
@@ -50,5 +55,36 @@ public class OrderItem {
      */
     public String toCompiledString() {
         return this.itemId + ":" + this.quantity + ":" + this.itemTotal + ((this.itemType == OrderItemType.TYPE_MENU) ? "M" : "P");
+    }
+
+    public Promotion getPromo() {
+        if (this.itemType != OrderItemType.TYPE_PROMO) return null; // Not a promotion
+        return PromotionMenuUI.retrievePromotion(this.itemId);
+    }
+
+    public MenuItem getMenuItem() {
+        if (this.itemType != OrderItemType.TYPE_MENU) return null; // Not a menu item
+        return FoodMenuUI.retrieveMenuItem(this.itemId);
+    }
+
+    public Object getItem() {
+        if (this.isPromotion()) return getPromo();
+        return getMenuItem();
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public boolean isPromotion() {
+        return this.itemType == OrderItemType.TYPE_PROMO;
+    }
+
+    /**
+     * Calculates the total and stores it into itemTotal
+     * Uses the price from finding the item and the quantity
+     */
+    public void calculateTotal() {
+
     }
 }

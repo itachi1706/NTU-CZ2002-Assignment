@@ -3,6 +3,10 @@ package sg.edu.ntu.scse.cz2002.ui;
 import org.jetbrains.annotations.Nullable;
 import sg.edu.ntu.scse.cz2002.MainApp;
 import sg.edu.ntu.scse.cz2002.features.Order;
+import sg.edu.ntu.scse.cz2002.features.OrderItem;
+import sg.edu.ntu.scse.cz2002.objects.menuitem.ItemNotFoundException;
+import sg.edu.ntu.scse.cz2002.objects.menuitem.MenuItem;
+import sg.edu.ntu.scse.cz2002.objects.menuitem.Promotion;
 import sg.edu.ntu.scse.cz2002.util.DateTimeFormatHelper;
 import sg.edu.ntu.scse.cz2002.util.ScannerHelper;
 
@@ -67,6 +71,11 @@ public class OrderMenuUI extends BaseMenu {
      */
     private void editOrderMenuScreen(final int orderNumber) {
         // TODO: Code Stub
+        Order o = findOrder(orderNumber, false);
+        if (o == null) {
+            System.out.println("Unable to find order. Exiting...");
+            return;
+        }
         while (true) {
             printHeader("Order #" + orderNumber);
             System.out.println("1) View items in order");
@@ -79,7 +88,18 @@ public class OrderMenuUI extends BaseMenu {
             int choice = doMenuChoice(3, 0);
             switch (choice) {
                 case 1:
-                    // TODO: To Implement
+                    System.out.println("List of items in Order #" + orderNumber + ":");
+                    if (o.getOrderItems().size() == 0) {
+                        System.out.println("No items in order. Add some by selection option 2!");
+                        System.out.println();
+                        break;
+                    }
+                    try {
+                        printOrderItems(o.getOrderItems());
+                    } catch (ItemNotFoundException e) {
+                        System.out.println("An error occurred obtaining items in the order. A brief description of the error is listed below\n" + e.getLocalizedMessage());
+                    }
+                    System.out.println();
                     break;
                 case 2:
                     // TODO: To Implement
@@ -161,21 +181,47 @@ public class OrderMenuUI extends BaseMenu {
      * @param o Order object to print details of
      */
     private void printOrderDetails(Order o) {
-        printHeader("Order #" + o.getOrderID() + " Details");
+        printHeader("Order #" + o.getOrderID() + " Details", 100);
         System.out.println("Order ID: " + o.getOrderID());
         System.out.println("Order State: " + ((o.getOrderState() == Order.OrderState.ORDER_PAID) ? "Paid" : "Unpaid"));
         System.out.println("Order Started On: " + DateTimeFormatHelper.formatMillisToDateTime(o.getCreatedAt()));
         if (o.getOrderState() == Order.OrderState.ORDER_PAID) System.out.println("Order Completed On: " + DateTimeFormatHelper.formatMillisToDateTime(o.getCompletedAt()));
-        System.out.println("Order Items");
-        printBreaks();
+        System.out.println("List of Order Items:");
+        printBreaks(100);
         if (o.getOrderItems().size() == 0) System.out.println("No Items in Order");
         else {
-            // TODO: Print Order Items
+            try {
+                printOrderItems(o.getOrderItems());
+            } catch (ItemNotFoundException e) {
+                System.out.println("An error occurred retrieving Order Items. A brief description of the error is listed below\n" + e.getLocalizedMessage());
+            }
         }
-        printBreaks();
+        printBreaks(100);
         System.out.println("Order Subtotal: " + o.getSubtotal());
-        printBreaks();
+        printBreaks(100);
         System.out.println("\n");
+    }
+
+    private void printOrderItems(ArrayList<OrderItem> items) throws ItemNotFoundException {
+        for (OrderItem i : items) {
+            Object item = i.getItem();
+            if (item == null) {
+                System.out.println("Item Not Found in Database");
+                continue; // Cannot find item, print Unknown Item
+            }
+            String itemName;
+            double price = 0;
+            if (i.isPromotion() && item instanceof Promotion) {
+                Promotion promo = (Promotion) item;
+                itemName = "[PROMO] " + promo.getPromoName();
+                price = promo.getPromoPrice();
+            } else if (item instanceof MenuItem) {
+                MenuItem mi = (MenuItem) item;
+                itemName = mi.getName();
+                price = mi.getPrice();
+            } else throw new ItemNotFoundException("Item is not Promotion or MenuItem"); // Exception for invalid item in database. Exception as we need to handle and fix
+            System.out.printf("%88s%-6dx%-6.2f\n", itemName, i.getQuantity(), price);
+        }
     }
 
     /**
