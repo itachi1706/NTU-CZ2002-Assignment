@@ -1,5 +1,7 @@
 package sg.edu.ntu.scse.cz2002.features;
 
+import sg.edu.ntu.scse.cz2002.util.ICsvSerializable;
+
 import java.text.ParseException;
 
 /**
@@ -10,7 +12,7 @@ import java.text.ParseException;
  * @since 2019-03-29
  */
 
-public class Table {
+public class Table implements ICsvSerializable {
 
     /**
      * The states of the table, whether it has been reserved, occupied or vacated.
@@ -87,6 +89,7 @@ public class Table {
      * This needs to be overridden if you need to save files to CSV
      * @return A String array of the CSV file
      */
+    @Override
     public String[] toCsv() {
         String[] s = new String[4];
         s[0] = this.tableNum + "";
