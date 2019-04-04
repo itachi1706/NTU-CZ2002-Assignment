@@ -118,6 +118,25 @@ public class OrderMenuUI extends BaseMenu {
         }
     }
 
+    private void addOrderItem(Order o) {
+        System.out.println("Select Item Type:");
+        System.out.println("1) Ala-carte Items");
+        System.out.println("2) Promotion Set");
+        System.out.println("0) Cancel");
+        int selection = doMenuChoice(2, 0);
+
+        switch (selection) {
+            case 1:
+                // TODO: Select Item Type
+                break;
+            case 2:
+                // TODO: Print Promotion Set
+                break;
+            case 0: return;
+            default: throw new IllegalStateException("Invalid Choice (Order Item Add)");
+        }
+    }
+
     /**
      * Creates an order and send you to the edit order UI at {@link OrderMenuUI#editOrderMenuScreen(int)}
      */
