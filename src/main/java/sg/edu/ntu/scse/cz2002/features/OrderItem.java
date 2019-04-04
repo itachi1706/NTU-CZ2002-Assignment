@@ -49,6 +49,33 @@ public class OrderItem {
     }
 
     /**
+     * Constructor
+     * @param itemId Item ID
+     * @param quantity Quantity of the item
+     * @param itemType Type of Item
+     */
+    public OrderItem(int itemId, int quantity, OrderItemType itemType) {
+        this.itemId = itemId;
+        this.quantity = quantity;
+        this.itemType = itemType;
+        this.calculateTotal();
+    }
+
+    /**
+     * Constructor
+     * @param itemId Item ID
+     * @param quantity Quantity of the item
+     * @param itemTotal Total Price of the items
+     * @param itemType Type of Item
+     */
+    public OrderItem(int itemId, int quantity, double itemTotal, OrderItemType itemType) {
+        this.itemId = itemId;
+        this.quantity = quantity;
+        this.itemTotal = itemTotal;
+        this.itemType = itemType;
+    }
+
+    /**
      * A method to convert to string
      * This needs to be overridden if you need to save files to CSV
      * @return A String array of the CSV file
@@ -85,6 +112,6 @@ public class OrderItem {
      * Uses the price from finding the item and the quantity
      */
     public void calculateTotal() {
-
+        // TODO: Code Stub
     }
 }
