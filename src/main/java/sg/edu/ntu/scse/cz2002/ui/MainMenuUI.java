@@ -43,7 +43,7 @@ public class MainMenuUI extends BaseMenu {
                 if (new ReservationMenuUI().startMainMenu()) return 1;
                 break;
             case 5:
-                // TODO: To Implement
+                checkTableAvailability();
                 break;
             case 6:
                 // TODO: To Implement
@@ -60,5 +60,10 @@ public class MainMenuUI extends BaseMenu {
                 throw new IllegalStateException("Invalid Choice (Main Menu)");
         }
         return 0;
+    }
+
+    private void checkTableAvailability() {
+        //TODO: Print out list of available tables from Tables ArrayList
+        //TODO: If time executed is not within AM or PM session, get the details of the upcoming session.
     }
 }
