@@ -29,7 +29,8 @@ repositories {
 
 javadoc {
     source = sourceSets.main.allJava
-    classpath = configurations.compile
+    configurations.implementation.setCanBeResolved(true)
+    classpath = configurations.implementation
     destinationDir = file('html')
     options.addBooleanOption('author', true)
     options.addStringOption('noqualifier', 'all')

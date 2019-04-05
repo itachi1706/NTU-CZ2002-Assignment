@@ -1,5 +1,6 @@
 package sg.edu.ntu.scse.cz2002.features;
 
+import org.jetbrains.annotations.NotNull;
 import sg.edu.ntu.scse.cz2002.util.ICsvSerializable;
 
 import java.util.ArrayList;
@@ -61,7 +62,7 @@ public class Order implements ICsvSerializable {
      * This needs to be overridden if you need to retrieve CSV data from file
      * @param csv A string array of the CSV file
      */
-    public Order(String[] csv) {
+    public Order(@NotNull String[] csv) {
         this.orderID = Integer.parseInt(csv[0]);
         String[] menuItemIDs = csv[1].split(",");
         this.orderItems = new ArrayList<>();
