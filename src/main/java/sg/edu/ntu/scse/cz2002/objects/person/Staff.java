@@ -52,15 +52,12 @@ public class Staff implements ICsvSerializable
      * A method to read from a CSV string to convert to an object instance
      * This needs to be overridden if you need to retrieve CSV data from file
      * @param csv A string array of the CSV file
-     * @throws ParseException When the date time provided from the CSV file has an invalid format,
-     * which is unlikely to happen unless CSV file was modified outside of program.
      */
     public Staff(String[] csv) {
         this.staffId= Integer.parseInt(csv[0]);
         this.staffName = csv[1];
         this.gender = csv[2].charAt(0);
         this.jobTitle = csv[3];
-        
     }
 
     /**

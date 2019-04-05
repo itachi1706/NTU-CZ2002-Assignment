@@ -140,6 +140,8 @@ public class DateTimeFormatHelper {
     /**
      * Checks if resv time is between any of the AM or PM sessions
      * @param resvTime User input reservation time formatted in HH:mm to LocalTime
+     * @param sessionStart time of the start of session
+     * @param sessionEnd time of the end of session
      * @return boolean variable determining whether the resvTime falls between either session
      */
     public static boolean checkResvTimeSession(LocalTime resvTime, LocalTime sessionStart, LocalTime sessionEnd) {
@@ -184,8 +186,8 @@ public class DateTimeFormatHelper {
      *
      * @param date String value unsplit containing date
      * @return Boolean value determining if the date is valid or invalid
-     * @throws InputMismatchException
-     * @throws NumberFormatException
+     * @throws InputMismatchException If parsing to integer failed (e.g. received String input)
+     * @throws NumberFormatException TBA
      */
     public static boolean validateDate(String date) throws InputMismatchException, NumberFormatException
     {

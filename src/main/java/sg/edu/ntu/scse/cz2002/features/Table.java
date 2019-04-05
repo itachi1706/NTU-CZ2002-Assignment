@@ -107,30 +107,59 @@ public class Table implements ICsvSerializable {
         return s;
     }
 
+    /**
+     * Mutator for table number
+     * @param tableNum Table number
+     */
     public void setTableNum(int tableNum) {
         this.tableNum = tableNum;
     }
 
+    /**
+     * Accessor for table number
+     * @return integer containing table number
+     */
     public int getTableNum() {
         return tableNum;
     }
 
+    /**
+     * Mutator for number of seats
+     * @param numSeats enum for number of seats
+     */
     public void setNumSeats(TableSeats numSeats) {
         this.numSeats = numSeats;
     }
 
+    /**
+     * Accessor for number of seaters
+     * @return enum value of numSeats
+     */
     public TableSeats getNumSeats() {
         return numSeats;
     }
 
+    /**
+     * Mutator for table state
+     * @param state enum for table state
+     */
     public void setState(TableState state) {
         this.state = state;
     }
 
+    /**
+     * Accessor for table state
+     * @return enum value of table state
+     */
     public TableState getState() {
         return state;
     }
 
+    /**
+     * Mutator for separate table reserved value
+     * Accesses {@link Table#setState(TableState state)} to simultaneously change table state
+     * @param reserved
+     */
     public void setReserved(boolean reserved) {
         isReserved = reserved;
 
@@ -144,6 +173,7 @@ public class Table implements ICsvSerializable {
     /**
      * A method to check if a table has already been reserved
      * Returns a boolean value determining whether table has been reserved.
+     * @return a boolean value determining whether table has been reserved.
      */
     public boolean checkReserved(){
         return this.isReserved;
