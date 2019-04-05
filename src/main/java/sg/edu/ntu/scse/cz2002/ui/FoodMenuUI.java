@@ -17,14 +17,13 @@ import java.util.Scanner;
  */
 public class FoodMenuUI extends BaseMenu {
 
-    /**
-     * The Food Menu Items Management Menu
-     * Exit Code. Return 1 to exit the program and -1 to exit to main menu
-     */
-	
 	@SuppressWarnings("resource")
 	Scanner sc = new Scanner(System.in);
 	
+    /**
+     * The Food Menu Items Management Menu
+     * @return Exit Code. Return 1 to exit the program and -1 to exit to main menu
+     */
 	@Override
     protected int generateMenuScreen() {
 		
@@ -268,6 +267,7 @@ public class FoodMenuUI extends BaseMenu {
 	 * @param targetItemID ID of the menu item object to be retrieved.
 	 * @return menuItemObj Object containing menu item attributes.
 	 */
+	@Nullable
 	public static MenuItem retrieveMenuItem(int targetItemID) {
 		
 		for (int i=0; i<(MainApp.menuItems.size()); i++) {
