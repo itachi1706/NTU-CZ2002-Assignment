@@ -62,16 +62,7 @@ public class MenuItemCSVHelper extends CSVBaseHelper {
         List<String[]> csvLines = readAll(csvFile, 1);
         ArrayList<MenuItem> items = new ArrayList<>();
         if (csvLines.size() == 0) return items;
-        csvLines.forEach((str) -> {
-            MenuItem item; // Create based on type
-            switch (str[2].toLowerCase()) {
-                case "main": item = new MenuItem(str); break;
-                case "dessert": item = new MenuItem(str); break;
-                case "drink": item = new MenuItem(str); break;
-                case "appetizer": item = new MenuItem(str); break;
-                default: item = new MenuItem(str); break;
-            }
-            items.add(item); });
+        csvLines.forEach((str) -> items.add(new MenuItem(str)));
         return items;
     }
 

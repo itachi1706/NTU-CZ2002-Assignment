@@ -1,5 +1,10 @@
 package sg.edu.ntu.scse.cz2002.ui;
 
+import sg.edu.ntu.scse.cz2002.MainApp;
+import sg.edu.ntu.scse.cz2002.features.Table;
+import sg.edu.ntu.scse.cz2002.features.Table.TableState;
+import sg.edu.ntu.scse.cz2002.objects.menuitem.MenuItem;
+
 /**
  * The Main Menu UI
  *
@@ -43,7 +48,7 @@ public class MainMenuUI extends BaseMenu {
                 if (new ReservationMenuUI().startMainMenu()) return 1;
                 break;
             case 5:
-                // TODO: To Implement
+                checkTableAvailability();
                 break;
             case 6:
                 // TODO: To Implement
@@ -60,5 +65,24 @@ public class MainMenuUI extends BaseMenu {
                 throw new IllegalStateException("Invalid Choice (Main Menu)");
         }
         return 0;
+    }
+
+    /**
+     * List out all available tables for the session
+     */
+    private void checkTableAvailability() {
+        //TODO: Print out list of available tables from Tables ArrayList
+    	System.out.println("These are the tables available:");
+		for (int i = 0; i < MainApp.tables.size(); i++) {
+			Table tables = (Table) MainApp.tables.get(i);
+			if(tables.getState() == TableState.TABLE_VACATED)
+			{
+				System.out.println("Table " + tables.getTableNum());
+			
+			}
+
+        //TODO: If time executed is not within AM or PM session, get the details of the upcoming session.		
+		}
+
     }
 }

@@ -1,5 +1,7 @@
 package sg.edu.ntu.scse.cz2002.objects.person;
 
+import sg.edu.ntu.scse.cz2002.util.ICsvSerializable;
+
 import java.text.ParseException;
 
 /**
@@ -9,7 +11,7 @@ import java.text.ParseException;
  * @version 1.0
  * @since 2019-03-30
  */
-public class Staff 
+public class Staff implements ICsvSerializable
 {
 	/**
 	 * Unique identifier for Staff 
@@ -50,15 +52,12 @@ public class Staff
      * A method to read from a CSV string to convert to an object instance
      * This needs to be overridden if you need to retrieve CSV data from file
      * @param csv A string array of the CSV file
-     * @throws ParseException When the date time provided from the CSV file has an invalid format,
-     * which is unlikely to happen unless CSV file was modified outside of program.
      */
     public Staff(String[] csv) {
         this.staffId= Integer.parseInt(csv[0]);
         this.staffName = csv[1];
         this.gender = csv[2].charAt(0);
         this.jobTitle = csv[3];
-        
     }
 
     /**
@@ -66,6 +65,7 @@ public class Staff
      * This needs to be overridden if you need to save files to CSV
      * @return A String array of the CSV file
      */
+    @Override
     public String[] toCsv() {
         String[] s = new String[4];
         s[0] = this.staffId + "";
@@ -84,18 +84,10 @@ public class Staff
     }
 
     /**
-    * Changes the staff ID of this Staff.
-    * @param staffId This Staff's ID.
-    */
-    public void setStaffId(int staffId) {
-        this.staffId = staffId;
-    }
-
-    /**
      * Gets the name of this Staff.
      * @return this Staff's name.
      */
-    public String staffName() {
+    public String getStaffName() {
         return staffName;
     }
 
@@ -103,7 +95,7 @@ public class Staff
      * Changes the name of this Staff.
      * @param staffName This Staff's ID.
      */
-    public void staffName(String staffName) {
+    public void setStaffName(String staffName) {
         this.staffName = staffName;
     }
 

@@ -58,7 +58,7 @@ public class ReservationCSVHelper extends CSVBaseHelper {
      * Reads the CSV file and parse it into an array list of menu item objects
      * @return ArrayList of Menu Item Objects
      * @throws IOException Unable to read from file
-     * @throws ParseException Wrong format of date time passed in
+     * @throws DateTimeParseException Wrong format of date time passed in
      */
     public ArrayList<Reservation> readFromCsv() throws IOException, DateTimeParseException {
         if (!FileIOHelper.exists(this.reservationCsv)) return new ArrayList<>(); // Empty array list

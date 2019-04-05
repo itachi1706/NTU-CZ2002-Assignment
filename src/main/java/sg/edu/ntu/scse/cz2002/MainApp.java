@@ -21,6 +21,7 @@ import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -62,6 +63,11 @@ public class MainApp {
      * The list of reservations loaded into the program
      */
     public static ArrayList<Staff> staffs;
+
+    /**
+     *
+     */
+    public static char restaurantSession = ' ';
 
     /**
      * Enable debug mode
@@ -117,6 +123,10 @@ public class MainApp {
 
         // Print welcome art
         printWelcomeAscii();
+
+        System.out.println("\nThe current/next session of restaurant operation is: " +
+                ((restaurantSession == 'A') ? "AM session - from 11:00hrs to 15:00hrs" :
+                                            "PM session - from 18:00hrs to 22:00hrs") + ".\n");
     }
 
     /**
@@ -128,7 +138,7 @@ public class MainApp {
         MenuItemCSVHelper menuItemCSVHelper = MenuItemCSVHelper.getInstance();
         PromoCSVHelper promoCSVHelper = PromoCSVHelper.getInstance();
         ReservationCSVHelper reservationCsvHelper = ReservationCSVHelper.getInstance();
-        TableCSVHelper tableCsvHelper = TableCSVHelper.getInstance();
+        //TableCSVHelper tableCsvHelper = TableCSVHelper.getInstance();
         StaffCSVHelper staffCsvHelper = StaffCSVHelper.getInstance();
         OrderCSVHelper orderCSVHelper = OrderCSVHelper.getInstance();
         try {
@@ -144,9 +154,9 @@ public class MainApp {
             reservationCsvHelper.writeToCsv(reservations);
             System.out.println("Reservation List Saved!");
 
-            System.out.println("Saving current tables to file...");
+            /*System.out.println("Saving current tables to file...");
             tableCsvHelper.writeToCsv(tables);
-            System.out.println("Table List Saved!");
+            System.out.println("Table List Saved!");*/
 
             System.out.println("Saving current staffs to file...");
             staffCsvHelper.writeToCsv(staffs);
@@ -189,7 +199,7 @@ public class MainApp {
             List<String> ascii = reader.lines().collect(Collectors.toList());
             ascii.forEach(System.out::println);
         } catch (IOException e) {
-            System.out.println("Failed to load ASCII Welcome Art!");
+            System.out.println("[ERROR] Failed to load ASCII Welcome Art!");
             if (DEBUG) System.out.println("Exception: " + e.getLocalizedMessage());
         }
     }
@@ -204,34 +214,47 @@ public class MainApp {
      */
     private static int checkTodayReservations() {
         int expiredCount = 0;
-        boolean removed = false;
+        //char session = 'A';
         Reservation r;
         Iterator<Reservation> iter = reservations.iterator();
+
+        //TODO: Check if AM or PM session using current time.
+        if (LocalTime.now().isBefore(LocalTime.of(15, 00)) || LocalTime.now().isAfter(LocalTime.of(22,00)))
+            restaurantSession = 'A';
+        else restaurantSession = 'P';
+
         while (iter.hasNext()) {
             r = iter.next();
 
-            if (LocalDate.now().isAfter(r.getResvDate())) {
+            if (DateTimeFormatHelper.compareIfBeforeToday(r.getResvDate())) {
                 iter.remove();
                 expiredCount++;
                 continue;
             }
 
-            if (r.getResvDate().equals(LocalDate.now())) {
+            if (r.getResvDate().equals(DateTimeFormatHelper.getTodayDate(false))) {
                 if (DateTimeFormatHelper.getTimeDifferenceMinutes(LocalTime.now(), r.getResvTime()) <= -30) {
                     iter.remove();
-                    removed = true;
                     expiredCount++;
-
+                    continue;
                 }
-                for (Table t : tables) {
-                    if (r.getTableNum() == t.getTableNum()) {
-                        t.setReserved(!removed);
-                        break;
+
+                if (restaurantSession == 'A' && r.getResvSession() == Reservation.ReservationSession.AM_SESSION) {
+                    for (Table t : tables) {
+                        if (t.getTableNum() == r.getTableNum())
+                            t.setReserved(true);
                     }
+                }
+                else if (restaurantSession == 'P' && r.getResvSession() == Reservation.ReservationSession.PM_SESSION) {
+                    for (Table t : tables) {
+                        if (t.getTableNum() == r.getTableNum())
+                            t.setReserved(true);
+                    }
+
                 }
 
             }
-            removed = false;
+
         }
         return expiredCount;
     }

@@ -78,6 +78,7 @@ public class TableCSVHelper extends CSVBaseHelper {
      * @param tables ArrayList of items to save
      * @throws IOException Unable to write to file
      */
+    @Deprecated
     public void writeToCsv(ArrayList<Table> tables) throws IOException {
         String[] header = {"Table Num", "NumSeats", "IsReserved", "Table State"};
         BufferedWriter csvFile = FileIOHelper.getFileBufferedWriter(this.tableCsv);

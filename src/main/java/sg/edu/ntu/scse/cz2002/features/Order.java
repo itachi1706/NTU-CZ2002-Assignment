@@ -1,5 +1,8 @@
 package sg.edu.ntu.scse.cz2002.features;
 
+import org.jetbrains.annotations.NotNull;
+import sg.edu.ntu.scse.cz2002.util.ICsvSerializable;
+
 import java.util.ArrayList;
 
 /**
@@ -9,7 +12,7 @@ import java.util.ArrayList;
  * @version 1.0
  * @since 2019-04-03
  */
-public class Order {
+public class Order implements ICsvSerializable {
 
     /**
      * Enum of the order states
@@ -59,7 +62,7 @@ public class Order {
      * This needs to be overridden if you need to retrieve CSV data from file
      * @param csv A string array of the CSV file
      */
-    public Order(String[] csv) {
+    public Order(@NotNull String[] csv) {
         this.orderID = Integer.parseInt(csv[0]);
         String[] menuItemIDs = csv[1].split(",");
         this.orderItems = new ArrayList<>();
@@ -78,6 +81,7 @@ public class Order {
      * This needs to be overridden if you need to save files to CSV
      * @return A String array of the CSV file
      */
+    @Override
     public String[] toCsv() {
         String[] s = new String[6];
         s[0] = this.orderID + "";
@@ -130,7 +134,11 @@ public class Order {
      * This subtotal does not include taxes
      */
     public void calculateSubtotal() {
-        // TODO: Calculate subtotal
+        this.subtotal = 0;
+        this.orderItems.forEach((o) -> {
+            o.calculateTotal(); // Make sure item is calculated
+            this.subtotal += o.getItemTotal();
+        });
     }
 
     /**

@@ -1,10 +1,11 @@
 package sg.edu.ntu.scse.cz2002.objects.menuitem;
+import sg.edu.ntu.scse.cz2002.util.ICsvSerializable;
 
 /**
  * @author Arthur
  *
  */
-public class MenuItem {
+public class MenuItem implements ICsvSerializable {
 
     protected int id;
     protected String name;
@@ -53,6 +54,7 @@ public class MenuItem {
      * This needs to be overridden if you need to save files to CSV
      * @return A String array of the CSV file
      */
+    @Override
     public String[] toCsv() {
         String[] s = new String[5];
         s[0] = this.id + "";

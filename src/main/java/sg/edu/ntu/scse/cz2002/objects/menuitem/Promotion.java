@@ -1,10 +1,11 @@
 package sg.edu.ntu.scse.cz2002.objects.menuitem;
+import sg.edu.ntu.scse.cz2002.util.ICsvSerializable;
 
 /**
  * @author Arthur
  *
  */
-public class Promotion {
+public class Promotion implements ICsvSerializable {
 
     protected int promoID;
     protected String promoName;
@@ -56,6 +57,7 @@ public class Promotion {
      * This needs to be overridden if you need to save files to CSV
      * @return A String array of the CSV file
      */
+    @Override
     public String[] toCsv() {
         String[] s = new String[6]; //6 columns of data
         s[0] = this.promoID + ""; //need to add + "" for numerics

@@ -1,6 +1,7 @@
 package sg.edu.ntu.scse.cz2002.features;
 
 import sg.edu.ntu.scse.cz2002.util.DateTimeFormatHelper;
+import sg.edu.ntu.scse.cz2002.util.ICsvSerializable;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -14,7 +15,7 @@ import java.time.format.DateTimeParseException;
  * @since 2019-03-29
  */
 
-public class Reservation {
+public class Reservation implements ICsvSerializable {
     /**
      * The sessions enum of the reservation, AM or PM
      */
@@ -62,7 +63,15 @@ public class Reservation {
     private int tableNum;
 
     /**
-     * Constructor for Reservation object
+     * Overriden constructor for Reservation
+     * @param id Reservation ID
+     * @param rd Reservation Date
+     * @param rt Reservation Time
+     * @param sess Reservation Session
+     * @param telNo Customer Telephone Number
+     * @param name Customer Name
+     * @param pax Number of pax for table
+     * @param t Table number assigned
      */
     public Reservation(int id, LocalDate rd, LocalTime rt, char sess, String telNo, String name, int pax, int t) {
         this.resvId = id;
@@ -100,6 +109,7 @@ public class Reservation {
      * This needs to be overridden if you need to save files to CSV
      * @return A String array of the CSV file
      */
+    @Override
     public String[] toCsv() {
         String[] s = new String[8];
         s[0] = this.resvId + "";
@@ -113,86 +123,132 @@ public class Reservation {
         return s;
     }
 
+    /**
+     * Accessor for Reservation ID
+     * @return Reservation ID in integer
+     */
     public int getResvId() {
         return resvId;
     }
 
+    /**
+     * Mutator for Reservation ID
+     * @param resvId Reservation ID
+     */
     public void setResvId(int resvId) {
         this.resvId = resvId;
     }
 
+    /**
+     * Accessor for Reservation Date
+     * @return Rservation Date in LocalDate
+     */
     public LocalDate getResvDate() {
         return resvDate;
     }
 
+    /**
+     * Mutator for Reservation Date
+     * @param resvDate Reservation Date
+     */
     public void setResvDate(LocalDate resvDate) {
         this.resvDate = resvDate;
     }
 
+    /**
+     * Accessor for Reservation Time
+     * @return Reservation Time in Local Time
+     */
     public LocalTime getResvTime() {
         return resvTime;
     }
 
+    /**
+     * Mutator for Reservation TIme
+     * @param resvTime Reservation Time
+     */
     public void setResvTime(LocalTime resvTime) {
         this.resvTime = resvTime;
     }
 
+    /**
+     * Accessor for Reservation Session
+     * @return Enum type of ReservationSession
+     */
     public ReservationSession getResvSession() {
         return resvSession;
     }
 
+    /**
+     * Mutator for Reservation Session
+     * @param resvSession Enum type ReservationSession value
+     */
     public void setResvSession(ReservationSession resvSession) {
         this.resvSession = resvSession;
     }
 
+    /**
+     * Accessor for number of pax
+     * @return Number of pax in integer
+     */
     public int getNumPax() {
         return numPax;
     }
 
+    /**
+     * Mutator for number of pax
+     * @param numPax Number of pax
+     */
     public void setNumPax(int numPax) {
         this.numPax = numPax;
     }
 
+    /**
+     * Accessor for Customer Name
+     * @return Customer Name in String
+     */
     public String getCustName() {
         return custName;
     }
 
+    /**
+     * Mutator for Customer Name
+     * @param custName Customer Name
+     */
     public void setCustName(String custName) {
         this.custName = custName;
     }
 
+    /**
+     * Accessor for Customer Telephone Number
+     * @return Customer Telephone Number in String
+     */
     public String getCustTelNo() {
         return custTelNo;
     }
 
+    /**
+     * Mutator for Customer Telephone number
+     * @param custTelNo Customer Telephone number
+     */
     public void setCustTelNo(String custTelNo) {
         this.custTelNo = custTelNo;
     }
 
+    /**
+     * Accessor for Table Number
+     * @return Table number in integer
+     */
     public int getTableNum() {
         return tableNum;
     }
 
+    /**
+     * Mutator for table number
+     * @param tableNum Table number in int
+     */
     public void setTableNum(int tableNum) {
         this.tableNum = tableNum;
-    }
-
-    /**
-     * This function executes the steps to make a reservation.
-     * It will check the availability of the table via the Table class, and (other stuff).
-     * @param tbl The Table object that is involved in the reservation
-     * @return An integer value depicting success or failure of reservation creation.
-     * Return value of 1 indicates success, 0 indicates error
-    private int makeReservation(Table tbl)
-    {
-        if (!tbl.checkReserved()) {
-
-        }
-        return 0;
-    }*/
-
-    private boolean checkTableReserved (Table tbl) {
-        return tbl.checkReserved();
     }
 
 }

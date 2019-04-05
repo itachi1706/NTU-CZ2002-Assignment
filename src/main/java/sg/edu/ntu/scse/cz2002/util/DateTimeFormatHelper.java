@@ -9,6 +9,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.InputMismatchException;
 
 /**
  * Helper class for conversion of Calendar values to printable String values
@@ -26,6 +27,7 @@ public class DateTimeFormatHelper {
      * Constant attribute determining the factor to convert milliseconds to days
      */
     private final static long MILLIS_TO_DAYS = 1000*60*60*24;
+    private final static long TO_UTC_PLUS_8 = 28800000;
 
     /**
      * Method for formatting LocalDate values into formatted String
@@ -83,16 +85,20 @@ public class DateTimeFormatHelper {
     }
 
     /**
-     * Method to get date in Calendar object
+     * Method to get today's date or 30 days later in LocalDate object
      * @param getNextMonth boolean variable to determine if getting today's date or date one month from now
      * @return LocalDate object containing today's date and time value
      */
-    public static LocalDate getDate(boolean getNextMonth) {
+    public static LocalDate getTodayDate(boolean getNextMonth) {
         if (!getNextMonth)
-            return LocalDate.ofEpochDay(System.currentTimeMillis()/MILLIS_TO_DAYS);
+            return LocalDate.ofEpochDay(getSysTimeMillisWithSGTimeZone()/MILLIS_TO_DAYS);
         else {
-            return LocalDate.ofEpochDay(System.currentTimeMillis()/MILLIS_TO_DAYS + 30);
+            return LocalDate.ofEpochDay(getSysTimeMillisWithSGTimeZone()/MILLIS_TO_DAYS + 30);
         }
+    }
+
+    public static LocalTime getTimeNow() {
+        return LocalTime.now().plusHours(8);
     }
 
     /**
@@ -110,9 +116,14 @@ public class DateTimeFormatHelper {
      * @param inputDate LocalDate variable to be compared
      * @return True is input date is after today, false if is same or before today.
      */
-    public static boolean compareToday(LocalDate inputDate){
+    public static boolean compareIfBeforeToday(LocalDate inputDate){
 
-        return inputDate.isAfter(LocalDate.ofEpochDay(System.currentTimeMillis()/MILLIS_TO_DAYS));
+        //For debug purposes
+        //Printout passed in date and today's date.
+        //TODO: Remove lines once confident everything is working.
+        //System.out.println(inputDate.toString());
+        //System.out.println(LocalDate.ofEpochDay(getSysTimeMillisWithSGTimeZone()/MILLIS_TO_DAYS).toString());
+        return inputDate.isBefore(LocalDate.ofEpochDay(getSysTimeMillisWithSGTimeZone()/MILLIS_TO_DAYS));
     }
 
     /**
@@ -129,6 +140,8 @@ public class DateTimeFormatHelper {
     /**
      * Checks if resv time is between any of the AM or PM sessions
      * @param resvTime User input reservation time formatted in HH:mm to LocalTime
+     * @param sessionStart time of the start of session
+     * @param sessionEnd time of the end of session
      * @return boolean variable determining whether the resvTime falls between either session
      */
     public static boolean checkResvTimeSession(LocalTime resvTime, LocalTime sessionStart, LocalTime sessionEnd) {
@@ -171,6 +184,77 @@ public class DateTimeFormatHelper {
      * iv) Validates if month is valid
      * v) Validates if the date is valid
      *
+     * @param date String value unsplit containing date
+     * @return Boolean value determining if the date is valid or invalid
+     * @throws InputMismatchException If parsing to integer failed (e.g. received String input)
+     * @throws NumberFormatException TBA
+     */
+    public static boolean validateDate(String date) throws InputMismatchException, NumberFormatException
+    {
+        try {
+            String[] dateSplit = new String[3];
+            dateSplit = date.split("/");
+            int d = Integer.parseInt(dateSplit[0]);
+            int m = Integer.parseInt(dateSplit[1]);
+            int y = Integer.parseInt(dateSplit[2]);
+            //Validate non-31 days months.
+            if ((((m == 4) || (m == 6)) || ((m == 9) || (m == 11))) && (d >= 31)) {
+                System.out.println("The month you have entered does not have more than 30 days.");
+                return false;
+            }
+                //Validate non-leap years.
+            else if (((y % 4 != 0) || ((y % 100 == 0) && (y % 400 != 0))) && ((m == 2) && (d >= 29))) {
+                System.out.println("The year entered is not a leap year, and as such 29th February does not exist.");
+                return false;
+            }
+                //Validate leap years invalid date.
+            else if (((y % 4 == 0) || ((y % 100 == 0) && (y % 400 == 0))) && ((m == 2) && (d >= 30))) {
+                System.out.println("February does not have a 30th day.");
+                return false;
+            }
+                //Validate invalid month.
+            else if (m < 1 || m > 12) {
+                System.out.println("Not a valid month.");
+                return false;
+            }
+                //Validate invalid date.
+            else if (d < 1 || d > 31) {
+                System.out.println("Not a valid date between 1 and 31.");
+                return false;
+            }
+                //All validations have been passed, date has no errors.
+            else
+                return true;
+        }
+        catch (InputMismatchException e) {
+            System.out.println("[ERROR] Date has an invalid input. (" + e.getLocalizedMessage() + "}");
+            return false;
+        }
+        catch (NumberFormatException e) {
+            System.out.println("[ERROR] Date is unable to be parsed through formatter. (" + e.getLocalizedMessage() + "}");
+            return false;
+        }
+    }
+
+    /**
+     * Method to add 8 hours to retrieval of system time to make it UTC+8
+     * Note: Plus 8 hours = 28,800,000 millis
+     * @return currentTimeMillis plus 8 hours in long
+     */
+    public static long getSysTimeMillisWithSGTimeZone(){
+        return System.currentTimeMillis() + TO_UTC_PLUS_8;
+    }
+
+    /**
+     * Method for validating whether a user-input date is valid
+     *
+     * Method validates for the following:
+     * i) Months that only have 30 days
+     * ii) Years that are not leap-years.
+     * iii) For years that are leap-years, validate the date
+     * iv) Validates if month is valid
+     * v) Validates if the date is valid
+     *
      * @param d Integer value containing 2-digit DATE
      * @param m Integer value containing 2-digit MONTH
      * @param y Integer value containing YEAR value
@@ -198,4 +282,5 @@ public class DateTimeFormatHelper {
         else
             return true;
     }
+
 }
