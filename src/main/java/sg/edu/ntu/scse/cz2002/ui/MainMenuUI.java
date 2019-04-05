@@ -1,5 +1,10 @@
 package sg.edu.ntu.scse.cz2002.ui;
 
+import sg.edu.ntu.scse.cz2002.MainApp;
+import sg.edu.ntu.scse.cz2002.features.Table;
+import sg.edu.ntu.scse.cz2002.features.Table.TableState;
+import sg.edu.ntu.scse.cz2002.objects.menuitem.MenuItem;
+
 /**
  * The Main Menu UI
  *
@@ -64,6 +69,17 @@ public class MainMenuUI extends BaseMenu {
 
     private void checkTableAvailability() {
         //TODO: Print out list of available tables from Tables ArrayList
-        //TODO: If time executed is not within AM or PM session, get the details of the upcoming session.
+    	System.out.println("This are the tables available:");
+		for (int i = 0; i < MainApp.tables.size(); i++) {
+			Table tables = (Table) MainApp.tables.get(i);
+			if(tables.getState() == TableState.TABLE_VACATED)
+			{
+				System.out.println( tables.getTableNum());
+			
+			}
+
+        //TODO: If time executed is not within AM or PM session, get the details of the upcoming session.		
+		}
+
     }
 }
