@@ -77,7 +77,7 @@ public class OrderMenuUI extends BaseMenu {
         }
         while (true) {
             printHeader("Order #" + orderNumber);
-            System.out.println("1) View items in order");
+            System.out.println("1) View order details");
             System.out.println("2) Add item to order");
             System.out.println("3) Change item quantity in order");
             System.out.println("4) Remove item from order");
@@ -87,17 +87,7 @@ public class OrderMenuUI extends BaseMenu {
             int choice = doMenuChoice(3, 0);
             switch (choice) {
                 case 1:
-                    System.out.println("List of items in Order #" + orderNumber + ":");
-                    if (o.getOrderItems().size() == 0) {
-                        System.out.println("No items in order. Add some by selection option 2!");
-                        System.out.println();
-                        break;
-                    }
-                    try {
-                        printOrderItems(o.getOrderItems(), false);
-                    } catch (ItemNotFoundException e) {
-                        System.out.println("An error occurred obtaining items in the order. A brief description of the error is listed below\n" + e.getLocalizedMessage());
-                    }
+                    printOrderDetails(o);
                     System.out.println();
                     break;
                 case 2:
@@ -252,28 +242,28 @@ public class OrderMenuUI extends BaseMenu {
      * @param o Order object to print details of
      */
     private void printOrderDetails(Order o) {
-        printHeader("Order #" + o.getOrderID() + " Details", 100);
+        printHeader("Order #" + o.getOrderID() + " Details", 60);
         System.out.println("Order ID: " + o.getOrderID());
         System.out.println("Order State: " + ((o.getOrderState() == Order.OrderState.ORDER_PAID) ? "Paid" : "Unpaid"));
         System.out.println("Order Started On: " + DateTimeFormatHelper.formatMillisToDateTime(o.getCreatedAt()));
         if (o.getOrderState() == Order.OrderState.ORDER_PAID) System.out.println("Order Completed On: " + DateTimeFormatHelper.formatMillisToDateTime(o.getCompletedAt()));
         System.out.println("List of Order Items:");
-        printBreaks(100);
+        printBreaks(60);
         if (o.getOrderItems().size() == 0) System.out.println("No Items in Order");
         else {
             try {
-                printOrderItems(o.getOrderItems(), true);
+                printOrderItems(o.getOrderItems());
             } catch (ItemNotFoundException e) {
                 System.out.println("An error occurred retrieving Order Items. A brief description of the error is listed below\n" + e.getLocalizedMessage());
             }
         }
-        printBreaks(100);
-        System.out.println("Order Subtotal: " + o.getSubtotal());
-        printBreaks(100);
+        printBreaks(60);
+        System.out.println("Order Subtotal: $" + String.format("%.2f", o.getSubtotal()));
+        printBreaks(60);
         System.out.println("\n");
     }
 
-    private void printOrderItems(ArrayList<OrderItem> items, boolean prettyPrint) throws ItemNotFoundException {
+    private void printOrderItems(ArrayList<OrderItem> items) throws ItemNotFoundException {
         for (OrderItem i : items) {
             Object item = i.getItem();
             if (item == null) {
@@ -291,8 +281,7 @@ public class OrderMenuUI extends BaseMenu {
                 itemName = mi.getName();
                 price = mi.getPrice();
             } else throw new ItemNotFoundException("Item is not Promotion or MenuItem"); // Exception for invalid item in database. Exception as we need to handle and fix
-            if (prettyPrint) System.out.printf("%-85s%6dx $%-6.2f\n", itemName, i.getQuantity(), price);
-            else System.out.println(i.getQuantity() + "x " + itemName + "\t$" + String.format("%.2f", price));
+            System.out.printf("%3dx %-45s $%-6.2f\n", i.getQuantity(), itemName, price);
         }
     }
 
