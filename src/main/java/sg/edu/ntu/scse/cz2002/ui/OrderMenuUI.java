@@ -1,5 +1,6 @@
 package sg.edu.ntu.scse.cz2002.ui;
 
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import sg.edu.ntu.scse.cz2002.MainApp;
 import sg.edu.ntu.scse.cz2002.features.Order;
@@ -11,7 +12,6 @@ import sg.edu.ntu.scse.cz2002.util.DateTimeFormatHelper;
 import sg.edu.ntu.scse.cz2002.util.ScannerHelper;
 
 import java.util.ArrayList;
-import java.util.Scanner;
 
 /**
  * The Order Menu UI
@@ -23,11 +23,12 @@ import java.util.Scanner;
 public class OrderMenuUI extends BaseMenu {
 
     /**
-     * Incomplete Orders that has not printed receipt yet
+     * Incomplete {@link Order} that has have its receipt printed yet
      * These orders will not be saved should the system crash
      */
     public static ArrayList<Order> incompleteOrders = null;
 
+    /* Menus */
     /**
      * The Order Management Menu
      * @return Exit Code. Return 1 to exit the program and -1 to exit to main menu
@@ -77,38 +78,26 @@ public class OrderMenuUI extends BaseMenu {
         }
         while (true) {
             printHeader("Order #" + orderNumber);
-            System.out.println("1) View items in order");
+            System.out.println("1) View order details");
             System.out.println("2) Add item to order");
             System.out.println("3) Change item quantity in order");
             System.out.println("4) Remove item from order");
             System.out.println("0) Exit Order Editing Screen");
             printBreaks();
 
-            int choice = doMenuChoice(3, 0);
+            int choice = doMenuChoice(4, 0);
             switch (choice) {
                 case 1:
-                    System.out.println("List of items in Order #" + orderNumber + ":");
-                    if (o.getOrderItems().size() == 0) {
-                        System.out.println("No items in order. Add some by selection option 2!");
-                        System.out.println();
-                        break;
-                    }
-                    try {
-                        printOrderItems(o.getOrderItems(), false);
-                    } catch (ItemNotFoundException e) {
-                        System.out.println("An error occurred obtaining items in the order. A brief description of the error is listed below\n" + e.getLocalizedMessage());
-                    }
-                    System.out.println();
+                    printOrderDetails(o);
                     break;
                 case 2:
-                    // TODO: To Implement
                     addOrderItem(o);
                     break;
                 case 3:
-                    // TODO: To Implement
+                    editOrderItem(o);
                     break;
                 case 4:
-                    // TODO: To Implement
+                    removeOrderItem(o);
                     break;
                 case 0:
                     return;
@@ -118,76 +107,8 @@ public class OrderMenuUI extends BaseMenu {
         }
     }
 
-    private void addOrderItem(Order o) {
-        System.out.println("Select Item Type:");
-        System.out.println("1) Ala-carte Items");
-        System.out.println("2) Promotion Set");
-        System.out.println("0) Cancel");
-        int selection = doMenuChoice(2, 0);
 
-        switch (selection) {
-            case 1:
-                // TODO: Select Item Type
-                break;
-            case 2:
-                // TODO: Print Promotion Set
-                if (MainApp.promotions.size() == 0) {
-                    System.out.println("No promotions available");
-                    return;
-                }
-                printHeader("Promotion Sets", 40);
-                int i = 0;
-                for (Promotion p : MainApp.promotions) {
-                    // Get each item in promotion
-                    System.out.printf("%d) %-28s $%-6.2f\n", (i+1) , p.getPromoName(), p.getPromoPrice());
-                    //printPromotionDetail(p);
-                    i++;
-                }
-                printBreaks(40);
-                int promoSel = ScannerHelper.getIntegerInput("Enter Set ID: ");
-                int promotionSelected = promoSel - 1; // Get in reference to array
-                if (promotionSelected < 0 || promotionSelected >= MainApp.promotions.size()) {
-                    // Invalid option say not found and kick back to main
-                    System.out.println("Promotion Set not valid. Returning to Order Edit screen");
-                    return;
-                }
-                int quantity = ScannerHelper.getIntegerInput("Enter Quantity: ", 0);
-
-                // Print promotion detail and ask if we really want to add this
-                Promotion p = MainApp.promotions.get(promotionSelected);
-                System.out.println();
-                printHeader(p.getPromoName() + " Details", 60);
-                printPromotionDetail(p);
-                System.out.println("Quantity: " + quantity + "");
-                System.out.printf("Total Set Price: $%.2f\n", (quantity * p.getPromoPrice()));
-                printBreaks(60);
-                boolean confirm = ScannerHelper.getYesNoInput("Confirm Promotion Set Selection?");
-                if (confirm) {
-                    // Add to Order
-                    o.getOrderItems().add(new OrderItem(p.getPromoID(), quantity, (quantity * p.getPromoPrice()), OrderItem.OrderItemType.TYPE_PROMO));
-                    System.out.println("Promotion Set Added to Order");
-                }
-                break;
-            case 0: return;
-            default: throw new IllegalStateException("Invalid Choice (Order Item Add)");
-        }
-    }
-
-    private void printPromotionDetail(Promotion p) {
-        // Console Length 60
-        // TODO: Discuss if it should still be here
-        StringBuilder sb = new StringBuilder();
-        MenuItem main = FoodMenuUI.retrieveMenuItem(p.getPromoMain());
-        MenuItem drink = FoodMenuUI.retrieveMenuItem(p.getPromoDrink());
-        MenuItem dessert = FoodMenuUI.retrieveMenuItem(p.getPromoDessert());
-        sb.append("Name: ").append(p.getPromoName()).append("\n")
-                .append("Price: $").append(String.format("%.2f", p.getPromoPrice())).append("\n\n")
-                .append("Set Contains:").append("\n");
-        if (main != null) sb.append(String.format("%-52s $%-6.2f", main.getName() + " (" + main.getDescription() + ") ", main.getPrice())).append("\n");
-        if (drink != null) sb.append(String.format("%-52s $%-6.2f", drink.getName() + " (" + drink.getDescription() + ") ", drink.getPrice())).append("\n");
-        if (dessert != null) sb.append(String.format("%-52s $%-6.2f", dessert.getName() + " (" + dessert.getDescription() + ") ", dessert.getPrice())).append("\n");
-        System.out.println(sb.toString());
-    }
+    /* General Order Methods */
 
     /**
      * Creates an order and send you to the edit order UI at {@link OrderMenuUI#editOrderMenuScreen(int)}
@@ -248,53 +169,133 @@ public class OrderMenuUI extends BaseMenu {
     }
 
     /**
-     * Print specific order details
-     * @param o Order object to print details of
+     * Edit Order option
+     * This method will request an order number and provide you the relevant edit order page if available
+     * If the order is already paid or does not exist, an error message will appear and you will exit back to the Order Menu
      */
-    private void printOrderDetails(Order o) {
-        printHeader("Order #" + o.getOrderID() + " Details", 100);
-        System.out.println("Order ID: " + o.getOrderID());
-        System.out.println("Order State: " + ((o.getOrderState() == Order.OrderState.ORDER_PAID) ? "Paid" : "Unpaid"));
-        System.out.println("Order Started On: " + DateTimeFormatHelper.formatMillisToDateTime(o.getCreatedAt()));
-        if (o.getOrderState() == Order.OrderState.ORDER_PAID) System.out.println("Order Completed On: " + DateTimeFormatHelper.formatMillisToDateTime(o.getCompletedAt()));
-        System.out.println("List of Order Items:");
-        printBreaks(100);
-        if (o.getOrderItems().size() == 0) System.out.println("No Items in Order");
-        else {
-            try {
-                printOrderItems(o.getOrderItems(), true);
-            } catch (ItemNotFoundException e) {
-                System.out.println("An error occurred retrieving Order Items. A brief description of the error is listed below\n" + e.getLocalizedMessage());
-            }
-        }
-        printBreaks(100);
-        System.out.println("Order Subtotal: " + o.getSubtotal());
-        printBreaks(100);
-        System.out.println("\n");
+    private void editOrder() {
+        int orderNo = ScannerHelper.getIntegerInput("Enter Order Number: ");
+        Order o = findOrder(orderNo, false);
+        if (o == null) System.out.println("Unable to find order. Note that orders that are paid for cannot be edited");
+        else editOrderMenuScreen(orderNo);
     }
 
-    private void printOrderItems(ArrayList<OrderItem> items, boolean prettyPrint) throws ItemNotFoundException {
-        for (OrderItem i : items) {
-            Object item = i.getItem();
-            if (item == null) {
-                System.out.println("Item Not Found in Database");
-                continue; // Cannot find item, print Unknown Item
-            }
-            String itemName;
-            double price = 0;
-            if (i.isPromotion() && item instanceof Promotion) {
-                Promotion promo = (Promotion) item;
-                itemName = "[PROMO] " + promo.getPromoName();
-                price = promo.getPromoPrice();
-            } else if (item instanceof MenuItem) {
-                MenuItem mi = (MenuItem) item;
-                itemName = mi.getName();
-                price = mi.getPrice();
-            } else throw new ItemNotFoundException("Item is not Promotion or MenuItem"); // Exception for invalid item in database. Exception as we need to handle and fix
-            if (prettyPrint) System.out.printf("%-85s%6dx $%-6.2f\n", itemName, i.getQuantity(), price);
-            else System.out.println(i.getQuantity() + "x " + itemName + "\t$" + String.format("%.2f", price));
+    /* Edit Order Methods */
+
+    /**
+     * Adds item to Order
+     * @param o Order Object
+     */
+    private void addOrderItem(@NotNull Order o) {
+        System.out.println("Select Item Type:");
+        System.out.println("1) Ala-carte Items");
+        System.out.println("2) Promotion Set");
+        System.out.println("0) Cancel");
+        int selection = doMenuChoice(2, 0);
+
+        switch (selection) {
+            case 1:
+                // TODO: Select Item Type
+                break;
+            case 2:
+                if (MainApp.promotions.size() == 0) {
+                    System.out.println("No promotions available");
+                    return;
+                }
+                printHeader("Promotion Sets", 40);
+                int i = 0;
+                for (Promotion p : MainApp.promotions) {
+                    // Get each item in promotion
+                    System.out.printf("%d) %-28s $%-6.2f\n", (i+1) , p.getPromoName(), p.getPromoPrice());
+                    //printPromotionDetail(p);
+                    i++;
+                }
+                printBreaks(40);
+                int promoSel = ScannerHelper.getIntegerInput("Enter Set ID: ");
+                int promotionSelected = promoSel - 1; // Get in reference to array
+                if (promotionSelected < 0 || promotionSelected >= MainApp.promotions.size()) {
+                    // Invalid option say not found and kick back to main
+                    System.out.println("Promotion Set not valid. Returning to Order Edit screen");
+                    return;
+                }
+                int quantity = ScannerHelper.getIntegerInput("Enter Quantity: ", 0);
+
+                // Print promotion detail and ask if we really want to add this
+                Promotion p = MainApp.promotions.get(promotionSelected);
+                System.out.println();
+                printHeader(p.getPromoName() + " Details", 60);
+                printPromotionDetail(p);
+                System.out.println("Quantity: " + quantity + "");
+                System.out.printf("Total Set Price: $%.2f\n", (quantity * p.getPromoPrice()));
+                printBreaks(60);
+                boolean confirm = ScannerHelper.getYesNoInput("Confirm Promotion Set Selection?");
+                if (confirm) {
+                    // Add to Order
+                    o.getOrderItems().add(new OrderItem(p.getPromoID(), quantity, OrderItem.OrderItemType.TYPE_PROMO));
+                    o.calculateSubtotal();
+                    System.out.println("Promotion Set Added to Order");
+                }
+                break;
+            case 0: return;
+            default: throw new IllegalStateException("Invalid Choice (Order Item Add)");
         }
     }
+
+    /**
+     * Edits item from Order
+     * @param o Order Object
+     */
+    private void editOrderItem(@NotNull Order o) {
+        if (o.getOrderItems().size() == 0) {
+            System.out.println("No items in order");
+            return;
+        }
+
+        // View list of order items
+        int selection;
+        try {
+            selection = getOrderItemToEdit(o,"Select an item to change quantity: ");
+        } catch (ItemNotFoundException e) {
+            System.out.println("An error occurred obtaining items in the order. A brief description of the error is listed below\n" + e.getLocalizedMessage());
+            return;
+        }
+        int quantity = ScannerHelper.getIntegerInput("Enter the new Quantity for the item. (Current Qty: " + o.getOrderItems().get(selection).getQuantity() + "): ", 0);
+        // Update quantity
+        o.getOrderItems().get(selection).setQuantity(quantity);
+        o.calculateSubtotal();
+        System.out.println("Quantity has been updated");
+    }
+
+    /**
+     * Removes item from Order
+     * @param o Order Object
+     */
+    private void removeOrderItem(@NotNull Order o) {
+        if (o.getOrderItems().size() == 0) {
+            System.out.println("No items in order to remove");
+            return;
+        }
+
+        int sel;
+        try {
+            sel = getOrderItemToEdit(o,"Select an item to remove from order: ");
+        } catch (ItemNotFoundException e) {
+            System.out.println("An error occurred obtaining items in the order. A brief description of the error is listed below\n" + e.getLocalizedMessage());
+            return;
+        }
+        OrderItem i = o.getOrderItems().get(sel);
+        String itemName = i.getItemName();
+        System.out.println(itemName + " (Qty: " + i.getQuantity() + ") is about to be removed from the order");
+        if (ScannerHelper.getYesNoInput("Confirm?")) {
+            o.getOrderItems().remove(sel);
+            System.out.println("Item removed from order");
+        } else {
+            System.out.println("Operation cancelled");
+        }
+
+    }
+
+    /* Helper Functions */
 
     /**
      * Finds an order from its Order ID
@@ -322,7 +323,7 @@ public class OrderMenuUI extends BaseMenu {
      * @param orders A list of order
      * @param tag A tag to append to the header
      */
-    private void printOrderList(ArrayList<Order> orders, String tag) {
+    private void printOrderList(@NotNull ArrayList<Order> orders, String tag) {
         printHeader("Order List (" + tag + ")", 100);
         if (orders.size() == 0) System.out.println("No orders found");
         else orders.forEach(o -> {
@@ -337,15 +338,94 @@ public class OrderMenuUI extends BaseMenu {
     }
 
     /**
-     * Edit Order option
-     * This method will request an order number and provide you the relevant edit order page if available
-     * If the order is already paid or does not exist, an error message will appear and you will exit back to the Order Menu
+     * Print specific order details
+     * @param o Order object to print details of
      */
-    private void editOrder() {
-        Scanner in = new Scanner(System.in);
-        int orderNo = ScannerHelper.getIntegerInput("Enter Order Number: ");
-        Order o = findOrder(orderNo, false);
-        if (o == null) System.out.println("Unable to find order. Note that orders that are paid for cannot be edited");
-        else editOrderMenuScreen(orderNo);
+    private void printOrderDetails(@NotNull Order o) {
+        printHeader("Order #" + o.getOrderID() + " Details", 60);
+        System.out.println("Order ID: " + o.getOrderID());
+        System.out.println("Order State: " + ((o.getOrderState() == Order.OrderState.ORDER_PAID) ? "Paid" : "Unpaid"));
+        System.out.println("Order Started On: " + DateTimeFormatHelper.formatMillisToDateTime(o.getCreatedAt()));
+        if (o.getOrderState() == Order.OrderState.ORDER_PAID) System.out.println("Order Completed On: " + DateTimeFormatHelper.formatMillisToDateTime(o.getCompletedAt()));
+        System.out.println("List of Order Items:");
+        printBreaks(60);
+        if (o.getOrderItems().size() == 0) System.out.println("No Items in Order");
+        else {
+            o.calculateSubtotal(); // Calculate Subtotal
+            try {
+                printOrderItems(o.getOrderItems(), true);
+            } catch (ItemNotFoundException e) {
+                System.out.println("An error occurred retrieving Order Items. A brief description of the error is listed below\n" + e.getLocalizedMessage());
+            }
+        }
+        printBreaks(60);
+        System.out.println("Order Subtotal: $" + String.format("%.2f", o.getSubtotal()));
+        printBreaks(60);
+        System.out.println("\n");
+    }
+
+    /**
+     * Prints details regarding the {@link Promotion} object
+     * @param p Promotion Object
+     */
+    private void printPromotionDetail(@NotNull Promotion p) {
+        // Console Length 60
+        // TODO: Discuss if it should still be here
+        StringBuilder sb = new StringBuilder();
+        MenuItem main = FoodMenuUI.retrieveMenuItem(p.getPromoMain());
+        MenuItem drink = FoodMenuUI.retrieveMenuItem(p.getPromoDrink());
+        MenuItem dessert = FoodMenuUI.retrieveMenuItem(p.getPromoDessert());
+        sb.append("Name: ").append(p.getPromoName()).append("\n")
+                .append("Price: $").append(String.format("%.2f", p.getPromoPrice())).append("\n\n")
+                .append("Set Contains:").append("\n");
+        if (main != null) sb.append(String.format("%-52s $%-6.2f", main.getName() + " (" + main.getDescription() + ") ", main.getPrice())).append("\n");
+        if (drink != null) sb.append(String.format("%-52s $%-6.2f", drink.getName() + " (" + drink.getDescription() + ") ", drink.getPrice())).append("\n");
+        if (dessert != null) sb.append(String.format("%-52s $%-6.2f", dessert.getName() + " (" + dessert.getDescription() + ") ", dessert.getPrice())).append("\n");
+        System.out.println(sb.toString());
+    }
+
+    /**
+     * Gets the list of item from the order and request the user to enter the ID of the item they are selecting
+     * @param o Order object
+     * @param prompt The prompt to prompt the user. If no prompt pass in an empty string
+     * @return the ID of the item they are selecting (based against the arraylist index, NOT the order item's respective ID
+     * @throws ItemNotFoundException An item cannot be found in the order
+     */
+    private int getOrderItemToEdit(@NotNull Order o, String prompt) throws ItemNotFoundException {
+        System.out.println("List of items from the order:");
+        printOrderItems(o.getOrderItems(), false);
+        System.out.println();
+        return ScannerHelper.getIntegerInput(prompt, 0, o.getOrderItems().size() + 1) - 1;
+    }
+
+    /**
+     * Prints the list of items in the order
+     * @param items An array list of the items in the order
+     * @param prettyPrint Whether or not we should format the string (for displaying in a table format) or as a list format
+     * @throws ItemNotFoundException Item not found in the order
+     */
+    private void printOrderItems(@NotNull ArrayList<OrderItem> items, boolean prettyPrint) throws ItemNotFoundException {
+        int imm = 1;
+        for (OrderItem i : items) {
+            Object item = i.getItem();
+            if (item == null) {
+                System.out.println("Item Not Found in Database");
+                continue; // Cannot find item, print Unknown Item
+            }
+            String itemName;
+            double price;
+            if (i.isPromotion() && item instanceof Promotion) {
+                Promotion promo = (Promotion) item;
+                itemName = "[PROMO] " + promo.getPromoName();
+                price = promo.getPromoPrice();
+            } else if (item instanceof MenuItem) {
+                MenuItem mi = (MenuItem) item;
+                itemName = mi.getName();
+                price = mi.getPrice();
+            } else throw new ItemNotFoundException("Item is not Promotion or MenuItem"); // Exception for invalid item in database. Exception as we need to handle and fix
+            if (prettyPrint) System.out.printf("%3dx %-45s $%-6.2f\n", i.getQuantity(), itemName, price);
+            else System.out.println(imm + ") " + i.getQuantity() + "x " + itemName + "\t$" + String.format("%.2f", price));
+            imm++;
+        }
     }
 }

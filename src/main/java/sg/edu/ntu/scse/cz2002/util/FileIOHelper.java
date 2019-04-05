@@ -26,6 +26,7 @@ public class FileIOHelper {
 
     /**
      * Check if file exists
+     * @param name File Name
      * @return true if exist
      */
     public static boolean exists(String name) {
