@@ -1,5 +1,6 @@
 package sg.edu.ntu.scse.cz2002.ui;
 
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import sg.edu.ntu.scse.cz2002.MainApp;
 import sg.edu.ntu.scse.cz2002.objects.menuitem.MenuItem;
@@ -17,14 +18,13 @@ import java.util.Scanner;
  */
 public class FoodMenuUI extends BaseMenu {
 
+	@SuppressWarnings("resource")
+	Scanner sc = new Scanner(System.in);
+	
     /**
      * The Food Menu Items Management Menu
      * @return Exit Code. Return 1 to exit the program and -1 to exit to main menu
      */
-	
-	@SuppressWarnings("resource")
-	Scanner sc = new Scanner(System.in);
-	
 	@Override
     protected int generateMenuScreen() {
 		
@@ -131,7 +131,7 @@ public class FoodMenuUI extends BaseMenu {
 	
 	
 	/**
-	 * Prints the CSV File Menu. @ Arthur
+	 * Prints the CSV File Menu.
 	 * (uses the globally defined "menuItems" ArrayList from MainApp)
 	 */
 	public void printMenu() {
@@ -148,12 +148,12 @@ public class FoodMenuUI extends BaseMenu {
 	//eventually do an if else to print either all, drinks, food, or etc respectively***
 	
 	/**
-	 * Adds a new menu item. @ Arthur
+	 * Method to add a new menu item.
 	 * (uses "writeToCsv" to facilitate I/O operations from MenuItemCSVHelper.)
-	 * @params newItemName <Name of the new menu item to be added.>
-	 * @params newItemType <Type of the new menu item to be added. Can only be defined as the following enum values: Drink, Main or Dessert.>
-	 * @params newItemDescription <Description of the new menu item to be added.>
-	 * @params newItemPrice <Price of the new menu item to be added.>
+	 * @param newItemName Name of the new menu item to be added.
+	 * @param newItemType Type of the new menu item to be added. Can only be defined as the following enum values: Drink, Main or Dessert.
+	 * @param newItemDescription Description of the new menu item to be added.
+	 * @param newItemPrice Price of the new menu item to be added.
 	 */
 	public void addNewMenuItem(String newItemName, String newItemType, String newItemDescription, double newItemPrice) {
 		
@@ -186,13 +186,13 @@ public class FoodMenuUI extends BaseMenu {
 	//eventually do a handler for double, in particular for newItemPrice***
 
 	/**
-	 * Edits an existing item. @ Arthur
+	 * Method to edit an existing item.
 	 * (uses "writeToCsv" AND "retrieveMenuItem" to facilitate I/O operations)
-	 * @params targetItemID <ID of the existing menu item to be edited.>
-	 * @params editItemName <Name of the existing menu item to be edited.>
-	 * @params editItemType <Type of the existing menu item to be edited. Can only be defined as the following enum values: Drink, Main or Dessert.>
-	 * @params editItemDescription <Description of the existing menu item to be edited.>
-	 * @params editItemPrice <Price of the existing menu item to be edited.>
+	 * @param targetItemID ID of the existing menu item to be edited.
+	 * @param editItemName Name of the existing menu item to be edited.
+	 * @param editItemType Type of the existing menu item to be edited. Can only be defined as the following enum values: Drink, Main or Dessert.
+	 * @param editItemDescription Description of the existing menu item to be edited.
+	 * @param editItemPrice Price of the existing menu item to be edited.
 	 */
 	public void editMenuItem(int targetItemID, String editItemName, String editItemType, String editItemDescription, double editItemPrice) {
 
@@ -227,9 +227,9 @@ public class FoodMenuUI extends BaseMenu {
 	}	
 	
 	/**
-	 * Deletes an existing item. @ Arthur
+	 * Method to delete an existing item.
 	 * (uses "writeToCsv" to facilitate I/O operations)
-	 * @params targetItemID <ID of the menu item to be deleted.>
+	 * @param targetItemID ID of the menu item to be deleted.
 	 */
 	public void deleteMenuItem(int targetItemID) {
 
@@ -241,15 +241,6 @@ public class FoodMenuUI extends BaseMenu {
 		// and then the write.csv method IO would be called
 
 		MenuItemCSVHelper menuHelper = MenuItemCSVHelper.getInstance();
-	
-		//for loop to check if ArrayList contains target item ID
-		
-		/*
-		for (MenuItem m : MainApp.menuItems) {
-			m.
-		} 
-		COOL METHOD TO PRINT THE WHOLE 
-		*/ 
 		
 		for (int i=0; i<(MainApp.menuItems.size()); i++) {
 			
@@ -273,9 +264,9 @@ public class FoodMenuUI extends BaseMenu {
 	}
 
 	/**
-	 * Returns a MenuItem object that matches the input targetItemID. @ Arthur
-	 * @params targetItemID <ID of the menu item object to be retrieved.>
-	 * @return menuItemObj <Object containing menu item attributes.>
+	 * Method returning a MenuItem object that matches the input targetItemID.
+	 * @param targetItemID ID of the menu item object to be retrieved.
+	 * @return menuItemObj Object containing menu item attributes.
 	 */
 	@Nullable
 	public static MenuItem retrieveMenuItem(int targetItemID) {

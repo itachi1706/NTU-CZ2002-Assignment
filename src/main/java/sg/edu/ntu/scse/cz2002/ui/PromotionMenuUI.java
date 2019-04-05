@@ -1,13 +1,16 @@
 package sg.edu.ntu.scse.cz2002.ui;
 
-import org.jetbrains.annotations.Nullable;
-import sg.edu.ntu.scse.cz2002.MainApp;
-import sg.edu.ntu.scse.cz2002.objects.menuitem.MenuItem;
-import sg.edu.ntu.scse.cz2002.objects.menuitem.Promotion;
-import sg.edu.ntu.scse.cz2002.util.PromoCSVHelper;
-
 import java.io.IOException;
 import java.util.Scanner;
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import sg.edu.ntu.scse.cz2002.MainApp;
+import sg.edu.ntu.scse.cz2002.objects.menuitem.Promotion;
+import sg.edu.ntu.scse.cz2002.objects.menuitem.MenuItem;
+import sg.edu.ntu.scse.cz2002.ui.FoodMenuUI;
+import sg.edu.ntu.scse.cz2002.util.MenuItemCSVHelper;
+import sg.edu.ntu.scse.cz2002.util.PromoCSVHelper;
 
 /**
  * The Promotion Menu UI
@@ -129,22 +132,20 @@ public class PromotionMenuUI extends BaseMenu {
         }
         return 0;
     }
-    
-    
-    
+
 	/**
-	 * Prints the CSV File of Promotions. @ Arthur
+	 * Prints the CSV File of Promotions.
 	 * (uses the globally defined "promotions" ArrayList from MainApp)
 	 * (also calls the retrieveMenuItem method from FoodMenuUI)
 	 */
 	public void printPromotion() {
 		for (int i = 0; i < MainApp.promotions.size(); i++) {
-			Promotion promotion = MainApp.promotions.get(i);
+			Promotion promotion = (Promotion) MainApp.promotions.get(i);
 			
 			MenuItem mainItem = FoodMenuUI.retrieveMenuItem(promotion.getPromoMain());
 			MenuItem dessertItem = FoodMenuUI.retrieveMenuItem(promotion.getPromoDessert());
 			MenuItem drinkItem = FoodMenuUI.retrieveMenuItem(promotion.getPromoDrink());
-
+			
 			System.out.println("|============================|");
 			System.out.println("Promotion ID: " + promotion.getPromoID());
 			System.out.println("Promotion Name: " + promotion.getPromoName());
@@ -157,13 +158,13 @@ public class PromotionMenuUI extends BaseMenu {
 	}
 
 	/**
-	 * Adds a new promotion. @ Arthur
+	 * Method to add a new promotion.
 	 * (uses "writeToCsv" to facilitate I/O operations from PromotionCSVHelper.)
-	 * @params newPromoName <Name of the new promotion to be added.>
-	 * @params newPromoPrice <Price of the new promotion to be added.>
-	 * @params newPromoMain <ID of the promotion's main.>
-	 * @params newPromoDessert <ID of the promotion's dessert.>
-	 * @params newPromoDrink <ID of the promotion's drink.>
+	 * @param newPromoName Name of the new promotion to be added.
+	 * @param newPromoPrice Price of the new promotion to be added.
+	 * @param newPromoMain ID of the new promotion's main.
+	 * @param newPromoDessert ID of the new promotion's dessert.
+	 * @param newPromoDrink ID of the new promotion's drink.
 	 */
 	public void addNewPromotion(String newPromoName, double newPromoPrice, int newPromoMain, int newPromoDessert, int newPromoDrink) {
 		
@@ -184,13 +185,14 @@ public class PromotionMenuUI extends BaseMenu {
 	}
 
 	/**
-	 * Edits an existing promotion. @ Arthur
+	 * Method to edit an existing promotion.
 	 * (uses "writeToCsv" AND "retrievePromotion" to facilitate I/O operations)
-	 * @params targetPromoID <ID of the new menu item to be edited.>
-	 * @params editPromoName <Name of the new menu item to be edited.>
-	 * @params editPromoType <Type of the new menu item to be edited. Can only be defined as the following enum values: Drink, Main or Dessert.>
-	 * @params newItemDescription <Description of the new menu item to be edited.>
-	 * @params newItemPrice <Price of the new menu item to be edited.>
+	 * @param targetPromoID ID of the promotion to be edited.
+	 * @param editPromoName Name of the promotion to be edited.
+	 * @param editPromoPrice Price of the promotion to be edited.
+	 * @param editPromoMain Main of the promotion to be edited.
+	 * @param editPromoDessert Dessert of the promotion to be edited.
+	 * @param editPromoDrink Drink of the promotion to be edited.
 	 */
 	public void editPromotion(int targetPromoID, String editPromoName, double editPromoPrice, int editPromoMain, int editPromoDessert, int editPromoDrink) {
 
@@ -227,9 +229,9 @@ public class PromotionMenuUI extends BaseMenu {
 	}	
 	
 	/**
-	 * Deletes an existing promotion. @ Arthur
+	 * Method to delete an existing promotion.
 	 * (uses "writeToCsv" to facilitate I/O operations)
-	 * @params targetPromoID <ID of the promotion to be deleted.>
+	 * @param targetPromoID ID of the promotion to be deleted.
 	 */
 	public void deletePromotion(int targetPromoID) {
 		PromoCSVHelper promoHelper = PromoCSVHelper.getInstance();
@@ -255,9 +257,9 @@ public class PromotionMenuUI extends BaseMenu {
 	
 	/**
 	 * Returns a Promotion object that matches the input targetPromoID. @ Arthur
-	 * @params targetPromoID <ID of the promotion object to be retrieved.>
-	 * @return promoObj <Object containing a promotion's attributes.> 
-	 */
+	 * @param targetPromoID ID of the promotion object to be retrieved.
+	 * @return promoObj Object containing a promotion's attributes.
+	 */	
 	@Nullable
 	public static Promotion retrievePromotion(int targetPromoID) {
 		
