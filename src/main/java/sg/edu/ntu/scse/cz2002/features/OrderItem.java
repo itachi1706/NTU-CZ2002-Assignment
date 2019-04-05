@@ -85,6 +85,16 @@ public class OrderItem {
         return getMenuItem();
     }
 
+    public String getItemName() {
+        Object o = this.getItem();
+        if (o instanceof MenuItem) {
+            return ((MenuItem) o).getName();
+        } else if (o instanceof Promotion) {
+            return ((Promotion) o).getPromoName();
+        }
+        return "Invalid Item";
+    }
+
     public int getQuantity() {
         return quantity;
     }

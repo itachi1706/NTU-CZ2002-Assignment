@@ -11,7 +11,6 @@ import sg.edu.ntu.scse.cz2002.util.DateTimeFormatHelper;
 import sg.edu.ntu.scse.cz2002.util.ScannerHelper;
 
 import java.util.ArrayList;
-import java.util.Scanner;
 
 /**
  * The Order Menu UI
@@ -84,7 +83,7 @@ public class OrderMenuUI extends BaseMenu {
             System.out.println("0) Exit Order Editing Screen");
             printBreaks();
 
-            int choice = doMenuChoice(3, 0);
+            int choice = doMenuChoice(4, 0);
             switch (choice) {
                 case 1:
                     printOrderDetails(o);
@@ -96,7 +95,7 @@ public class OrderMenuUI extends BaseMenu {
                     editOrderItem(o);
                     break;
                 case 4:
-                    // TODO: To Implement
+                    removeOrderItem(o);
                     break;
                 case 0:
                     return;
@@ -106,6 +105,38 @@ public class OrderMenuUI extends BaseMenu {
         }
     }
 
+    private int getOrderItemToEdit(Order o, String prompt) throws ItemNotFoundException {
+        System.out.println("List of items from the order:");
+        printOrderItems(o.getOrderItems(), false);
+        System.out.println();
+        return ScannerHelper.getIntegerInput(prompt, 0, o.getOrderItems().size() + 1) - 1;
+    }
+
+    private void removeOrderItem(Order o) {
+        if (o.getOrderItems().size() == 0) {
+            System.out.println("No items in order to remove");
+            return;
+        }
+
+        int sel;
+        try {
+            sel = getOrderItemToEdit(o,"Select an item to remove from order: ");
+        } catch (ItemNotFoundException e) {
+            System.out.println("An error occurred obtaining items in the order. A brief description of the error is listed below\n" + e.getLocalizedMessage());
+            return;
+        }
+        OrderItem i = o.getOrderItems().get(sel);
+        String itemName = i.getItemName();
+        System.out.println(itemName + " (Qty: " + i.getQuantity() + ") is about to be removed from the order");
+        if (ScannerHelper.getYesNoInput("Confirm?")) {
+            o.getOrderItems().remove(sel);
+            System.out.println("Item removed from order");
+        } else {
+            System.out.println("Operation cancelled");
+        }
+
+    }
+
     private void editOrderItem(Order o) {
         if (o.getOrderItems().size() == 0) {
             System.out.println("No items in order");
@@ -113,14 +144,13 @@ public class OrderMenuUI extends BaseMenu {
         }
 
         // View list of order items
-        System.out.println("List of items from the order to change quantity:");
+        int selection;
         try {
-            printOrderItems(o.getOrderItems(), false);
+            selection = getOrderItemToEdit(o,"Select an item to change quantity: ");
         } catch (ItemNotFoundException e) {
             System.out.println("An error occurred obtaining items in the order. A brief description of the error is listed below\n" + e.getLocalizedMessage());
+            return;
         }
-        System.out.println();
-        int selection = ScannerHelper.getIntegerInput("Select an item: ", 0, o.getOrderItems().size() + 1) - 1;
         int quantity = ScannerHelper.getIntegerInput("Enter the new Quantity for the item. (Current Qty: " + o.getOrderItems().get(selection).getQuantity() + "): ", 0);
         // Update quantity
         o.getOrderItems().get(selection).setQuantity(quantity);
@@ -355,7 +385,6 @@ public class OrderMenuUI extends BaseMenu {
      * If the order is already paid or does not exist, an error message will appear and you will exit back to the Order Menu
      */
     private void editOrder() {
-        Scanner in = new Scanner(System.in);
         int orderNo = ScannerHelper.getIntegerInput("Enter Order Number: ");
         Order o = findOrder(orderNo, false);
         if (o == null) System.out.println("Unable to find order. Note that orders that are paid for cannot be edited");
