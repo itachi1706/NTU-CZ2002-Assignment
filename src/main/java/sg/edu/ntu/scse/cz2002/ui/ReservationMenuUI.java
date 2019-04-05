@@ -369,7 +369,7 @@ public class ReservationMenuUI extends BaseMenu {
 
     /**
      * Method to print details of reservation lines by phone number.
-     * Uses overloaded method of same name that passes in Reservation object
+     * Uses overloaded method of same name {@link ReservationMenuUI#printReservationLine(Reservation)} that passes in Reservation object
      * @param telNo String variable containing customer's telephone number
      * @return The number of reservations linked to the same telephone number passed in.
      */

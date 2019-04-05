@@ -67,14 +67,17 @@ public class MainMenuUI extends BaseMenu {
         return 0;
     }
 
+    /**
+     * List out all available tables for the session
+     */
     private void checkTableAvailability() {
         //TODO: Print out list of available tables from Tables ArrayList
-    	System.out.println("This are the tables available:");
+    	System.out.println("These are the tables available:");
 		for (int i = 0; i < MainApp.tables.size(); i++) {
 			Table tables = (Table) MainApp.tables.get(i);
 			if(tables.getState() == TableState.TABLE_VACATED)
 			{
-				System.out.println( tables.getTableNum());
+				System.out.println("Table " + tables.getTableNum());
 			
 			}
 
