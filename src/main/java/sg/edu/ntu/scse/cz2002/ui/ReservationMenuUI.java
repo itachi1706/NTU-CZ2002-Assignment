@@ -23,6 +23,17 @@ import java.util.Scanner;
 public class ReservationMenuUI extends BaseMenu {
 
     /**
+     * Scanner object for taking user input
+     */
+    private Scanner input = new Scanner(System.in);
+
+    /**
+     * The total number of tables at the restaurant.
+     * This number will be used to determine whether AM or PM sessions are available.
+     */
+    private final int MAX_TABLES = MainApp.tables.size();
+
+    /**
      * The Reservation Management Menu
      * @return Exit Code. Return 1 to exit the program and -1 to exit to main menu
      */
@@ -78,13 +89,13 @@ public class ReservationMenuUI extends BaseMenu {
         char resvSession = ' ';
 
         //Instanced variables used for this method
-        Scanner input = new Scanner(System.in);
+        //Scanner input = new Scanner(System.in);
         String userDate = "";
         boolean correctDate = false;
         boolean correctTime = false;
         boolean amAvail = false;
         boolean pmAvail = false;
-        String nextMonthDate = DateTimeFormatHelper.formatToStringDate(DateTimeFormatHelper.getDate(true));
+        String nextMonthDate = DateTimeFormatHelper.formatToStringDate(DateTimeFormatHelper.getTodayDate(true));
 
         printHeader("Create Reservation Booking");
         try { //Start of try-catch
@@ -114,10 +125,13 @@ public class ReservationMenuUI extends BaseMenu {
                 if (correctDate) {
                     resvDate = DateTimeFormatHelper.formatToLocalDate(userDate);
 
-                    if (DateTimeFormatHelper.compareIfBeforeToday(resvDate)) {
+                    if (DateTimeFormatHelper.compareIfBeforeToday(resvDate) ||
+                            (resvDate.isEqual(DateTimeFormatHelper.getTodayDate(false))
+                                    && LocalTime.now().isAfter(LocalTime.of(22,00)))) {
                         System.out.println("[ERROR] The date entered is already over.");
                         correctDate = false;
                     }
+
                 } else {
                     System.out.println("[ERROR] Received invalid date input.");
                 }
@@ -149,7 +163,7 @@ public class ReservationMenuUI extends BaseMenu {
             }
 
             while (!correctTime) {
-                System.out.print("Enter reservation time ");
+                System.out.println("Enter reservation time");
                 if (amAvail && pmAvail)
                     System.out.print("(Restaurant operates in 2 sessions: " +
                             "\n11:00 to 15:00, and 18:00 to 22:00)");
@@ -158,7 +172,7 @@ public class ReservationMenuUI extends BaseMenu {
                 else if (pmAvail)
                     System.out.print("(Restaurant in operation from 18:00 to 22:00)");
 
-                System.out.println("<Note the 24-hour time format of hh:mm>");
+                System.out.println("\n<Note the 24-hour time format of hh:mm>");
                 System.out.print("Your input: ");
                 resvTime = DateTimeFormatHelper.formatToLocalTime(input.nextLine());
 
@@ -255,7 +269,7 @@ public class ReservationMenuUI extends BaseMenu {
      */
     private void checkReservationBooking() {
         int count = 0;
-        Scanner input = new Scanner(System.in);
+        //Scanner input = new Scanner(System.in);
         printHeader("Checking of reservation booking");
         System.out.print("Enter your telephone number linked to reservation(s): ");
         String telNo = input.nextLine();
@@ -273,7 +287,7 @@ public class ReservationMenuUI extends BaseMenu {
      * assume that the user inputs telephone number before deciding which reservation booking to delete.
      */
     private void removeReservationBooking() {
-        Scanner input = new Scanner(System.in);
+        //Scanner input = new Scanner(System.in);
         int count = 0;
         this.listReservations();
         printHeader("Remove Reservation Booking");
@@ -353,6 +367,12 @@ public class ReservationMenuUI extends BaseMenu {
 
     }
 
+    /**
+     * Method to print details of reservation lines by phone number.
+     * Uses overloaded method of same name that passes in Reservation object
+     * @param telNo String variable containing customer's telephone number
+     * @return The number of reservations linked to the same telephone number passed in.
+     */
     private int printReservationLine(String telNo)
     {
         int count = 0;
@@ -369,7 +389,7 @@ public class ReservationMenuUI extends BaseMenu {
     }
 
     /**
-     * Method to print details of a single reservation
+     * Overloaded method to print details of a single reservation
      * @param r Reservation object
      */
     private void printReservationLine(Reservation r) {
@@ -391,13 +411,18 @@ public class ReservationMenuUI extends BaseMenu {
      * @return True if available, false if slot is taken
      */
     private boolean checkMorningSessionDate (LocalDate date) {
+
+        if (LocalTime.now().isAfter(LocalTime.of(15,00))) return false;
+
+        int amCount = 0;
         for (Reservation r: MainApp.reservations) {
             if (r.getResvDate().isEqual(date) &&
                     r.getResvSession() == Reservation.ReservationSession.AM_SESSION)
-                return false;
+                        amCount++;
         }
-
-        return true;
+        //For debug purposes - print out numTables left; TODO: Remove line after completion of code checking.
+        System.out.println("There are " + (MAX_TABLES - amCount) + " reservations slots free for the AM session.");
+        return amCount < MAX_TABLES;
     }
 
     /**
@@ -407,13 +432,18 @@ public class ReservationMenuUI extends BaseMenu {
      * @return True if available, false if slot is taken
      */
     private boolean checkEveningSessionDate (LocalDate date) {
+
+        if (LocalTime.now().isAfter(LocalTime.of(22,00))) return false;
+
+        int pmCount = 0;
         for (Reservation r: MainApp.reservations) {
             if (r.getResvDate().isEqual(date) &&
                     r.getResvSession() == Reservation.ReservationSession.PM_SESSION)
-                return false;
+                pmCount++;
         }
-
-        return true;
+        //For debug purposes - print out numTables left; TODO: Remove line after completion of code checking.
+        System.out.println("There are " + (MAX_TABLES - pmCount) + " reservations slots free for the PM session.");
+        return pmCount < MAX_TABLES;
     }
 
 
