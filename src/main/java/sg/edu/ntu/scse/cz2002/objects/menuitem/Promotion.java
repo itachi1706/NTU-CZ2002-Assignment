@@ -1,5 +1,9 @@
 package sg.edu.ntu.scse.cz2002.objects.menuitem;
 
+/**
+ * @author Arthur
+ *
+ */
 public class Promotion {
 
     protected int promoID;
@@ -12,10 +16,17 @@ public class Promotion {
     /**
      * Default constructor
      */
-    public Promotion() {}
+    public Promotion() {
+    }
 
     /**
      * Constructor to pass in all attributes
+     * @param promoID This promotion's ID.
+     * @param promoName This promotion's name.
+     * @param promoPrice This promotion's price.
+     * @param promoMain This promotion's main.
+     * @param promoDessert This promotion's drink.
+     * @param promoDrink This promotion's drink.
      */
 	public Promotion(int promoID, String promoName, double promoPrice, int promoMain, int promoDessert, int promoDrink) {
 		this.promoID = promoID;
@@ -56,53 +67,87 @@ public class Promotion {
         return s;
     }
 
-    ////////////////////////////////
-    // Accessor & Mutator Methods // 
-    ////////////////////////////////
+
+	/**
+	 * @return Gets this promotion's ID.
+	 */
 	public int getPromoID() {
 		return promoID;
 	}
 
+	/**
+	 * @param promoID Sets this promotion's ID.
+	 */
 	public void setPromoID(int promoID) {
 		this.promoID = promoID;
 	}
 
+	/**
+	 * @return Gets this promotion's name.
+	 */
 	public String getPromoName() {
 		return promoName;
 	}
 
+	/**
+	 * @param promoName Sets this promotion's name.
+	 */
 	public void setPromoName(String promoName) {
 		this.promoName = promoName;
 	}
 
+	/**
+	 * @return Gets this promotion's price.
+	 */
 	public double getPromoPrice() {
 		return promoPrice;
 	}
 
+	/**
+	 * @param promoPrice Sets this promotion's price.
+	 */
 	public void setPromoPrice(double promoPrice) {
 		this.promoPrice = promoPrice;
 	}
 
+	/**
+	 * @return Gets this promotion's main.
+	 */
 	public int getPromoMain() {
 		return promoMain;
 	}
 
+	/**
+	 * @param promoMain Sets this promotion's main.
+	 */
 	public void setPromoMain(int promoMain) {
 		this.promoMain = promoMain;
 	}
 
+	/**
+	 * @return Gets this promotion's dessert.
+	 */
 	public int getPromoDessert() {
 		return promoDessert;
 	}
 
+	/**
+	 * @param promoDessert Sets this promotion's dessert.
+	 */
 	public void setPromoDessert(int promoDessert) {
 		this.promoDessert = promoDessert;
 	}
 
+	/**
+	 * @return Gets this promotion's drink.
+	 */
 	public int getPromoDrink() {
 		return promoDrink;
 	}
 
+	/**
+	 * @param promoDrink Sets this promotion's drink.
+	 */
 	public void setPromoDrink(int promoDrink) {
 		this.promoDrink = promoDrink;
 	}
