@@ -136,7 +136,7 @@ public class Order implements ICsvSerializable {
         this.subtotal = 0;
         this.orderItems.forEach((o) -> {
             o.calculateTotal(); // Make sure item is calculated
-            this.subtotal = o.getItemTotal();
+            this.subtotal += o.getItemTotal();
         });
     }
 

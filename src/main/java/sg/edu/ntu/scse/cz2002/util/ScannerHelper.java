@@ -52,6 +52,21 @@ public class ScannerHelper {
     }
 
     /**
+     * Integer input with a minimum integer
+     * @param prompt Text to prompt for the input, pass in empty string for no prompt
+     * @param min Minimum input (exclusive)
+     * @param max Maximum input (exclusive)
+     * @return Validated Input
+     */
+    public static int getIntegerInput(String prompt, int min, int max) {
+        while (true) {
+            int val = getIntegerInput(prompt, min);
+            if (val < max) return val;
+            System.out.println("Invalid Input. Please ensure you enter a number less than " + max);
+        }
+    }
+
+    /**
      * Yes/No Prompt
      * @param prompt Text to prompt for the input, pass in empty string for no prompt
      * @return true if yes, false if no

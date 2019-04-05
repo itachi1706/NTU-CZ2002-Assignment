@@ -89,6 +89,10 @@ public class OrderItem {
         return quantity;
     }
 
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
     public boolean isPromotion() {
         return this.itemType == OrderItemType.TYPE_PROMO;
     }

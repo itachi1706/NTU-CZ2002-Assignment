@@ -93,7 +93,7 @@ public class OrderMenuUI extends BaseMenu {
                     addOrderItem(o);
                     break;
                 case 3:
-                    // TODO: To Implement
+                    editOrderItem(o);
                     break;
                 case 4:
                     // TODO: To Implement
@@ -104,6 +104,28 @@ public class OrderMenuUI extends BaseMenu {
                     throw new IllegalStateException("Invalid Choice (Order Edit Menu)");
             }
         }
+    }
+
+    private void editOrderItem(Order o) {
+        if (o.getOrderItems().size() == 0) {
+            System.out.println("No items in order");
+            return;
+        }
+
+        // View list of order items
+        System.out.println("List of items from the order to change quantity:");
+        try {
+            printOrderItems(o.getOrderItems(), false);
+        } catch (ItemNotFoundException e) {
+            System.out.println("An error occurred obtaining items in the order. A brief description of the error is listed below\n" + e.getLocalizedMessage());
+        }
+        System.out.println();
+        int selection = ScannerHelper.getIntegerInput("Select an item: ", 0, o.getOrderItems().size() + 1) - 1;
+        int quantity = ScannerHelper.getIntegerInput("Enter the new Quantity for the item. (Current Qty: " + o.getOrderItems().get(selection).getQuantity() + "): ", 0);
+        // Update quantity
+        o.getOrderItems().get(selection).setQuantity(quantity);
+        o.calculateSubtotal();
+        System.out.println("Quantity has been updated");
     }
 
     private void addOrderItem(Order o) {
@@ -249,8 +271,9 @@ public class OrderMenuUI extends BaseMenu {
         printBreaks(60);
         if (o.getOrderItems().size() == 0) System.out.println("No Items in Order");
         else {
+            o.calculateSubtotal(); // Calculate Subtotal
             try {
-                printOrderItems(o.getOrderItems());
+                printOrderItems(o.getOrderItems(), true);
             } catch (ItemNotFoundException e) {
                 System.out.println("An error occurred retrieving Order Items. A brief description of the error is listed below\n" + e.getLocalizedMessage());
             }
@@ -261,7 +284,8 @@ public class OrderMenuUI extends BaseMenu {
         System.out.println("\n");
     }
 
-    private void printOrderItems(ArrayList<OrderItem> items) throws ItemNotFoundException {
+    private void printOrderItems(ArrayList<OrderItem> items, boolean prettyPrint) throws ItemNotFoundException {
+        int imm = 1;
         for (OrderItem i : items) {
             Object item = i.getItem();
             if (item == null) {
@@ -279,7 +303,9 @@ public class OrderMenuUI extends BaseMenu {
                 itemName = mi.getName();
                 price = mi.getPrice();
             } else throw new ItemNotFoundException("Item is not Promotion or MenuItem"); // Exception for invalid item in database. Exception as we need to handle and fix
-            System.out.printf("%3dx %-45s $%-6.2f\n", i.getQuantity(), itemName, price);
+            if (prettyPrint) System.out.printf("%3dx %-45s $%-6.2f\n", i.getQuantity(), itemName, price);
+            else System.out.println(imm + ") " + i.getQuantity() + "x " + itemName + "\t$" + String.format("%.2f", price));
+            imm++;
         }
     }
 
