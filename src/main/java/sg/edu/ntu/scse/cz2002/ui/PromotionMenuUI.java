@@ -3,6 +3,8 @@ package sg.edu.ntu.scse.cz2002.ui;
 import java.io.IOException;
 import java.util.Scanner;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import sg.edu.ntu.scse.cz2002.MainApp;
 import sg.edu.ntu.scse.cz2002.objects.menuitem.Promotion;
 import sg.edu.ntu.scse.cz2002.objects.menuitem.MenuItem;
