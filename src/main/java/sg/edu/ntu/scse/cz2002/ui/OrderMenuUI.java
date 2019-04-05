@@ -88,10 +88,8 @@ public class OrderMenuUI extends BaseMenu {
             switch (choice) {
                 case 1:
                     printOrderDetails(o);
-                    System.out.println();
                     break;
                 case 2:
-                    // TODO: To Implement
                     addOrderItem(o);
                     break;
                 case 3:
@@ -120,7 +118,6 @@ public class OrderMenuUI extends BaseMenu {
                 // TODO: Select Item Type
                 break;
             case 2:
-                // TODO: Print Promotion Set
                 if (MainApp.promotions.size() == 0) {
                     System.out.println("No promotions available");
                     return;
@@ -154,7 +151,8 @@ public class OrderMenuUI extends BaseMenu {
                 boolean confirm = ScannerHelper.getYesNoInput("Confirm Promotion Set Selection?");
                 if (confirm) {
                     // Add to Order
-                    o.getOrderItems().add(new OrderItem(p.getPromoID(), quantity, (quantity * p.getPromoPrice()), OrderItem.OrderItemType.TYPE_PROMO));
+                    o.getOrderItems().add(new OrderItem(p.getPromoID(), quantity, OrderItem.OrderItemType.TYPE_PROMO));
+                    o.calculateSubtotal();
                     System.out.println("Promotion Set Added to Order");
                 }
                 break;
@@ -271,7 +269,7 @@ public class OrderMenuUI extends BaseMenu {
                 continue; // Cannot find item, print Unknown Item
             }
             String itemName;
-            double price = 0;
+            double price;
             if (i.isPromotion() && item instanceof Promotion) {
                 Promotion promo = (Promotion) item;
                 itemName = "[PROMO] " + promo.getPromoName();

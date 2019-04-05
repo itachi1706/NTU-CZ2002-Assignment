@@ -133,7 +133,11 @@ public class Order implements ICsvSerializable {
      * This subtotal does not include taxes
      */
     public void calculateSubtotal() {
-        // TODO: Calculate subtotal
+        this.subtotal = 0;
+        this.orderItems.forEach((o) -> {
+            o.calculateTotal(); // Make sure item is calculated
+            this.subtotal = o.getItemTotal();
+        });
     }
 
     /**

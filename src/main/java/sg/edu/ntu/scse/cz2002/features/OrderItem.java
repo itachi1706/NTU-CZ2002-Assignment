@@ -62,20 +62,6 @@ public class OrderItem {
     }
 
     /**
-     * Constructor
-     * @param itemId Item ID
-     * @param quantity Quantity of the item
-     * @param itemTotal Total Price of the items
-     * @param itemType Type of Item
-     */
-    public OrderItem(int itemId, int quantity, double itemTotal, OrderItemType itemType) {
-        this.itemId = itemId;
-        this.quantity = quantity;
-        this.itemTotal = itemTotal;
-        this.itemType = itemType;
-    }
-
-    /**
      * A method to convert to string
      * This needs to be overridden if you need to save files to CSV
      * @return A String array of the CSV file
@@ -107,11 +93,22 @@ public class OrderItem {
         return this.itemType == OrderItemType.TYPE_PROMO;
     }
 
+    public double getItemTotal() {
+        return itemTotal;
+    }
+
     /**
      * Calculates the total and stores it into itemTotal
      * Uses the price from finding the item and the quantity
      */
     public void calculateTotal() {
-        // TODO: Code Stub
+        Object o = this.getItem();
+        if (o instanceof MenuItem) {
+            MenuItem mi = (MenuItem) o;
+            this.itemTotal = mi.getPrice() * this.quantity;
+        } else if (o instanceof Promotion) {
+            Promotion p = (Promotion) o;
+            this.itemTotal = p.getPromoPrice() * this.quantity;
+        }
     }
 }
