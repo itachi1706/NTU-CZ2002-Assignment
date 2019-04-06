@@ -1,6 +1,7 @@
 package sg.edu.ntu.scse.cz2002.features;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import sg.edu.ntu.scse.cz2002.objects.person.Staff;
 import sg.edu.ntu.scse.cz2002.util.ICsvSerializable;
 
@@ -45,9 +46,9 @@ public class Order implements ICsvSerializable {
      */
     private long completedAt;
 
-    private Staff staff;
+    private int staffId;
 
-    private Table table;
+    private int tableId;
 
     /**
      * Create a new order object
@@ -80,6 +81,7 @@ public class Order implements ICsvSerializable {
         this.createdAt = Long.parseLong(csv[4]);
         this.completedAt = Long.parseLong(csv[5]);
         // TODO: Read staff ID and Table ID
+
     }
 
     /**
@@ -184,19 +186,29 @@ public class Order implements ICsvSerializable {
         return completedAt;
     }
 
+    public int getStaffId() {
+        return staffId;
+    }
+
+    public void setStaffId(int staff) {
+        this.staffId = staff;
+    }
+
+    public int getTableId() {
+        return tableId;
+    }
+
+    public void setTableId(int table) {
+        this.tableId = table;
+    }
+
+    @Nullable
     public Staff getStaff() {
-        return staff;
+        return Staff.getStaff(this.staffId);
     }
 
-    public void setStaff(Staff staff) {
-        this.staff = staff;
-    }
-
+    @Nullable
     public Table getTable() {
-        return table;
-    }
-
-    public void setTable(Table table) {
-        this.table = table;
+        return Table.getTableByNumber(this.tableId);
     }
 }

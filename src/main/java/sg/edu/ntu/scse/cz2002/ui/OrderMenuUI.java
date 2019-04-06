@@ -165,8 +165,8 @@ public class OrderMenuUI extends BaseMenu {
             newId = MainApp.completedOrders.get(MainApp.completedOrders.size() - 1).getOrderID() + 1;
         }
         Order o = new Order(newId);
-        o.setStaff(selectedStaff);
-        o.setTable(t);
+        o.setStaffId(selectedStaff.getStaffId());
+        o.setTableId(t.getTableNum());
         incompleteOrders.add(o);
         System.out.println("New Order #" + o.getOrderID() + " created!");
         editOrderMenuScreen(o.getOrderID()); // Bring user to the order item edit screen

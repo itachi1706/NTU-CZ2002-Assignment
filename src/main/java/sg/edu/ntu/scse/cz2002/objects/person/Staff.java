@@ -1,8 +1,8 @@
 package sg.edu.ntu.scse.cz2002.objects.person;
 
+import org.jetbrains.annotations.Nullable;
+import sg.edu.ntu.scse.cz2002.MainApp;
 import sg.edu.ntu.scse.cz2002.util.ICsvSerializable;
-
-import java.text.ParseException;
 
 /**
  * The Staff Class
@@ -131,4 +131,17 @@ public class Staff implements ICsvSerializable
         this.jobTitle = jobTitle;
     }
 
+    /**
+     * Gets Staff by Staff ID from the global staff list initialized on app start
+     * @param staffId Staff ID
+     * @return Staff if found, null otherwise
+     */
+    @Nullable
+    public static Staff getStaff(int staffId) {
+        for (Staff s : MainApp.staffs) {
+            if (s.getStaffId() == staffId)
+                return s;
+        }
+        return null;
+    }
 }
