@@ -97,6 +97,10 @@ public class DateTimeFormatHelper {
         }
     }
 
+    /**
+     * Function to get time now (without date), in UTC+8 (Singapore Time)
+     * @return LocalTime variable containing the time now.
+     */
     public static LocalTime getTimeNow() {
         return LocalTime.now().plusHours(8);
     }
@@ -120,9 +124,6 @@ public class DateTimeFormatHelper {
 
         //For debug purposes
         //Printout passed in date and today's date.
-        //TODO: Remove lines once confident everything is working.
-        //System.out.println(inputDate.toString());
-        //System.out.println(LocalDate.ofEpochDay(getSysTimeMillisWithSGTimeZone()/MILLIS_TO_DAYS).toString());
         return inputDate.isBefore(LocalDate.ofEpochDay(getSysTimeMillisWithSGTimeZone()/MILLIS_TO_DAYS));
     }
 
@@ -187,9 +188,9 @@ public class DateTimeFormatHelper {
      * @param date String value unsplit containing date
      * @return Boolean value determining if the date is valid or invalid
      * @throws InputMismatchException If parsing to integer failed (e.g. received String input)
-     * @throws NumberFormatException TBA
+     * @throws ArrayIndexOutOfBoundsException If user input is anything other than dd/MM/yyyy (e.g. 08/2019343, 08/202019)
      */
-    public static boolean validateDate(String date) throws InputMismatchException, NumberFormatException
+    public static boolean validateDate(String date) throws InputMismatchException, ArrayIndexOutOfBoundsException
     {
         try {
             String[] dateSplit = new String[3];
@@ -230,7 +231,7 @@ public class DateTimeFormatHelper {
             System.out.println("[ERROR] Date has an invalid input. (" + e.getLocalizedMessage() + "}");
             return false;
         }
-        catch (NumberFormatException e) {
+        catch (ArrayIndexOutOfBoundsException e) {
             System.out.println("[ERROR] Date is unable to be parsed through formatter. (" + e.getLocalizedMessage() + "}");
             return false;
         }
