@@ -158,7 +158,7 @@ public class Table implements ICsvSerializable {
     /**
      * Mutator for separate table reserved value
      * Accesses {@link Table#setState(TableState state)} to simultaneously change table state
-     * @param reserved
+     * @param reserved True or false boolean variable.
      */
     public void setReserved(boolean reserved) {
         isReserved = reserved;

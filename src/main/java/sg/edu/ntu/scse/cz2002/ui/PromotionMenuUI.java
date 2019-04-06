@@ -21,14 +21,13 @@ import sg.edu.ntu.scse.cz2002.util.PromoCSVHelper;
  */
 public class PromotionMenuUI extends BaseMenu {
 
-    /**
-     * The Promotion Management Menu
-     * @return Exit Code. Return 1 to exit the program and -1 to exit to main menu
-     */
-	
 	@SuppressWarnings("resource")
 	Scanner sc = new Scanner(System.in);
-	
+
+	/**
+	 * The Promotion Management Menu
+	 * @return Exit Code. Return 1 to exit the program and -1 to exit to main menu
+	 */
     @Override
     protected int generateMenuScreen() {
         printHeader("Promotion Management");
