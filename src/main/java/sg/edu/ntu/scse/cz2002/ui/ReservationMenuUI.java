@@ -9,9 +9,7 @@ import sg.edu.ntu.scse.cz2002.util.ScannerHelper;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeParseException;
-import java.util.InputMismatchException;
-import java.util.Iterator;
-import java.util.Scanner;
+import java.util.*;
 
 /**
  * The Reservation Menu UI
@@ -83,7 +81,7 @@ public class ReservationMenuUI extends BaseMenu {
         //Variables required to create Reservation object using defined constructor
         Reservation r = null;
         String custName, custTelNo;
-        int numPax, tableNum = 0;
+        int numPax = 0, tableNum = 0;
         LocalDate resvDate = LocalDate.now();
         LocalTime resvTime = LocalTime.now();
         char resvSession = ' ';
@@ -95,6 +93,7 @@ public class ReservationMenuUI extends BaseMenu {
         boolean correctTime = false;
         boolean amAvail = false;
         boolean pmAvail = false;
+        boolean isToday = false;
         String nextMonthDate = DateTimeFormatHelper.formatToStringDate(DateTimeFormatHelper.getTodayDate(true));
 
         printHeader("Create Reservation Booking");
@@ -124,10 +123,14 @@ public class ReservationMenuUI extends BaseMenu {
 
                 if (correctDate) {
                     resvDate = DateTimeFormatHelper.formatToLocalDate(userDate);
+                    isToday = resvDate.isEqual(DateTimeFormatHelper.getTodayDate(false));
 
-                    if (DateTimeFormatHelper.compareIfBeforeToday(resvDate) ||
-                            (resvDate.isEqual(DateTimeFormatHelper.getTodayDate(false))
-                                    && LocalTime.now().isAfter(LocalTime.of(22,00)))) {
+                    if (resvDate.isAfter(DateTimeFormatHelper.getTodayDate(true))) {
+                        System.out.println("Reservations can only be made at most 1 month in advance.");
+                        correctDate = false;
+                    }
+                    else if (DateTimeFormatHelper.compareIfBeforeToday(resvDate) ||
+                            (isToday && LocalTime.now().isAfter(LocalTime.of(22, 00)))) {
                         System.out.println("[ERROR] The date entered is already over.");
                         correctDate = false;
                     }
@@ -143,8 +146,8 @@ public class ReservationMenuUI extends BaseMenu {
                     checkSessionAvailability(resvDate);
                     TODO: Errorneous checking of availability: to check against all reservations to determine if there is availability.
                     */
-                    amAvail = checkMorningSessionDate(resvDate);
-                    pmAvail = checkEveningSessionDate(resvDate);
+                    amAvail = checkMorningSessionDate(resvDate, isToday);
+                    pmAvail = checkEveningSessionDate(resvDate, isToday);
 
                     if (amAvail && pmAvail)
                         System.out.println("AM and PM sessions are available on " +
@@ -177,7 +180,7 @@ public class ReservationMenuUI extends BaseMenu {
                 resvTime = DateTimeFormatHelper.formatToLocalTime(input.nextLine());
 
                 //TODO: Find a better code for the if fragment below
-                if (!(DateTimeFormatHelper.getTimeDifferenceMinutes(LocalTime.now(), resvTime) <= 0)) {
+                if (!isToday || !(DateTimeFormatHelper.getTimeDifferenceMinutes(LocalTime.now(), resvTime) <= 0)) {
                     if (amAvail && DateTimeFormatHelper.checkResvTimeSession
                             (resvTime, LocalTime.of(11, 0), LocalTime.of(15, 0))) {
                         resvSession = 'A';
@@ -186,62 +189,28 @@ public class ReservationMenuUI extends BaseMenu {
                             (resvTime, LocalTime.of(18, 0), LocalTime.of(22, 0))) {
                         resvSession = 'P';
                         correctTime = true;
-                    }
-                    else {
+                    } else {
                         System.out.println("The restaurant is not in operation at the time you entered.");
                         correctTime = false;
                     }
-                }
-                else {
+                } else {
                     System.out.println("The time entered is invalid. Current time is " + LocalTime.now() + ".");
                     correctTime = false;
                 }
             }
 
-            System.out.print("Enter pax amount (table for how many?): ");
-            numPax = input.nextInt();
+            while (numPax <= 0 || numPax > 10) {
+                System.out.print("Enter pax amount (table for how many?): ");
+                numPax = input.nextInt();
 
-            if (numPax <= 2) {
-                for (Table t : MainApp.tables) {
-                    if (t.getNumSeats() == Table.TableSeats.TWO_SEATER &&
-                            t.getState() == Table.TableState.TABLE_VACATED) {
-                        tableNum = t.getTableNum();
-                        t.setReserved(true);
-                        break;
-                    }
+                if (numPax <= 0) {
+                    System.out.println("You cannot book a reservation for 0 pax.");
+                } else if (numPax > 10){
+                    System.out.println("Sorry! The restaurant's maximum seating is 10 people.");
                 }
-            } else if (numPax <= 4) {
-                for (Table t : MainApp.tables) {
-                    if (t.getNumSeats() == Table.TableSeats.FOUR_SEATER &&
-                            t.getState() == Table.TableState.TABLE_VACATED) {
-                        tableNum = t.getTableNum();
-                        t.setReserved(true);
-                        break;
-                    }
-                }
-
-            } else if (numPax <= 8) {
-                for (Table t : MainApp.tables) {
-                    if (t.getNumSeats() == Table.TableSeats.EIGHT_SEATER &&
-                            t.getState() == Table.TableState.TABLE_VACATED) {
-                        tableNum = t.getTableNum();
-                        t.setReserved(true);
-                        break;
-                    }
-                }
-
-            } else if (numPax <= 10) {
-                for (Table t : MainApp.tables) {
-                    if (t.getNumSeats() == Table.TableSeats.TEN_SEATER &&
-                            t.getState() == Table.TableState.TABLE_VACATED) {
-                        tableNum = t.getTableNum();
-                        t.setReserved(true);
-                        break;
-                    }
-                }
-            } else {
-                System.out.println("Sorry! The restaurant's maximum seating is 10 people.");
             }
+
+            tableNum = findTableForReservation(numPax, resvDate);
 
             //Conditional loop to determine is available table is found.
             if (tableNum > 0) {
@@ -252,8 +221,10 @@ public class ReservationMenuUI extends BaseMenu {
                 System.out.println("Your reservation has been successfully recorded! Your assigned table is " + tableNum + ".");
             } else {
                 System.out.println("All tables all current booked for the day and session. We're sorry!");
+                System.out.println("Returning to Reservation Menu...");
             }
 
+            input.nextLine(); //Clears buffer (?)
             //TODO: Further validation
         } catch (DateTimeParseException e) {
             //Only thrown for failure to parse Date and Time in custom format
@@ -263,6 +234,112 @@ public class ReservationMenuUI extends BaseMenu {
             System.out.println("[ERROR] Please input a valid number of pax. (" + e.getLocalizedMessage() + "}");
         }
     }
+
+    /**
+     * Method to find available table for the number of pax, and date of reservation.
+     * @param numPax Number of people
+     * @param resvDate Reservation date indicated for the reservation
+     * @return An integer containing the first available table number for the date of reservation
+     */
+    private int findTableForReservation(int numPax, LocalDate resvDate) {
+        ArrayList<Integer> tablesBookedForDate = new ArrayList<>();
+        boolean booked = false;
+        int tableNum = -1;
+
+        /* READ-ME: This following for-loop does the following functions
+         * Retrieves the table numbers that have been booked on the date the user specified
+         * and stores into a local instanced ArrayList.
+         * This ArrayList will be used for the upcoming for-loops
+         */
+        for (Reservation r : MainApp.reservations) {
+            if (r.getResvDate().equals(resvDate))
+                tablesBookedForDate.add(r.getTableNum());
+        }
+
+        //Sorting the ArrayList in ascending order to increase efficiency of iteration later on.
+        Collections.sort(tablesBookedForDate);
+
+        /* READ-ME: For the following nested if-else condition fragments,
+         * only ONE if-else condition will be entered, depending on the number of pax that has
+         * been passed into this function.
+         * Therefore, for the respective if-condition fragments, for-loops will be done in-order to:
+         * 1. Ensure number of seats at the table is less than or equal to the number of pax
+         * which thereafter retrieves uses that Table object to retrieve its table number.
+         * 2. This table number will then be passed into another for-loop to determine if that table
+         * has also been booked by another reservation on that same date.
+         * If it has been booked, the for-loop in the above premise (premise 1) will be repeated
+         *
+         * The for-loops will continue until an available table on that date has been found.
+         */
+        //Checking for 2-seater tables
+        if (numPax <= 2) {
+            for (Table t : MainApp.tables) {
+                if (t.getNumSeats() == Table.TableSeats.TWO_SEATER) {
+                    for (int tn : tablesBookedForDate)
+                        if (t.getTableNum() == tn) {
+                            booked = true;
+                            break;
+                        }
+
+                    if (!booked) {
+                        tableNum = t.getTableNum();
+                        break;
+                    }
+                }
+            }
+            //Checking for 4-seater tables
+        } else if (numPax <= 4) {
+            for (Table t : MainApp.tables) {
+                if (t.getNumSeats() == Table.TableSeats.FOUR_SEATER) {
+                    for (int tn : tablesBookedForDate)
+                        if (t.getTableNum() == tn) {
+                            booked = true;
+                            break;
+                        }
+
+                    if (!booked) {
+                        tableNum = t.getTableNum();
+                        break;
+                    }
+                }
+            }
+            //Checking for 8-seater tables
+        } else if (numPax <= 8) {
+            for (Table t : MainApp.tables) {
+                if (t.getNumSeats() == Table.TableSeats.EIGHT_SEATER) {
+                    for (int tn : tablesBookedForDate)
+                        if (t.getTableNum() == tn) {
+                            booked = true;
+                            break;
+                        }
+
+                    if (!booked) {
+                        tableNum = t.getTableNum();
+                        break;
+                    }
+                }
+            }
+            //Checking for 10-seater tables
+        } else if (numPax <= 10) {
+            for (Table t : MainApp.tables) {
+                if (t.getNumSeats() == Table.TableSeats.TEN_SEATER) {
+                    for (int tn : tablesBookedForDate)
+                        if (t.getTableNum() == tn) {
+                            booked = true;
+                            break;
+                        }
+
+                    if (!booked) {
+                        tableNum = t.getTableNum();
+                        break;
+                    }
+                }
+            }
+        }
+
+        return tableNum;
+    }
+
 
     /**
      * Method to check reservation booking(s) under a user-input telephone number.
@@ -408,11 +485,12 @@ public class ReservationMenuUI extends BaseMenu {
      * Method to check if the restaurant is open to reservations for the morning session
      * given the specified date
      * @param date LocalDate variable
+     * @param isToday Boolean variable indicating whether date input is today.
      * @return True if available, false if slot is taken
      */
-    private boolean checkMorningSessionDate (LocalDate date) {
-
-        if (LocalTime.now().isAfter(LocalTime.of(15,00))) return false;
+    private boolean checkMorningSessionDate (LocalDate date, boolean isToday) {
+        if (isToday &&
+                LocalTime.now().isAfter(LocalTime.of(15,00))) return false;
 
         int amCount = 0;
         for (Reservation r: MainApp.reservations) {
@@ -431,9 +509,10 @@ public class ReservationMenuUI extends BaseMenu {
      * @param date LocalDate variable
      * @return True if available, false if slot is taken
      */
-    private boolean checkEveningSessionDate (LocalDate date) {
+    private boolean checkEveningSessionDate (LocalDate date, boolean isToday) {
 
-        if (LocalTime.now().isAfter(LocalTime.of(22,00))) return false;
+        if (isToday &&
+                LocalTime.now().isAfter(LocalTime.of(22,00))) return false;
 
         int pmCount = 0;
         for (Reservation r: MainApp.reservations) {
@@ -445,6 +524,4 @@ public class ReservationMenuUI extends BaseMenu {
         System.out.println("There are " + (MAX_TABLES - pmCount) + " reservations slots free for the PM session.");
         return pmCount < MAX_TABLES;
     }
-
-
 }
