@@ -24,7 +24,7 @@ public class MainMenuUI extends BaseMenu {
         System.out.println("1) Menu Items Management");
         System.out.println("2) Promotions Management");
         System.out.println("3) Order Management");
-        System.out.println("4) Reservation Manangement");
+        System.out.println("4) Reservation Management");
         System.out.println("5) Check Table Availability");
         System.out.println("6) Print Bill Invoice");
         System.out.println("7) Print sale revenue report");

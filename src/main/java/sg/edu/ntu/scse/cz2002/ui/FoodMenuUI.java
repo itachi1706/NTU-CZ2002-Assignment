@@ -7,6 +7,7 @@ import sg.edu.ntu.scse.cz2002.objects.menuitem.MenuItem;
 import sg.edu.ntu.scse.cz2002.util.MenuItemCSVHelper;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
@@ -270,19 +271,39 @@ public class FoodMenuUI extends BaseMenu {
 	 */
 	@Nullable
 	public static MenuItem retrieveMenuItem(int targetItemID) {
-		
+
 		for (int i=0; i<(MainApp.menuItems.size()); i++) {
-			
+
 			MenuItem menuItemObj = MainApp.menuItems.get(i);
-			
-			if (targetItemID == menuItemObj.getId()) {
-				System.out.println("Target menu item found.");
+
+			if (targetItemID == menuItemObj.getId()) { //"Target menu item found."
 				return menuItemObj;
 			}
-			
+
 		}
-		
-		System.out.println("Target menu item not found.");
-		return null;
+
+		return null; //"Target menu item not found."
+	}
+
+	/**
+	 * Method returning an ArrayList filtered by one menu item type.
+	 * @param targetItemType type of the menu item objects to be retrieved.
+	 * @return menuItemsFiltered ArrayList containing the menu item type selected
+	 */
+	@Nullable
+	public static ArrayList<MenuItem> retrieveMenuItemListFiltered(String targetItemType) {
+
+		ArrayList<MenuItem> menuItemsFiltered = new ArrayList<MenuItem>(); //declare new empty arraylist
+
+		for (int i=0; i<(MainApp.menuItems.size()); i++) { //for loop to run through menuitems and to filter out
+
+			MenuItem menuItemObj = MainApp.menuItems.get(i); //gets a menu item object while the loop is running
+
+			if (targetItemType == menuItemObj.getType()) { //"Menu item of target item types found."
+				menuItemsFiltered.add(menuItemObj); //add the found object into the filtered array list
+			}
+
+		}
+		return menuItemsFiltered;
 	}
 }

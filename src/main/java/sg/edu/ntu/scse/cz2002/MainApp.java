@@ -39,6 +39,7 @@ public class MainApp {
      * The list of tables available in the restaurant
      */
     public static ArrayList<Table> tables;
+
     /**
      * The list of menuitems loaded into the program
      */
