@@ -47,6 +47,8 @@ public class Order implements ICsvSerializable {
 
     private Staff staff;
 
+    private Table table;
+
     /**
      * Create a new order object
      * @param orderID Order ID to set this new order as
@@ -77,7 +79,7 @@ public class Order implements ICsvSerializable {
         this.orderState = (csv[3].equals("1")) ? OrderState.ORDER_PAID : OrderState.ORDER_UNPAID;
         this.createdAt = Long.parseLong(csv[4]);
         this.completedAt = Long.parseLong(csv[5]);
-        // TODO: Read staff ID
+        // TODO: Read staff ID and Table ID
     }
 
     /**
@@ -98,7 +100,7 @@ public class Order implements ICsvSerializable {
         s[3] = (this.orderState == OrderState.ORDER_PAID) ? "1" : "0";
         s[4] = this.createdAt + "";
         s[5] = this.completedAt + "";
-        // TODO: Write Staff ID
+        // TODO: Write Staff ID and Table ID
         return s;
     }
 
@@ -188,5 +190,13 @@ public class Order implements ICsvSerializable {
 
     public void setStaff(Staff staff) {
         this.staff = staff;
+    }
+
+    public Table getTable() {
+        return table;
+    }
+
+    public void setTable(Table table) {
+        this.table = table;
     }
 }

@@ -1,5 +1,6 @@
 package sg.edu.ntu.scse.cz2002.features;
 
+import org.jetbrains.annotations.Nullable;
 import sg.edu.ntu.scse.cz2002.MainApp;
 import sg.edu.ntu.scse.cz2002.util.DateTimeFormatHelper;
 import sg.edu.ntu.scse.cz2002.util.ICsvSerializable;
@@ -259,6 +260,7 @@ public class Reservation implements ICsvSerializable {
      * @param telNo Telephone number in String
      * @return Table object. Null if tableNum is eventually -1
      */
+    @Nullable
     public static Table hasReservation(String telNo) {
         int tableNum = -1;
         for (Reservation r : MainApp.reservations) {
