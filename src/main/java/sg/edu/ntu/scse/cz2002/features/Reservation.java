@@ -1,5 +1,6 @@
 package sg.edu.ntu.scse.cz2002.features;
 
+import sg.edu.ntu.scse.cz2002.MainApp;
 import sg.edu.ntu.scse.cz2002.util.DateTimeFormatHelper;
 import sg.edu.ntu.scse.cz2002.util.ICsvSerializable;
 
@@ -251,4 +252,22 @@ public class Reservation implements ICsvSerializable {
         this.tableNum = tableNum;
     }
 
+    /**
+     * A method to return a Table object based on the telephone number.
+     * Checks through the list of reservations.
+     * Invokes method from Table class to return Table object
+     * @param telNo Telephone number in String
+     * @return Table object. Null if tableNum is eventually -1
+     */
+    public static Table hasReservation(String telNo) {
+        int tableNum = -1;
+        for (Reservation r : MainApp.reservations) {
+            if (r.getCustTelNo().equals(telNo)
+                    && r.getResvDate().isEqual(DateTimeFormatHelper.getTodayDate(false))) {
+                tableNum = r.getTableNum();
+                break;
+            }
+        }
+        return Table.getTableByNumber(tableNum);
+    }
 }

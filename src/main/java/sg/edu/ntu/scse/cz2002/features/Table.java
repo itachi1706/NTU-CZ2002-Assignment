@@ -1,5 +1,6 @@
 package sg.edu.ntu.scse.cz2002.features;
 
+import sg.edu.ntu.scse.cz2002.MainApp;
 import sg.edu.ntu.scse.cz2002.util.ICsvSerializable;
 
 import java.text.ParseException;
@@ -179,29 +180,17 @@ public class Table implements ICsvSerializable {
         return this.isReserved;
     }
 
-    /*public int checkAvailableTables(int numPax) {
-
-        if (numPax <= 2) {
-            if (this.getNumSeats() == TableSeats.TWO_SEATER &&
-                    this.getState() == TableState.TABLE_VACATED){
-                return this.tableNum;
-            }
-        } else if (numPax <= 4) {
-            if (this.getNumSeats() == TableSeats.FOUR_SEATER &&
-                    this.getState() == TableState.TABLE_VACATED) {
-                return this.tableNum;
-            }
-        } else if (numPax <= 8) {
-            if (this.getNumSeats() == TableSeats.EIGHT_SEATER &&
-                    this.getState() == TableState.TABLE_VACATED) {
-                return this.tableNum;
-            }
-        } else if (numPax <= 10) {
-            if (this.getNumSeats() == TableSeats.TEN_SEATER &&
-                    this.getState() == TableState.TABLE_VACATED) {
-                return this.tableNum;
-            }
+    /**
+     * A method to get Table object from global Table ArrayList based on table number
+     * @param tableNum Table number
+     * @return Table object that matches table number input. Returns null if table number is -1;
+     */
+    public static Table getTableByNumber(int tableNum) {
+        for (Table t : MainApp.tables) {
+            if (t.getTableNum() == tableNum)
+                return t;
         }
-    }*/
+        return null;
+    }
 
 }
