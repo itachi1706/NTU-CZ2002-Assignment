@@ -8,6 +8,8 @@ import sg.edu.ntu.scse.cz2002.util.ICsvSerializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
+import java.util.Comparator;
 
 /**
  * The Reservation Class
@@ -263,13 +265,40 @@ public class Reservation implements ICsvSerializable {
     @Nullable
     public static Table hasReservation(String telNo) {
         int tableNum = -1;
+        char session = ' ';
         for (Reservation r : MainApp.reservations) {
-            if (r.getCustTelNo().equals(telNo)
-                    && r.getResvDate().isEqual(DateTimeFormatHelper.getTodayDate(false))) {
-                tableNum = r.getTableNum();
-                break;
+            if (r.getCustTelNo().equals(telNo)) {
+                session = r.getResvSession() == ReservationSession.AM_SESSION ? 'A' : 'P';
+                if (r.getResvDate().isEqual(DateTimeFormatHelper.getTodayDate(false))
+                        && (session == MainApp.restaurantSession)) {
+                    tableNum = r.getTableNum();
+                    break;
+                }
             }
         }
         return Table.getTableByNumber(tableNum);
+    }
+
+    /**
+     * This following for-loop does the following functions
+     * Retrieves the table numbers that have been booked on the date the user specified
+     * and stores into a local instanced ArrayList.
+     * This ArrayList will be used for the upcoming for-loops
+     *
+     * @param resvDate
+     * @return
+     */
+    public static ArrayList<Table> getTablesBookedOnDateBySession(LocalDate resvDate, char resvSession) {
+        ArrayList<Table> tablesBooked = new ArrayList<>();
+        ReservationSession rs = resvSession == 'A' ?
+                ReservationSession.AM_SESSION : ReservationSession.PM_SESSION;
+
+        for (Reservation r : MainApp.reservations) {
+            if (r.getResvDate().equals(resvDate) && r.getResvSession().equals(rs))
+                tablesBooked.add(Table.getTableByNumber(r.getTableNum()));
+        }
+
+        tablesBooked.sort(Comparator.comparingInt(o -> o.getTableNum()));
+        return tablesBooked;
     }
 }

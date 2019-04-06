@@ -5,6 +5,9 @@ import sg.edu.ntu.scse.cz2002.MainApp;
 import sg.edu.ntu.scse.cz2002.util.ICsvSerializable;
 
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Iterator;
 
 /**
  * The Table class
@@ -24,7 +27,7 @@ public class Table implements ICsvSerializable {
     /**
      * The varying number of seats at different tables
      */
-    public enum TableSeats {TEN_SEATER, EIGHT_SEATER, FOUR_SEATER, TWO_SEATER, UNKNOWN_SEATER}
+    public enum TableSeats {TWO_SEATER, FOUR_SEATER, EIGHT_SEATER, TEN_SEATER, UNKNOWN_SEATER}
 
     /**
      * The number that is allocated to the table.
@@ -193,6 +196,47 @@ public class Table implements ICsvSerializable {
                 return t;
         }
         return null;
+    }
+
+    /**
+     * Method to obtain all tables with TABLE_VACANT table state for the session based on numPax
+     * @param numPax Number of people
+     * @return ArrayList of Tables
+     */
+    @Nullable
+    public static ArrayList<Table> getVacantTablesByNumPax(int numPax, ArrayList<Table> bookedTables) {
+        ArrayList<Table> tablesByNumPax = new ArrayList<>();
+        final Table.TableSeats tableSeats;
+        if (numPax <= 0 || numPax > 10) return null;
+        else if (numPax > 8) tableSeats = TableSeats.TEN_SEATER;
+        else if (numPax > 4) tableSeats = TableSeats.EIGHT_SEATER;
+        else if (numPax > 2) tableSeats = TableSeats.FOUR_SEATER;
+        else tableSeats = TableSeats.TWO_SEATER;
+
+        MainApp.tables.forEach((t) -> {
+            if (t.getNumSeats().ordinal() >= tableSeats.ordinal())
+                tablesByNumPax.add(t);
+        });
+
+        tablesByNumPax.sort(Comparator.comparingInt(o -> o.getNumSeats().ordinal()));
+
+        Iterator<Table> iter = tablesByNumPax.iterator();
+
+        if (bookedTables.equals(MainApp.tables)) {
+            System.out.println("DEBUG: Walk-in check");
+            Table tab;
+            //TODO: Do walk-in check
+            while (iter.hasNext()) {
+                tab = iter.next();
+                if (tab.getState() != TableState.TABLE_VACATED) iter.remove();
+            }
+        }
+        else {
+            System.out.println("DEBUG: Reservation check");
+            //TODO: Do reservation check
+            tablesByNumPax.removeAll(bookedTables);
+        }
+        return tablesByNumPax;
     }
 
 }

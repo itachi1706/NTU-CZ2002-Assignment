@@ -210,7 +210,7 @@ public class ReservationMenuUI extends BaseMenu {
                 }
             }
 
-            tableNum = findTableForReservation(numPax, resvDate);
+            tableNum = findTableForReservation(numPax, resvDate, resvSession);
 
             //Conditional loop to determine is available table is found.
             if (tableNum > 0) {
@@ -220,7 +220,7 @@ public class ReservationMenuUI extends BaseMenu {
 
                 System.out.println("Your reservation has been successfully recorded! Your assigned table is " + tableNum + ".");
             } else {
-                System.out.println("All tables all current booked for the day and session. We're sorry!");
+                System.out.println("There are no available tables that can cater the number of pax for the day and session. We're sorry!");
                 System.out.println("Returning to Reservation Menu...");
             }
 
@@ -241,8 +241,8 @@ public class ReservationMenuUI extends BaseMenu {
      * @param resvDate Reservation date indicated for the reservation
      * @return An integer containing the first available table number for the date of reservation
      */
-    private int findTableForReservation(int numPax, LocalDate resvDate) {
-        ArrayList<Integer> tablesBookedForDate = new ArrayList<>();
+    private int findTableForReservation(int numPax, LocalDate resvDate, char resvSession) {
+        ArrayList<Table> tablesBookedOnDateBySession, tablesByNumPax;
         boolean booked = false;
         int tableNum = -1;
 
@@ -251,13 +251,8 @@ public class ReservationMenuUI extends BaseMenu {
          * and stores into a local instanced ArrayList.
          * This ArrayList will be used for the upcoming for-loops
          */
-        for (Reservation r : MainApp.reservations) {
-            if (r.getResvDate().equals(resvDate))
-                tablesBookedForDate.add(r.getTableNum());
-        }
-
-        //Sorting the ArrayList in ascending order to increase efficiency of iteration later on.
-        Collections.sort(tablesBookedForDate);
+        tablesBookedOnDateBySession = Reservation.getTablesBookedOnDateBySession(resvDate, resvSession);
+        tablesByNumPax = Table.getVacantTablesByNumPax(numPax, tablesBookedOnDateBySession);
 
         /* READ-ME: For the following nested if-else condition fragments,
          * only ONE if-else condition will be entered, depending on the number of pax that has
@@ -271,7 +266,7 @@ public class ReservationMenuUI extends BaseMenu {
          *
          * The for-loops will continue until an available table on that date has been found.
          */
-        //Checking for 2-seater tables
+        /*//Checking for 2-seater tables
         if (numPax <= 2) {
             for (Table t : MainApp.tables) {
                 if (t.getNumSeats() == Table.TableSeats.TWO_SEATER) {
@@ -335,9 +330,10 @@ public class ReservationMenuUI extends BaseMenu {
                     }
                 }
             }
-        }
+        }*/
 
-        return tableNum;
+        return (!tablesByNumPax.isEmpty()) ?
+                tablesByNumPax.get(0).getTableNum() : -1;
     }
 
 
