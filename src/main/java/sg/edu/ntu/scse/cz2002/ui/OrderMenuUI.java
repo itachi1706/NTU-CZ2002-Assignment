@@ -5,13 +5,17 @@ import org.jetbrains.annotations.Nullable;
 import sg.edu.ntu.scse.cz2002.MainApp;
 import sg.edu.ntu.scse.cz2002.features.Order;
 import sg.edu.ntu.scse.cz2002.features.OrderItem;
+import sg.edu.ntu.scse.cz2002.features.Reservation;
+import sg.edu.ntu.scse.cz2002.features.Table;
 import sg.edu.ntu.scse.cz2002.objects.menuitem.ItemNotFoundException;
 import sg.edu.ntu.scse.cz2002.objects.menuitem.MenuItem;
 import sg.edu.ntu.scse.cz2002.objects.menuitem.Promotion;
+import sg.edu.ntu.scse.cz2002.objects.person.Staff;
 import sg.edu.ntu.scse.cz2002.util.DateTimeFormatHelper;
 import sg.edu.ntu.scse.cz2002.util.ScannerHelper;
 
 import java.util.ArrayList;
+import java.util.stream.IntStream;
 
 /**
  * The Order Menu UI
@@ -114,6 +118,45 @@ public class OrderMenuUI extends BaseMenu {
      * Creates an order and send you to the edit order UI at {@link OrderMenuUI#editOrderMenuScreen(int)}
      */
     private void createOrder() {
+        // Ask for staff ID to add order
+        printHeader("Staff List");
+        IntStream.range(0, MainApp.staffs.size()).forEach((i) -> System.out.println((i+1) + ") " + MainApp.staffs.get(i).getStaffName()));
+        printBreaks();
+        int staffId = ScannerHelper.getIntegerInput("Enter Staff ID to create the order in (0 to cancel): ", -1);
+        if (staffId == 0) {
+            System.out.println("Create Order Operation Cancelled");
+            System.out.println();
+            return; // Cancel Operation
+        }
+        Staff selectedStaff = MainApp.staffs.get(staffId);
+
+        // Ask for reservation
+        Table t = null; // Table that will be used
+        if (ScannerHelper.getYesNoInput("Do the customer has an existing reservation?")) {
+            // Got reservation
+            System.out.print("Enter phone number the customer used for the reservation: ");
+            String num = ScannerHelper.getScannerInput().nextLine();
+            // Check for reservation
+            t = Reservation.hasReservation(num);
+            if (t == null) {
+                System.out.println("Reservation not found");
+                if (!ScannerHelper.getYesNoInput("Create order as walk-in?")) {
+                    System.out.println("Cancelling order creation");
+                    System.out.println();
+                    return;
+                }
+            }
+        }
+
+        if (t == null) {
+            // Ask how many people
+            int tableSizeNeeded = ScannerHelper.getIntegerInput("How many people in the party? (Max 10): ", 0, 11);
+            // Get list of vacant tables matching that criteria
+            // TODO: Code Stub. Awaiting method to call to get vacant tables. Randomly allocating a table for now
+            t = MainApp.tables.get(0);
+        }
+
+
         // Create a new order (completed + incompleted check and get ID after)
         int newId = 1;
         if (incompleteOrders.size() > 0) {
@@ -122,6 +165,8 @@ public class OrderMenuUI extends BaseMenu {
             newId = MainApp.completedOrders.get(MainApp.completedOrders.size() - 1).getOrderID() + 1;
         }
         Order o = new Order(newId);
+        o.setStaffId(selectedStaff.getStaffId());
+        o.setTableId(t.getTableNum());
         incompleteOrders.add(o);
         System.out.println("New Order #" + o.getOrderID() + " created!");
         editOrderMenuScreen(o.getOrderID()); // Bring user to the order item edit screen

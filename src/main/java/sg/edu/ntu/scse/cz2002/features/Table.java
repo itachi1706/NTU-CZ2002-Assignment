@@ -1,5 +1,6 @@
 package sg.edu.ntu.scse.cz2002.features;
 
+import org.jetbrains.annotations.Nullable;
 import sg.edu.ntu.scse.cz2002.MainApp;
 import sg.edu.ntu.scse.cz2002.util.ICsvSerializable;
 
@@ -185,6 +186,7 @@ public class Table implements ICsvSerializable {
      * @param tableNum Table number
      * @return Table object that matches table number input. Returns null if table number is -1;
      */
+    @Nullable
     public static Table getTableByNumber(int tableNum) {
         for (Table t : MainApp.tables) {
             if (t.getTableNum() == tableNum)

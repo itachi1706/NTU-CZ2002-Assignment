@@ -1,6 +1,8 @@
 package sg.edu.ntu.scse.cz2002.features;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import sg.edu.ntu.scse.cz2002.objects.person.Staff;
 import sg.edu.ntu.scse.cz2002.util.ICsvSerializable;
 
 import java.util.ArrayList;
@@ -45,6 +47,16 @@ public class Order implements ICsvSerializable {
     private long completedAt;
 
     /**
+     * Staff ID of the staff taking this order
+     */
+    private int staffId = -1;
+
+    /**
+     * Table ID of the table assigned to this order
+     */
+    private int tableId = -1;
+
+    /**
      * Create a new order object
      * @param orderID Order ID to set this new order as
      */
@@ -74,6 +86,9 @@ public class Order implements ICsvSerializable {
         this.orderState = (csv[3].equals("1")) ? OrderState.ORDER_PAID : OrderState.ORDER_UNPAID;
         this.createdAt = Long.parseLong(csv[4]);
         this.completedAt = Long.parseLong(csv[5]);
+        this.staffId = Integer.parseInt(csv[6]);
+        this.tableId = Integer.parseInt(csv[7]);
+
     }
 
     /**
@@ -83,7 +98,7 @@ public class Order implements ICsvSerializable {
      */
     @Override
     public String[] toCsv() {
-        String[] s = new String[6];
+        String[] s = new String[8];
         s[0] = this.orderID + "";
         StringBuilder b = new StringBuilder();
         for (OrderItem i : this.orderItems) {
@@ -94,6 +109,8 @@ public class Order implements ICsvSerializable {
         s[3] = (this.orderState == OrderState.ORDER_PAID) ? "1" : "0";
         s[4] = this.createdAt + "";
         s[5] = this.completedAt + "";
+        s[6] = this.staffId + "";
+        s[7] = this.tableId + "";
         return s;
     }
 
@@ -175,5 +192,55 @@ public class Order implements ICsvSerializable {
      */
     public long getCompletedAt() {
         return completedAt;
+    }
+
+    /**
+     * Gets the Staff ID of the Staff who took this order
+     * @return Staff ID
+     */
+    public int getStaffId() {
+        return staffId;
+    }
+
+    /**
+     * Sets the Staff ID of the staff who took this order
+     * @param staff Staff ID
+     */
+    public void setStaffId(int staff) {
+        this.staffId = staff;
+    }
+
+    /**
+     * Gets the table ID of the table assigned to this order
+     * @return Table ID
+     */
+    public int getTableId() {
+        return tableId;
+    }
+
+    /**
+     * Sets the table ID of the table assigned to this order
+     * @param table Table ID
+     */
+    public void setTableId(int table) {
+        this.tableId = table;
+    }
+
+    /**
+     * Tries and get the Staff object from {@link sg.edu.ntu.scse.cz2002.MainApp#staffs}
+     * @return Staff object if found, null otherwise
+     */
+    @Nullable
+    public Staff getStaff() {
+        return Staff.getStaff(this.staffId);
+    }
+
+    /**
+     * Tries and get the Table object from {@link sg.edu.ntu.scse.cz2002.MainApp#tables}
+     * @return Table object if found, null otherwise
+     */
+    @Nullable
+    public Table getTable() {
+        return Table.getTableByNumber(this.tableId);
     }
 }
