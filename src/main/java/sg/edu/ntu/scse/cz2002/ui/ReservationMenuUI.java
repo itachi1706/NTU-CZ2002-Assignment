@@ -239,6 +239,7 @@ public class ReservationMenuUI extends BaseMenu {
      * Method to find available table for the number of pax, and date of reservation.
      * @param numPax Number of people
      * @param resvDate Reservation date indicated for the reservation
+     * @param resvSession Reservation session A or P
      * @return An integer containing the first available table number for the date of reservation
      */
     private int findTableForReservation(int numPax, LocalDate resvDate, char resvSession) {

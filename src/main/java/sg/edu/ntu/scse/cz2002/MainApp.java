@@ -73,7 +73,7 @@ public class MainApp {
     /**
      * Enable debug mode
      */
-    private static final boolean DEBUG = false;
+    public static final boolean DEBUG = false;
 
     /**
      * Initializes all of the necessary items of the application
