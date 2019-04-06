@@ -507,6 +507,7 @@ public class ReservationMenuUI extends BaseMenu {
      * Method to check if the restaurant is open to reservations for the evening session
      * given the specified date
      * @param date LocalDate variable
+     * @param isToday Boolean variable indicating whether date input is today.
      * @return True if available, false if slot is taken
      */
     private boolean checkEveningSessionDate (LocalDate date, boolean isToday) {
