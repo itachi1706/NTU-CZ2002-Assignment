@@ -28,13 +28,11 @@ public class StaffMgmtMenuUI extends BaseMenu {
 		System.out.println("2) Edit Staff Information");
 		System.out.println("3) Remove Staff");
 		System.out.println("4) List All Staff");
-		System.out.println("5) Change Staff");
-		System.out.println("6) View Current Logged in Staff");
-		System.out.println("7) Return to Main Menu");
+		System.out.println("5) Return to Main Menu");
 		System.out.println("0) Exit");
 		printBreaks();
 
-		int choice = doMenuChoice(7, 0);
+		int choice = doMenuChoice(5, 0);
 		switch (choice) {
 		case 1:
 			this.createNewStaff();
@@ -49,12 +47,6 @@ public class StaffMgmtMenuUI extends BaseMenu {
 			this.listAllStaff();
 			break;
 		case 5:
-			// TODO: To Implement
-			break;
-		case 6:
-			// TODO: To Implement
-			break;
-		case 7:
 			return -1;
 		case 0:
 			return 1;
