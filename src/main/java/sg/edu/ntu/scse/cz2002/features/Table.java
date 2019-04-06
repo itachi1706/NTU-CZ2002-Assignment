@@ -200,7 +200,11 @@ public class Table implements ICsvSerializable {
 
     /**
      * Method to obtain all tables with TABLE_VACANT table state for the session based on numPax
+     * Method to obtain all tables that have no clashes with bookedTables ArrayList
      * @param numPax Number of people
+     * @param bookedTables ArrayList containing tables booked on a specified date. This parameter will only be passed in
+     *                     if invoked from {@Link ReservationMenuUI#findTableForReservation(int, LocalDate, char}
+     *                     Otherwise, MainApp.tables should be passed in if invoked from other functions
      * @return ArrayList of Tables
      */
     @Nullable
@@ -223,7 +227,7 @@ public class Table implements ICsvSerializable {
         Iterator<Table> iter = tablesByNumPax.iterator();
 
         if (bookedTables.equals(MainApp.tables)) {
-            System.out.println("DEBUG: Walk-in check");
+            if (MainApp.DEBUG) System.out.println("DEBUG: Walk-in check");
             Table tab;
             //TODO: Do walk-in check
             while (iter.hasNext()) {
@@ -232,7 +236,7 @@ public class Table implements ICsvSerializable {
             }
         }
         else {
-            System.out.println("DEBUG: Reservation check");
+            if (MainApp.DEBUG) System.out.println("DEBUG: Reservation check");
             //TODO: Do reservation check
             tablesByNumPax.removeAll(bookedTables);
         }
