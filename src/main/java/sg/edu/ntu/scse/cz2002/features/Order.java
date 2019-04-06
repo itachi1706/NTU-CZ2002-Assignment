@@ -46,8 +46,14 @@ public class Order implements ICsvSerializable {
      */
     private long completedAt;
 
+    /**
+     * Staff ID of the staff taking this order
+     */
     private int staffId = -1;
 
+    /**
+     * Table ID of the table assigned to this order
+     */
     private int tableId = -1;
 
     /**
@@ -188,27 +194,51 @@ public class Order implements ICsvSerializable {
         return completedAt;
     }
 
+    /**
+     * Gets the Staff ID of the Staff who took this order
+     * @return Staff ID
+     */
     public int getStaffId() {
         return staffId;
     }
 
+    /**
+     * Sets the Staff ID of the staff who took this order
+     * @param staff Staff ID
+     */
     public void setStaffId(int staff) {
         this.staffId = staff;
     }
 
+    /**
+     * Gets the table ID of the table assigned to this order
+     * @return Table ID
+     */
     public int getTableId() {
         return tableId;
     }
 
+    /**
+     * Sets the table ID of the table assigned to this order
+     * @param table Table ID
+     */
     public void setTableId(int table) {
         this.tableId = table;
     }
 
+    /**
+     * Tries and get the Staff object from {@link sg.edu.ntu.scse.cz2002.MainApp#staffs}
+     * @return Staff object if found, null otherwise
+     */
     @Nullable
     public Staff getStaff() {
         return Staff.getStaff(this.staffId);
     }
 
+    /**
+     * Tries and get the Table object from {@link sg.edu.ntu.scse.cz2002.MainApp#tables}
+     * @return Table object if found, null otherwise
+     */
     @Nullable
     public Table getTable() {
         return Table.getTableByNumber(this.tableId);
