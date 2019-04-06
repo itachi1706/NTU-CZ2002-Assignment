@@ -8,10 +8,12 @@ import sg.edu.ntu.scse.cz2002.features.OrderItem;
 import sg.edu.ntu.scse.cz2002.objects.menuitem.ItemNotFoundException;
 import sg.edu.ntu.scse.cz2002.objects.menuitem.MenuItem;
 import sg.edu.ntu.scse.cz2002.objects.menuitem.Promotion;
+import sg.edu.ntu.scse.cz2002.objects.person.Staff;
 import sg.edu.ntu.scse.cz2002.util.DateTimeFormatHelper;
 import sg.edu.ntu.scse.cz2002.util.ScannerHelper;
 
 import java.util.ArrayList;
+import java.util.stream.IntStream;
 
 /**
  * The Order Menu UI
@@ -114,6 +116,17 @@ public class OrderMenuUI extends BaseMenu {
      * Creates an order and send you to the edit order UI at {@link OrderMenuUI#editOrderMenuScreen(int)}
      */
     private void createOrder() {
+        // Ask for staff ID to add order
+        printHeader("Staff List");
+        IntStream.range(0, MainApp.staffs.size()).forEach((i) -> System.out.println((i+1) + ") " + MainApp.staffs.get(i).getStaffName()));
+        printBreaks();
+        int staffId = ScannerHelper.getIntegerInput("Enter Staff ID to create the order in (0 to cancel): ", -1);
+        if (staffId == 0) {
+            System.out.println("Create Order Operation Cancelled");
+            System.out.println();
+            return; // Cancel Operation
+        }
+        Staff selectedStaff = MainApp.staffs.get(staffId);
         // Create a new order (completed + incompleted check and get ID after)
         int newId = 1;
         if (incompleteOrders.size() > 0) {
@@ -122,6 +135,7 @@ public class OrderMenuUI extends BaseMenu {
             newId = MainApp.completedOrders.get(MainApp.completedOrders.size() - 1).getOrderID() + 1;
         }
         Order o = new Order(newId);
+        o.setStaff(selectedStaff);
         incompleteOrders.add(o);
         System.out.println("New Order #" + o.getOrderID() + " created!");
         editOrderMenuScreen(o.getOrderID()); // Bring user to the order item edit screen

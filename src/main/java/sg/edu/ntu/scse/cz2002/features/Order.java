@@ -1,6 +1,7 @@
 package sg.edu.ntu.scse.cz2002.features;
 
 import org.jetbrains.annotations.NotNull;
+import sg.edu.ntu.scse.cz2002.objects.person.Staff;
 import sg.edu.ntu.scse.cz2002.util.ICsvSerializable;
 
 import java.util.ArrayList;
@@ -44,6 +45,8 @@ public class Order implements ICsvSerializable {
      */
     private long completedAt;
 
+    private Staff staff;
+
     /**
      * Create a new order object
      * @param orderID Order ID to set this new order as
@@ -74,6 +77,7 @@ public class Order implements ICsvSerializable {
         this.orderState = (csv[3].equals("1")) ? OrderState.ORDER_PAID : OrderState.ORDER_UNPAID;
         this.createdAt = Long.parseLong(csv[4]);
         this.completedAt = Long.parseLong(csv[5]);
+        // TODO: Read staff ID
     }
 
     /**
@@ -94,6 +98,7 @@ public class Order implements ICsvSerializable {
         s[3] = (this.orderState == OrderState.ORDER_PAID) ? "1" : "0";
         s[4] = this.createdAt + "";
         s[5] = this.completedAt + "";
+        // TODO: Write Staff ID
         return s;
     }
 
@@ -175,5 +180,13 @@ public class Order implements ICsvSerializable {
      */
     public long getCompletedAt() {
         return completedAt;
+    }
+
+    public Staff getStaff() {
+        return staff;
+    }
+
+    public void setStaff(Staff staff) {
+        this.staff = staff;
     }
 }
