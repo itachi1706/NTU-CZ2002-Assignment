@@ -1,0 +1,54 @@
+image: anapsix/alpine-java:8_jdk
+
+# Cache modules in between jobs
+cache:
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
+    - html/
+    - .gradle/
+
+stages:
+  - javadoc
+  - deploy
+
+compile:
+  stage: javadoc
+  script:
+    - chmod +x gradlew
+    - ./gradlew javadoc
+    - echo "Cleaning up to prevent it from being in the cache"
+    - rm -f  ./.gradle/caches/modules-2/modules-2.lock
+    - rm -fr ./.gradle/caches/*/plugin-resolution/
+  only:
+    - master
+
+commit:
+  stage: deploy
+  script:
+    - echo "Deploying to JavaDocs Repo"
+    - echo "Installing Dependencies"
+    - apk update && apk add git
+    - echo "Configuring Dependencies"
+    - git config --global user.name "OODP GitLab CI"
+    - git config --global user.email "gitlabci@itachi1706.com"
+    - echo "Cloning Repository"
+    - git clone https://${GITHUB_USER}:${GITHUB_PAT}@github.com/itachi1706/How-to-use-Git-NTUSCSE1819-Site.git jdocs
+    - cd jdocs
+    - git pull
+    - echo "Ensuring that files are cleaned"
+    - mkdir -p projects/oodp/html
+    - cd projects/oodp/html
+    - rm -rf ./*
+    - cd ../../../../
+    - echo "Copying Javadocs" # Our deploying site
+    - cp -r ./html/* ./jdocs/projects/oodp/html/
+    - cd jdocs
+    - echo "Viewing Git Status"
+    - git status
+    - echo "Committing"
+    - git add -A
+    - "git commit -m \"Automated GitLab Build #${CI_PIPELINE_IID} from Pipelines for ${CI_JOB_NAME}. View the build at ${CI_PIPELINE_URL}!\""
+    - echo "Pushing to Git"
+    - git push
+  only:
+    - master
