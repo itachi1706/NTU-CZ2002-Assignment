@@ -73,7 +73,7 @@ public class OrderCSVHelper extends CSVBaseHelper {
      * @throws IOException Unable to write to file
      */
     public void writeToCsv(ArrayList<Order> items) throws IOException {
-        String[] header = {"ID", "Items", "Subtotal", "State", "CreatedAt", "CompletedAt"};
+        String[] header = {"ID", "Items", "Subtotal", "State", "CreatedAt", "CompletedAt", "StaffID", "TableID"};
         BufferedWriter csvFile = FileIOHelper.getFileBufferedWriter(this.orderCsv);
         ArrayList<String[]> toWrite = new ArrayList<>();
         toWrite.add(header);

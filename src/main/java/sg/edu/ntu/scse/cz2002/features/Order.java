@@ -46,9 +46,9 @@ public class Order implements ICsvSerializable {
      */
     private long completedAt;
 
-    private int staffId;
+    private int staffId = -1;
 
-    private int tableId;
+    private int tableId = -1;
 
     /**
      * Create a new order object
@@ -80,7 +80,8 @@ public class Order implements ICsvSerializable {
         this.orderState = (csv[3].equals("1")) ? OrderState.ORDER_PAID : OrderState.ORDER_UNPAID;
         this.createdAt = Long.parseLong(csv[4]);
         this.completedAt = Long.parseLong(csv[5]);
-        // TODO: Read staff ID and Table ID
+        this.staffId = Integer.parseInt(csv[6]);
+        this.tableId = Integer.parseInt(csv[7]);
 
     }
 
@@ -91,7 +92,7 @@ public class Order implements ICsvSerializable {
      */
     @Override
     public String[] toCsv() {
-        String[] s = new String[6];
+        String[] s = new String[8];
         s[0] = this.orderID + "";
         StringBuilder b = new StringBuilder();
         for (OrderItem i : this.orderItems) {
@@ -102,7 +103,8 @@ public class Order implements ICsvSerializable {
         s[3] = (this.orderState == OrderState.ORDER_PAID) ? "1" : "0";
         s[4] = this.createdAt + "";
         s[5] = this.completedAt + "";
-        // TODO: Write Staff ID and Table ID
+        s[6] = this.staffId + "";
+        s[7] = this.tableId + "";
         return s;
     }
 
