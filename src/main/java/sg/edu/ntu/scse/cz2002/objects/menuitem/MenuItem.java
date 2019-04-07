@@ -138,7 +138,7 @@ public class MenuItem implements ICsvSerializable {
     /**
      * Prints details regarding this item
      * This is formatted to fit a console table of size 60
-     * @return Parsed string of the Promotion Set
+     * @return Parsed string of the Menu Item
      */
     public String printItemDetail() {
         return "Name: " + this.getName() + "\n" +
