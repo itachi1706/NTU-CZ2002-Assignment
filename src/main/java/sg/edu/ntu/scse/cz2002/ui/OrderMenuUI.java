@@ -276,7 +276,7 @@ public class OrderMenuUI extends BaseMenu {
                 Promotion p = MainApp.promotions.get(promotionSelected);
                 System.out.println();
                 printHeader(p.getPromoName() + " Details", 60);
-                printPromotionDetail(p);
+                System.out.println(p.printPromotionDetail());
                 System.out.println("Quantity: " + quantity + "");
                 System.out.printf("Total Set Price: $%.2f\n", (quantity * p.getPromoPrice()));
                 printBreaks(60);
@@ -414,26 +414,6 @@ public class OrderMenuUI extends BaseMenu {
         System.out.println("Order Subtotal: $" + String.format("%.2f", o.getSubtotal()));
         printBreaks(60);
         System.out.println("\n");
-    }
-
-    /**
-     * Prints details regarding the {@link Promotion} object
-     * @param p Promotion Object
-     */
-    private void printPromotionDetail(@NotNull Promotion p) {
-        // Console Length 60
-        // TODO: Discuss if it should still be here
-        StringBuilder sb = new StringBuilder();
-        MenuItem main = FoodMenuUI.retrieveMenuItem(p.getPromoMain());
-        MenuItem drink = FoodMenuUI.retrieveMenuItem(p.getPromoDrink());
-        MenuItem dessert = FoodMenuUI.retrieveMenuItem(p.getPromoDessert());
-        sb.append("Name: ").append(p.getPromoName()).append("\n")
-                .append("Price: $").append(String.format("%.2f", p.getPromoPrice())).append("\n\n")
-                .append("Set Contains:").append("\n");
-        if (main != null) sb.append(String.format("%-52s $%-6.2f", main.getName() + " (" + main.getDescription() + ") ", main.getPrice())).append("\n");
-        if (drink != null) sb.append(String.format("%-52s $%-6.2f", drink.getName() + " (" + drink.getDescription() + ") ", drink.getPrice())).append("\n");
-        if (dessert != null) sb.append(String.format("%-52s $%-6.2f", dessert.getName() + " (" + dessert.getDescription() + ") ", dessert.getPrice())).append("\n");
-        System.out.println(sb.toString());
     }
 
     /**

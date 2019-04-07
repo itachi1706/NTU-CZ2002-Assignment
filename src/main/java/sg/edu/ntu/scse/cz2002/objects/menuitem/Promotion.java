@@ -1,8 +1,13 @@
 package sg.edu.ntu.scse.cz2002.objects.menuitem;
+import sg.edu.ntu.scse.cz2002.ui.FoodMenuUI;
 import sg.edu.ntu.scse.cz2002.util.ICsvSerializable;
 
 /**
- * @author Arthur
+ * Class handling Promotion Sets
+ *
+ * @author Arthur, Kenneth
+ * @version 1.1
+ * @since 2019-04-03
  *
  */
 public class Promotion implements ICsvSerializable {
@@ -153,6 +158,23 @@ public class Promotion implements ICsvSerializable {
 	public void setPromoDrink(int promoDrink) {
 		this.promoDrink = promoDrink;
 	}
-    
-    
+
+	/**
+	 * Prints details regarding this promotion set
+	 * This is formatted to fit a console table of size 60
+	 * @return Parsed string of the Promotion Set
+	 */
+	public String printPromotionDetail() {
+		StringBuilder sb = new StringBuilder();
+		MenuItem main = FoodMenuUI.retrieveMenuItem(this.getPromoMain());
+		MenuItem drink = FoodMenuUI.retrieveMenuItem(this.getPromoDrink());
+		MenuItem dessert = FoodMenuUI.retrieveMenuItem(this.getPromoDessert());
+		sb.append("Name: ").append(this.getPromoName()).append("\n")
+				.append("Price: $").append(String.format("%.2f", this.getPromoPrice())).append("\n\n")
+				.append("Set Contains:").append("\n");
+		if (main != null) sb.append(String.format("%-52s $%-6.2f", main.getName() + " (" + main.getDescription() + ") ", main.getPrice())).append("\n");
+		if (drink != null) sb.append(String.format("%-52s $%-6.2f", drink.getName() + " (" + drink.getDescription() + ") ", drink.getPrice())).append("\n");
+		if (dessert != null) sb.append(String.format("%-52s $%-6.2f", dessert.getName() + " (" + dessert.getDescription() + ") ", dessert.getPrice())).append("\n");
+		return sb.toString();
+	}
 }
