@@ -285,8 +285,9 @@ public class Reservation implements ICsvSerializable {
      * and stores into a local instanced ArrayList.
      * This ArrayList will be used for the upcoming for-loops
      *
-     * @param resvDate
-     * @return
+     * @param resvDate Date of reservation input by user
+     * @param resvSession Restaurant morning (A) or evening (P) session
+     * @return ArrayList of Tables booked on that date according to the session A or P
      */
     public static ArrayList<Table> getTablesBookedOnDateBySession(LocalDate resvDate, char resvSession) {
         ArrayList<Table> tablesBooked = new ArrayList<>();
