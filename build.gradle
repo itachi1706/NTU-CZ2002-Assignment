@@ -66,6 +66,16 @@ javadoc {
     if (umlJavadocs) {
         options.addStringOption('umlBasePath', 'umlhtml')
         options.addStringOption('umlImageDirectory', 'uml')
-        options.addBooleanOption('umlIncludeHyperlinks', true)
+        options.addStringOption('umlIncludeHyperlinks', 'true')
+        options.addStringOption('umlIncludeDeprecatedClasses', 'true')
+        options.addStringOption('umlIncludePackagePrivateClasses', 'true')
+        options.addStringOption('umlIncludePrivateClasses', 'true')
+        options.addStringOption('umlIncludeDeprecatedMethods', 'true')
+        options.addStringOption('umlIncludePackagePrivateMethods', 'true')
+        options.addStringOption('umlIncludePrivateMethods', 'true')
+        options.addStringOption('umlIncludeMethodParamNames', 'true')
+        options.addStringOption('umlIncludeDeprecatedFields', 'true')
+        options.addStringOption('umlIncludePackagePrivateFields', 'true')
+        options.addStringOption('umlIncludePrivateFields', 'true')
     }
 }
