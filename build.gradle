@@ -6,6 +6,8 @@ wrapper {
     gradleVersion = '4.10'
 }
 
+def umlJavadocs = System.getenv("JAVADOC_UML") ?: false
+
 group 'sg.edu.ntu.scse.cz2002'
 version '1.0'
 
@@ -27,19 +29,43 @@ repositories {
     mavenCentral()
 }
 
-javadoc {
-    source = sourceSets.main.allJava
-    configurations.implementation.setCanBeResolved(true)
-    classpath = configurations.implementation
-    destinationDir = file('html')
-    options.addBooleanOption('author', true)
-    options.addStringOption('noqualifier', 'all')
-    options.addBooleanOption('private', true)
-    options.addBooleanOption('version', true)
+if (umlJavadocs) {
+    configurations {
+        umlDoclet
+    }
 }
 
 
 dependencies {
     // Any project level dependencies will be located here
     implementation 'org.jetbrains:annotations:17.0.0'
+    if (umlJavadocs) umlDoclet "nl.talsmasoftware:umldoclet:1.1.3"
+}
+
+javadoc {
+    source = sourceSets.main.allJava
+
+    if (umlJavadocs) {
+        // UML CD (Disable to generate normal UML)
+        options.docletpath = configurations.umlDoclet.files.asType(List)
+        options.doclet = "nl.talsmasoftware.umldoclet.UMLDoclet"
+    }
+
+    configurations.implementation.setCanBeResolved(true)
+    classpath = configurations.implementation
+    if (umlJavadocs) destinationDir = file('umlhtml')
+    else destinationDir = file('html')
+
+    // Options
+    options.addBooleanOption('author', true)
+    options.addStringOption('noqualifier', 'all')
+    options.addBooleanOption('private', true)
+    options.addBooleanOption('version', true)
+
+    // UML Options
+    if (umlJavadocs) {
+        options.addStringOption('umlBasePath', 'umlhtml')
+        options.addStringOption('umlImageDirectory', 'uml')
+        options.addBooleanOption('umlIncludeHyperlinks', true)
+    }
 }
