@@ -1,6 +1,5 @@
 package sg.edu.ntu.scse.cz2002.ui;
 
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import sg.edu.ntu.scse.cz2002.MainApp;
 import sg.edu.ntu.scse.cz2002.objects.menuitem.MenuItem;
@@ -290,7 +289,6 @@ public class FoodMenuUI extends BaseMenu {
 	 * @param targetItemType type of the menu item objects to be retrieved.
 	 * @return menuItemsFiltered ArrayList containing the menu item type selected
 	 */
-	@Nullable
 	public static ArrayList<MenuItem> retrieveMenuItemListFiltered(String targetItemType) {
 
 		ArrayList<MenuItem> menuItemsFiltered = new ArrayList<MenuItem>(); //declare new empty arraylist
@@ -299,7 +297,7 @@ public class FoodMenuUI extends BaseMenu {
 
 			MenuItem menuItemObj = MainApp.menuItems.get(i); //gets a menu item object while the loop is running
 
-			if (targetItemType == menuItemObj.getType()) { //"Menu item of target item types found."
+			if (targetItemType.equals(menuItemObj.getType())) { //"Menu item of target item types found."
 				menuItemsFiltered.add(menuItemObj); //add the found object into the filtered array list
 			}
 

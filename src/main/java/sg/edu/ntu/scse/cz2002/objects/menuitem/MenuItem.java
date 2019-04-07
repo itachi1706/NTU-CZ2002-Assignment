@@ -134,4 +134,15 @@ public class MenuItem implements ICsvSerializable {
     public void setPrice(double price) {
         this.price = price;
     }
+
+    /**
+     * Prints details regarding this item
+     * This is formatted to fit a console table of size 60
+     * @return Parsed string of the Promotion Set
+     */
+    public String printItemDetail() {
+        return "Name: " + this.getName() + "\n" +
+                "Description: " + this.getDescription() + "\n" +
+                "Price: $" + String.format("%.2f", this.getPrice());
+    }
 }

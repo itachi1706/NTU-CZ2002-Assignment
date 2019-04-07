@@ -247,7 +247,7 @@ public class OrderMenuUI extends BaseMenu {
 
         switch (selection) {
             case 1:
-                // TODO: Select Item Type
+                addAlaCarteItem(o);
                 break;
             case 2:
                 if (MainApp.promotions.size() == 0) {
@@ -258,16 +258,13 @@ public class OrderMenuUI extends BaseMenu {
                 int i = 0;
                 for (Promotion p : MainApp.promotions) {
                     // Get each item in promotion
-                    System.out.printf("%d) %-28s $%-6.2f\n", (i+1) , p.getPromoName(), p.getPromoPrice());
-                    //printPromotionDetail(p);
+                    System.out.printf("%3d) %-27s $%-6.2f\n", (i+1) , p.getPromoName(), p.getPromoPrice());
                     i++;
                 }
                 printBreaks(40);
-                int promoSel = ScannerHelper.getIntegerInput("Enter Set ID: ");
-                int promotionSelected = promoSel - 1; // Get in reference to array
-                if (promotionSelected < 0 || promotionSelected >= MainApp.promotions.size()) {
-                    // Invalid option say not found and kick back to main
-                    System.out.println("Promotion Set not valid. Returning to Order Edit screen");
+                int promotionSelected = ScannerHelper.getIntegerInput("Enter Set ID (0 to cancel): ", -1, MainApp.promotions.size() + 1) - 1;
+                if (promotionSelected < 0) {
+                    System.out.println("Operation Cancelled. Returning to Order Edit screen");
                     return;
                 }
                 int quantity = ScannerHelper.getIntegerInput("Enter Quantity: ", 0);
@@ -290,6 +287,57 @@ public class OrderMenuUI extends BaseMenu {
                 break;
             case 0: return;
             default: throw new IllegalStateException("Invalid Choice (Order Item Add)");
+        }
+    }
+
+    private void addAlaCarteItem(@NotNull Order o) {
+        System.out.println("Select Ala-Carte Item Types:");
+        System.out.println("1) Appetizers");
+        System.out.println("2) Mains");
+        System.out.println("3) Dessert");
+        System.out.println("4) Drinks");
+        System.out.println("0) Cancel");
+        int selection = doMenuChoice(4, 0);
+        String type;
+        switch (selection) {
+            case 1: type = "Appetizer"; break;
+            case 2: type = "Main"; break;
+            case 3: type = "Dessert"; break;
+            case 4: type = "Drink"; break;
+            case 0: return;
+            default: throw new IllegalStateException("Invalid Choice (Order Ala Carte Item Add");
+        }
+        ArrayList<MenuItem> foodItems = FoodMenuUI.retrieveMenuItemListFiltered(type);
+        if (foodItems.size() == 0) {
+            System.out.println("No items in this category. Exiting....");
+            return;
+        }
+        printHeader("List of " + type, 60);
+        IntStream.range(0, foodItems.size()).forEach((i) -> {
+            MenuItem m = foodItems.get(i);
+            System.out.printf("%3d) %-47s $%-6.2f\n", (i+1) , m.getName(), m.getPrice());
+        });
+        printBreaks(60);
+        int itemSel = ScannerHelper.getIntegerInput("Enter Item ID: ", 0, foodItems.size() + 1) - 1;
+        if (itemSel < 0) {
+            System.out.println("Operation Cancelled. Returning to Order Edit screen");
+            return;
+        }
+        int quantity = ScannerHelper.getIntegerInput("Enter Quantity: ", 0);
+
+        // Print item detail and ask if we really want to add this
+        MenuItem mi = foodItems.get(itemSel);
+        System.out.println();
+        System.out.println("You are about to add the following items to order: ");
+        System.out.println(mi.printItemDetail());
+        System.out.println("Quantity: " + quantity + "");
+        System.out.printf("Total Set Price: $%.2f\n", (quantity * mi.getPrice()));
+        boolean confirm = ScannerHelper.getYesNoInput("Confirm?");
+        if (confirm) {
+            // Add to Order
+            o.getOrderItems().add(new OrderItem(mi.getId(), quantity, OrderItem.OrderItemType.TYPE_MENU));
+            o.calculateSubtotal();
+            System.out.println("Item Added to Order");
         }
     }
 
