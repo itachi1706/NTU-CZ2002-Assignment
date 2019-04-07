@@ -398,6 +398,8 @@ public class OrderMenuUI extends BaseMenu {
         System.out.println("Order ID: " + o.getOrderID());
         System.out.println("Order State: " + ((o.getOrderState() == Order.OrderState.ORDER_PAID) ? "Paid" : "Unpaid"));
         System.out.println("Order Started On: " + DateTimeFormatHelper.formatMillisToDateTime(o.getCreatedAt()));
+        System.out.println("Staff Handling Order: " + ((o.getStaff() == null) ? "Unknown Staff" : "[" + o.getStaff().getStaffId() + "] " + o.getStaff().getStaffName()));
+        System.out.println("Table Number: " + ((o.getTable() == null) ? "Unknown Table" : o.getTable().getTableNum()));
         if (o.getOrderState() == Order.OrderState.ORDER_PAID) System.out.println("Order Completed On: " + DateTimeFormatHelper.formatMillisToDateTime(o.getCompletedAt()));
         System.out.println("List of Order Items:");
         printBreaks(60);
