@@ -6,7 +6,6 @@ import sg.edu.ntu.scse.cz2002.ui.ReservationMenuUI;
 import sg.edu.ntu.scse.cz2002.util.ICsvSerializable;
 
 import java.text.ParseException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Iterator;
@@ -100,11 +99,7 @@ public class Table implements ICsvSerializable {
     public String[] toCsv() {
         String[] s = new String[4];
         s[0] = this.tableNum + "";
-        s[1] = (this.numSeats == TableSeats.TWO_SEATER      ? 2 :
-                this.numSeats == TableSeats.FOUR_SEATER     ? 4 :
-                this.numSeats == TableSeats.EIGHT_SEATER    ? 8 :
-                this.numSeats == TableSeats.TEN_SEATER      ? 10 : -1) + "";
-
+        s[1] = this.getNumSeatsInt() + "";
         s[2] = (this.isReserved ? 1 : 0) + "";
 
         s[3] = (this.state == TableState.TABLE_OCCUPIED ? 0 :
@@ -144,6 +139,17 @@ public class Table implements ICsvSerializable {
      */
     public TableSeats getNumSeats() {
         return numSeats;
+    }
+
+    /**
+     * Gets number of seats based on the enum
+     * @return Number of seats
+     */
+    public int getNumSeatsInt() {
+        return this.numSeats == TableSeats.TWO_SEATER       ? 2 :
+                this.numSeats == TableSeats.FOUR_SEATER     ? 4 :
+                this.numSeats == TableSeats.EIGHT_SEATER    ? 8 :
+                this.numSeats == TableSeats.TEN_SEATER      ? 10 : -1;
     }
 
     /**

@@ -152,8 +152,14 @@ public class OrderMenuUI extends BaseMenu {
             // Ask how many people
             int tableSizeNeeded = ScannerHelper.getIntegerInput("How many people in the party? (Max 10): ", 0, 11);
             // Get list of vacant tables matching that criteria
-            // TODO: Code Stub. Awaiting method to call to get vacant tables. Randomly allocating a table for now
-            t = MainApp.tables.get(0);
+            ArrayList<Table> vacantTables = Table.getVacantTablesByNumPax(tableSizeNeeded, MainApp.tables);
+            if (vacantTables == null || vacantTables.size() == 0) {
+                System.out.println("There are no tables available that is large enough to accommodate this party");
+                System.out.println();
+                return;
+            }
+            t = vacantTables.get(0); // Allocate first possible table as it should be the least
+            System.out.println("Allocated Table Number: " + t.getTableNum() + " (Table Size: " + t.getNumSeatsInt() + ")");
         }
 
 
@@ -169,6 +175,7 @@ public class OrderMenuUI extends BaseMenu {
         o.setTableId(t.getTableNum());
         incompleteOrders.add(o);
         System.out.println("New Order #" + o.getOrderID() + " created!");
+        t.setState(Table.TableState.TABLE_OCCUPIED); // Sets the table specified as occupied
         editOrderMenuScreen(o.getOrderID()); // Bring user to the order item edit screen
     }
 
