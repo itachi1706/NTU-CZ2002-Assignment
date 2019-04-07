@@ -152,8 +152,14 @@ public class OrderMenuUI extends BaseMenu {
             // Ask how many people
             int tableSizeNeeded = ScannerHelper.getIntegerInput("How many people in the party? (Max 10): ", 0, 11);
             // Get list of vacant tables matching that criteria
-            // TODO: Code Stub. Awaiting method to call to get vacant tables. Randomly allocating a table for now
-            t = MainApp.tables.get(0);
+            ArrayList<Table> vacantTables = Table.getVacantTablesByNumPax(tableSizeNeeded, MainApp.tables);
+            if (vacantTables == null || vacantTables.size() == 0) {
+                System.out.println("There are no tables available that is large enough to accommodate this party");
+                System.out.println();
+                return;
+            }
+            t = vacantTables.get(0); // Allocate first possible table as it should be the least
+            System.out.println("Allocated Table Number: " + t.getTableNum() + " (Table Size: " + t.getNumSeatsInt() + ")");
         }
 
 
@@ -169,6 +175,7 @@ public class OrderMenuUI extends BaseMenu {
         o.setTableId(t.getTableNum());
         incompleteOrders.add(o);
         System.out.println("New Order #" + o.getOrderID() + " created!");
+        t.setState(Table.TableState.TABLE_OCCUPIED); // Sets the table specified as occupied
         editOrderMenuScreen(o.getOrderID()); // Bring user to the order item edit screen
     }
 
@@ -240,7 +247,7 @@ public class OrderMenuUI extends BaseMenu {
 
         switch (selection) {
             case 1:
-                // TODO: Select Item Type
+                addAlaCarteItem(o);
                 break;
             case 2:
                 if (MainApp.promotions.size() == 0) {
@@ -251,16 +258,13 @@ public class OrderMenuUI extends BaseMenu {
                 int i = 0;
                 for (Promotion p : MainApp.promotions) {
                     // Get each item in promotion
-                    System.out.printf("%d) %-28s $%-6.2f\n", (i+1) , p.getPromoName(), p.getPromoPrice());
-                    //printPromotionDetail(p);
+                    System.out.printf("%3d) %-27s $%-6.2f\n", (i+1) , p.getPromoName(), p.getPromoPrice());
                     i++;
                 }
                 printBreaks(40);
-                int promoSel = ScannerHelper.getIntegerInput("Enter Set ID: ");
-                int promotionSelected = promoSel - 1; // Get in reference to array
-                if (promotionSelected < 0 || promotionSelected >= MainApp.promotions.size()) {
-                    // Invalid option say not found and kick back to main
-                    System.out.println("Promotion Set not valid. Returning to Order Edit screen");
+                int promotionSelected = ScannerHelper.getIntegerInput("Enter Set ID (0 to cancel): ", -1, MainApp.promotions.size() + 1) - 1;
+                if (promotionSelected < 0) {
+                    System.out.println("Operation Cancelled. Returning to Order Edit screen");
                     return;
                 }
                 int quantity = ScannerHelper.getIntegerInput("Enter Quantity: ", 0);
@@ -269,7 +273,7 @@ public class OrderMenuUI extends BaseMenu {
                 Promotion p = MainApp.promotions.get(promotionSelected);
                 System.out.println();
                 printHeader(p.getPromoName() + " Details", 60);
-                printPromotionDetail(p);
+                System.out.println(p.printPromotionDetail());
                 System.out.println("Quantity: " + quantity + "");
                 System.out.printf("Total Set Price: $%.2f\n", (quantity * p.getPromoPrice()));
                 printBreaks(60);
@@ -283,6 +287,57 @@ public class OrderMenuUI extends BaseMenu {
                 break;
             case 0: return;
             default: throw new IllegalStateException("Invalid Choice (Order Item Add)");
+        }
+    }
+
+    private void addAlaCarteItem(@NotNull Order o) {
+        System.out.println("Select Ala-Carte Item Types:");
+        System.out.println("1) Appetizers");
+        System.out.println("2) Mains");
+        System.out.println("3) Dessert");
+        System.out.println("4) Drinks");
+        System.out.println("0) Cancel");
+        int selection = doMenuChoice(4, 0);
+        String type;
+        switch (selection) {
+            case 1: type = "Appetizer"; break;
+            case 2: type = "Main"; break;
+            case 3: type = "Dessert"; break;
+            case 4: type = "Drink"; break;
+            case 0: return;
+            default: throw new IllegalStateException("Invalid Choice (Order Ala Carte Item Add");
+        }
+        ArrayList<MenuItem> foodItems = FoodMenuUI.retrieveMenuItemListFiltered(type);
+        if (foodItems.size() == 0) {
+            System.out.println("No items in this category. Exiting....");
+            return;
+        }
+        printHeader("List of " + type, 60);
+        IntStream.range(0, foodItems.size()).forEach((i) -> {
+            MenuItem m = foodItems.get(i);
+            System.out.printf("%3d) %-47s $%-6.2f\n", (i+1) , m.getName(), m.getPrice());
+        });
+        printBreaks(60);
+        int itemSel = ScannerHelper.getIntegerInput("Enter Item ID: ", 0, foodItems.size() + 1) - 1;
+        if (itemSel < 0) {
+            System.out.println("Operation Cancelled. Returning to Order Edit screen");
+            return;
+        }
+        int quantity = ScannerHelper.getIntegerInput("Enter Quantity: ", 0);
+
+        // Print item detail and ask if we really want to add this
+        MenuItem mi = foodItems.get(itemSel);
+        System.out.println();
+        System.out.println("You are about to add the following items to order: ");
+        System.out.println(mi.printItemDetail());
+        System.out.println("Quantity: " + quantity + "");
+        System.out.printf("Total Set Price: $%.2f\n", (quantity * mi.getPrice()));
+        boolean confirm = ScannerHelper.getYesNoInput("Confirm?");
+        if (confirm) {
+            // Add to Order
+            o.getOrderItems().add(new OrderItem(mi.getId(), quantity, OrderItem.OrderItemType.TYPE_MENU));
+            o.calculateSubtotal();
+            System.out.println("Item Added to Order");
         }
     }
 
@@ -391,6 +446,8 @@ public class OrderMenuUI extends BaseMenu {
         System.out.println("Order ID: " + o.getOrderID());
         System.out.println("Order State: " + ((o.getOrderState() == Order.OrderState.ORDER_PAID) ? "Paid" : "Unpaid"));
         System.out.println("Order Started On: " + DateTimeFormatHelper.formatMillisToDateTime(o.getCreatedAt()));
+        System.out.println("Staff Handling Order: " + ((o.getStaff() == null) ? "Unknown Staff" : "[" + o.getStaff().getStaffId() + "] " + o.getStaff().getStaffName()));
+        System.out.println("Table Number: " + ((o.getTable() == null) ? "Unknown Table" : o.getTable().getTableNum()));
         if (o.getOrderState() == Order.OrderState.ORDER_PAID) System.out.println("Order Completed On: " + DateTimeFormatHelper.formatMillisToDateTime(o.getCompletedAt()));
         System.out.println("List of Order Items:");
         printBreaks(60);
@@ -407,26 +464,6 @@ public class OrderMenuUI extends BaseMenu {
         System.out.println("Order Subtotal: $" + String.format("%.2f", o.getSubtotal()));
         printBreaks(60);
         System.out.println("\n");
-    }
-
-    /**
-     * Prints details regarding the {@link Promotion} object
-     * @param p Promotion Object
-     */
-    private void printPromotionDetail(@NotNull Promotion p) {
-        // Console Length 60
-        // TODO: Discuss if it should still be here
-        StringBuilder sb = new StringBuilder();
-        MenuItem main = FoodMenuUI.retrieveMenuItem(p.getPromoMain());
-        MenuItem drink = FoodMenuUI.retrieveMenuItem(p.getPromoDrink());
-        MenuItem dessert = FoodMenuUI.retrieveMenuItem(p.getPromoDessert());
-        sb.append("Name: ").append(p.getPromoName()).append("\n")
-                .append("Price: $").append(String.format("%.2f", p.getPromoPrice())).append("\n\n")
-                .append("Set Contains:").append("\n");
-        if (main != null) sb.append(String.format("%-52s $%-6.2f", main.getName() + " (" + main.getDescription() + ") ", main.getPrice())).append("\n");
-        if (drink != null) sb.append(String.format("%-52s $%-6.2f", drink.getName() + " (" + drink.getDescription() + ") ", drink.getPrice())).append("\n");
-        if (dessert != null) sb.append(String.format("%-52s $%-6.2f", dessert.getName() + " (" + dessert.getDescription() + ") ", dessert.getPrice())).append("\n");
-        System.out.println(sb.toString());
     }
 
     /**
