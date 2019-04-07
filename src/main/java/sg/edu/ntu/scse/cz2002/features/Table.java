@@ -2,9 +2,11 @@ package sg.edu.ntu.scse.cz2002.features;
 
 import org.jetbrains.annotations.Nullable;
 import sg.edu.ntu.scse.cz2002.MainApp;
+import sg.edu.ntu.scse.cz2002.ui.ReservationMenuUI;
 import sg.edu.ntu.scse.cz2002.util.ICsvSerializable;
 
 import java.text.ParseException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Iterator;
@@ -203,7 +205,7 @@ public class Table implements ICsvSerializable {
      * Method to obtain all tables that have no clashes with bookedTables ArrayList
      * @param numPax Number of people
      * @param bookedTables ArrayList containing tables booked on a specified date. This parameter will only be passed in
-     *                     if invoked from {@Link ReservationMenuUI#findTableForReservation(int, LocalDate, char}
+     *                     if invoked from {@link ReservationMenuUI}
      *                     Otherwise, MainApp.tables should be passed in if invoked from other functions
      * @return ArrayList of Tables
      */
