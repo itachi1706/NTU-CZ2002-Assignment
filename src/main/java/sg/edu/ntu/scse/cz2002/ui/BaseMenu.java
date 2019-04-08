@@ -29,7 +29,7 @@ public abstract class BaseMenu {
     protected abstract int generateMenuScreen();
 
     /**
-     * Other classes calls this method to start the Main Menu on a loop
+     * Other classes calls this method to start the MAIN Menu on a loop
      * @return Exit Code, true to exit the program
      */
     public boolean startMainMenu() {

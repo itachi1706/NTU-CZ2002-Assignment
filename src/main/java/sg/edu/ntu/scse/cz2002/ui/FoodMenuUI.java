@@ -4,6 +4,7 @@ import org.jetbrains.annotations.Nullable;
 import sg.edu.ntu.scse.cz2002.MainApp;
 import sg.edu.ntu.scse.cz2002.objects.menuitem.MenuItem;
 import sg.edu.ntu.scse.cz2002.util.MenuItemCSVHelper;
+import sg.edu.ntu.scse.cz2002.util.ScannerHelper;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -46,14 +47,20 @@ public class FoodMenuUI extends BaseMenu {
                 break;
             case 2: // Create new menu item
 				String newItemName;
-				String newItemType;
+				int newItemType;
 				String newItemDescription;
 				double newItemPrice;
 				
 				System.out.println("Enter new menu item name: ");
 				newItemName = sc.nextLine();
+
 				System.out.println("Enter new menu item type: ");
-				newItemType = sc.nextLine();
+				newItemType = ScannerHelper.getIntegerInput("Enter new menu item type. " +
+						"(1) For Main, " +
+						"(2) For Dessert, " +
+						"(3) For Drink",
+						0,5);
+
 				System.out.println("Enter new menu item description: ");
 				newItemDescription = sc.nextLine();
 				System.out.println("Enter new menu item price: ");
@@ -69,7 +76,7 @@ public class FoodMenuUI extends BaseMenu {
             case 3: // Edit an existing menu item
 				int editItemID;
 				String editItemName;
-				String editItemType;
+				int editItemType;
 				String editItemDescription;
 				double editItemPrice;
 				
@@ -87,10 +94,14 @@ public class FoodMenuUI extends BaseMenu {
 				//e.g. Enter "SCS Ovaltine's new name:"
 				System.out.println("Enter new item name: ");
 				editItemName = sc.nextLine();
-				
-				System.out.println("Enter new item type: ");
-				editItemType = sc.nextLine();
-				
+
+				System.out.println("Enter new menu item type: ");
+				editItemType = ScannerHelper.getIntegerInput("Enter new menu item type. " +
+								"(1) For Main, " +
+								"(2) For Dessert, " +
+								"(3) For Drink",
+						0,5);
+
 				System.out.println("Enter new item description: ");
 				editItemDescription = sc.nextLine();
 				
@@ -151,11 +162,11 @@ public class FoodMenuUI extends BaseMenu {
 	 * Method to add a new menu item.
 	 * (uses "writeToCsv" to facilitate I/O operations from MenuItemCSVHelper.)
 	 * @param newItemName Name of the new menu item to be added.
-	 * @param newItemType Type of the new menu item to be added. Can only be defined as the following enum values: Drink, Main or Dessert.
+	 * @param newItemType Type of the new menu item to be added. Can only be defined as the following enum values: DRINK, MAIN or DESSERT.
 	 * @param newItemDescription Description of the new menu item to be added.
 	 * @param newItemPrice Price of the new menu item to be added.
 	 */
-	public void addNewMenuItem(String newItemName, String newItemType, String newItemDescription, double newItemPrice) {
+	public void addNewMenuItem(String newItemName, int newItemType, String newItemDescription, double newItemPrice) {
 		
 		try {
 			
@@ -182,7 +193,7 @@ public class FoodMenuUI extends BaseMenu {
 			System.out.println("IOException > " + e.getMessage());
 		}
 	}
-	//maybe also do an if-else case to input enum data types, e.g. 1 for Drink, 2 for food***
+	//maybe also do an if-else case to input enum data types, e.g. 1 for DRINK, 2 for food***
 	//eventually do a handler for double, in particular for newItemPrice***
 
 	/**
@@ -190,11 +201,11 @@ public class FoodMenuUI extends BaseMenu {
 	 * (uses "writeToCsv" AND "retrieveMenuItem" to facilitate I/O operations)
 	 * @param targetItemID ID of the existing menu item to be edited.
 	 * @param editItemName Name of the existing menu item to be edited.
-	 * @param editItemType Type of the existing menu item to be edited. Can only be defined as the following enum values: Drink, Main or Dessert.
+	 * @param editItemType Type of the existing menu item to be edited. Can only be defined as the following enum values: DRINK, MAIN or DESSERT.
 	 * @param editItemDescription Description of the existing menu item to be edited.
 	 * @param editItemPrice Price of the existing menu item to be edited.
 	 */
-	public void editMenuItem(int targetItemID, String editItemName, String editItemType, String editItemDescription, double editItemPrice) {
+	public void editMenuItem(int targetItemID, String editItemName, int editItemType, String editItemDescription, double editItemPrice) {
 
 		MenuItemCSVHelper menuHelper = MenuItemCSVHelper.getInstance();
 		
@@ -289,7 +300,26 @@ public class FoodMenuUI extends BaseMenu {
 	 * @param targetItemType type of the menu item objects to be retrieved.
 	 * @return menuItemsFiltered ArrayList containing the menu item type selected
 	 */
+
+	@Deprecated
 	public static ArrayList<MenuItem> retrieveMenuItemListFiltered(String targetItemType) {
+		ArrayList<MenuItem> menuItemsFiltered = new ArrayList<MenuItem>(); //declare new empty arraylist
+
+		for (int i=0; i<(MainApp.menuItems.size()); i++) { //for loop to run through menuitems and to filter out
+
+			MenuItem menuItemObj = MainApp.menuItems.get(i); //gets a menu item object while the loop is running
+
+			//need to change to enum
+			if (menuItemObj.convertToItemType(targetItemType) == menuItemObj.getType()) { //"Menu item of target item types found."
+				menuItemsFiltered.add(menuItemObj); //add the found object into the filtered array list
+			}
+
+		}
+		return menuItemsFiltered;
+	}
+
+	@Nullable
+	public static ArrayList<MenuItem> retrieveMenuItemListFiltered(int targetItemType) {
 
 		ArrayList<MenuItem> menuItemsFiltered = new ArrayList<MenuItem>(); //declare new empty arraylist
 
@@ -297,7 +327,31 @@ public class FoodMenuUI extends BaseMenu {
 
 			MenuItem menuItemObj = MainApp.menuItems.get(i); //gets a menu item object while the loop is running
 
-			if (targetItemType.equals(menuItemObj.getType())) { //"Menu item of target item types found."
+			//need to change to enum
+			if (menuItemObj.convertToItemType(targetItemType) == menuItemObj.getType()) { //"Menu item of target item types found."
+				menuItemsFiltered.add(menuItemObj); //add the found object into the filtered array list
+			}
+
+		}
+		return menuItemsFiltered;
+	}
+
+	/**
+	 * Method returning an ArrayList filtered by one menu item type.
+	 * @param targetItemType type of the menu item objects to be retrieved.
+	 * @return menuItemsFiltered ArrayList containing the menu item type selected
+	 */
+	@Nullable
+	public static ArrayList<MenuItem> retrieveMenuItemListFiltered(MenuItem.MenuItemType targetItemType) {
+
+		ArrayList<MenuItem> menuItemsFiltered = new ArrayList<MenuItem>(); //declare new empty arraylist
+
+		for (int i=0; i<(MainApp.menuItems.size()); i++) { //for loop to run through menuitems and to filter out
+
+			MenuItem menuItemObj = MainApp.menuItems.get(i); //gets a menu item object while the loop is running
+
+			//need to change to enum
+			if (targetItemType == menuItemObj.getType()) { //"Menu item of target item types found."
 				menuItemsFiltered.add(menuItemObj); //add the found object into the filtered array list
 			}
 

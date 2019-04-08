@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Main Application Class
+ * MAIN Application Class
  * Entry point for the RRPSS application
  * @author Kenneth Soh, Francis Lim
  * @version 1.1

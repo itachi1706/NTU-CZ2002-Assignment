@@ -7,11 +7,21 @@ import sg.edu.ntu.scse.cz2002.util.ICsvSerializable;
  */
 public class MenuItem implements ICsvSerializable {
 
+
+
     protected int id;
     protected String name;
-    protected String type;
+    protected int type;
+
+    //use caps for enum just like final
+    //remember that enums are actually classes e.g.
+    //public num Class
+    public enum MenuItemType {TBA, MAIN, DESSERT, DRINK} //these values actually correspond to 0,1,2,3
     protected String description;
     protected double price;
+
+
+    private MenuItemType eType;
 
     /**
      * Default constructor for menu item.
@@ -19,7 +29,7 @@ public class MenuItem implements ICsvSerializable {
     public MenuItem() {
     }
 
-    
+
     /**
      * Constructor to pass in all required parameters for menu item.
      * @param id This menu items's ID.
@@ -28,13 +38,30 @@ public class MenuItem implements ICsvSerializable {
      * @param description This menu item's description.
      * @param price This menu item's price.
      */
-    public MenuItem(int id, String name, String type, String description, double price) {
+    public MenuItem(int id, String name, int type, String description, double price) {
         this.id = id;
         this.name = name;
         this.type = type;
         this.description = description;
         this.price = price;
     }
+
+    /*
+     * Constructor to pass in all required parameters for menu item.
+     * @param id This menu items's ID.
+     * @param name This menu item's name.
+     * @param type This menu item's type.
+     * @param description This menu item's description.
+     * @param price This menu item's price.
+     *
+    @Deprecated
+    public MenuItem(int id, String name, String type, String description, double price) {
+        this.id = id;
+        this.name = name;
+        this.eType = convertToItemType(type);
+        this.description = description;
+        this.price = price;
+    }*/
 
     /**
      * A method to read from a CSV string to convert to an object instance
@@ -44,7 +71,9 @@ public class MenuItem implements ICsvSerializable {
     public MenuItem(String[] csv) {
         this.id = Integer.parseInt(csv[0]);
         this.name = csv[1];
-        this.type = csv[2];
+
+        this.eType = convertToItemType(Integer.parseInt(csv[2]));
+
         this.price = Double.parseDouble(csv[3]);
         this.description = csv[4];
     }
@@ -59,7 +88,13 @@ public class MenuItem implements ICsvSerializable {
         String[] s = new String[5];
         s[0] = this.id + "";
         s[1] = this.name;
-        s[2] = this.type;
+
+        //this is based on what enum it is, converts to the right
+        s[2] =  this.eType == MenuItemType.MAIN      ? "1"    :
+                this.eType == MenuItemType.DESSERT   ? "2" :
+                this.eType ==  MenuItemType.DRINK    ? "3"   :
+                                                        "0";
+
         s[3] = this.price + "";
         s[4] = this.description;
         return s;
@@ -94,17 +129,43 @@ public class MenuItem implements ICsvSerializable {
     }
 
     /**
-     * @return Gets the menu item's type. 
+     * @return Gets the menu item's type.
      */
-    public String getType() {
-        return type;
-    }
+    public MenuItemType getType() {
+        return eType;
+    } //my getters return MenuItemType
+
 
     /**
      * @param type Sets the menu item's type.
      */
+    public void setType(int type) {
+        this.eType = convertToItemType(type);
+    } //my setters can be integer
+
+    /*
+    @Deprecated
     public void setType(String type) {
-        this.type = type;
+        this.type = convertToItemType(type);
+    }*/
+
+    // Compartmentalized method that takes in integer and converts
+    public MenuItemType convertToItemType(int type) {
+        return  type == 1   ? MenuItemType.MAIN     :
+                type == 2   ? MenuItemType.DESSERT  :
+                        type == 3   ? MenuItemType.DRINK    :
+                                MenuItemType.TBA;
+    }
+
+    /**
+     * Dieded. Switch to {@link MenuItem#convertToItemType(int)}
+     * @deprecated Change the damn thing
+     * @param type type
+     * @return type
+     */
+    @Deprecated
+    public MenuItemType convertToItemType(String type) {
+        return MenuItemType.TBA;
     }
 
     /**
