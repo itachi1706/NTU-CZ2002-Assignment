@@ -23,12 +23,6 @@ public class MenuItem implements ICsvSerializable {
 
     private MenuItemType eType;
 
-    /**
-     * Default constructor for menu item.
-     */
-    public MenuItem() {
-    }
-
 
     /**
      * Constructor to pass in all required parameters for menu item.

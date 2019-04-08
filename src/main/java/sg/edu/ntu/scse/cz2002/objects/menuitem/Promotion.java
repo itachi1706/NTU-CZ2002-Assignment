@@ -18,12 +18,6 @@ public class Promotion implements ICsvSerializable {
     protected int promoMain;
     protected int promoDessert;
     protected int promoDrink;
-	
-    /**
-     * Default constructor
-     */
-    public Promotion() {
-    }
 
     /**
      * Constructor to pass in all attributes

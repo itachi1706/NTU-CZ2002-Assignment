@@ -58,7 +58,7 @@ public class FoodMenuUI extends BaseMenu {
 						"(1) Main | " +
 						"(2) Dessert | " +
 						"(3) Drink\n",
-						0,5);
+						0,4);
 
 				System.out.println("Enter new menu item description: ");
 				newItemDescription = sc.nextLine();
@@ -97,7 +97,7 @@ public class FoodMenuUI extends BaseMenu {
 								"(1) Main | " +
 								"(2) Dessert | " +
 								"(3) Drink\n",
-						0,5);
+						0,4);
 
 				System.out.println("Enter new item description: ");
 				editItemDescription = sc.nextLine();
