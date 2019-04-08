@@ -1,7 +1,6 @@
 package sg.edu.ntu.scse.cz2002;
 
 import sg.edu.ntu.scse.cz2002.features.Invoice;
-import sg.edu.ntu.scse.cz2002.features.Order;
 import sg.edu.ntu.scse.cz2002.features.Reservation;
 import sg.edu.ntu.scse.cz2002.features.Table;
 import sg.edu.ntu.scse.cz2002.objects.menuitem.MenuItem;
@@ -27,6 +26,8 @@ import java.util.stream.Collectors;
  * @since 2019-03-29
  */
 public class MainApp {
+
+    public static final String APP_NAME = "BMT Cookhouse";
 
     /**
      * The list of tables available in the restaurant

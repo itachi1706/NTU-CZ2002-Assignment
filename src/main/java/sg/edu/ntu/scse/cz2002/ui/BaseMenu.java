@@ -64,7 +64,7 @@ public abstract class BaseMenu {
     protected static void printHeader(String headerName, int length) {
         printBreaks(length);
         // Do fancy parsing of header to center it (size 40)
-        int noOfSpaces = (length - headerName.length()) / 2;
+        int noOfSpaces = (headerName.length() > length) ? 0 : ((length - headerName.length()) / 2);
         Stream.generate(() -> " ").limit(noOfSpaces).forEach(System.out::print);
         System.out.println(headerName);
         printBreaks(length);

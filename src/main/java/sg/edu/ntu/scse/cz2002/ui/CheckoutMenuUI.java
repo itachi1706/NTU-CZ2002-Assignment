@@ -6,11 +6,13 @@ import sg.edu.ntu.scse.cz2002.features.Invoice;
 import sg.edu.ntu.scse.cz2002.features.Order;
 import sg.edu.ntu.scse.cz2002.features.Table;
 import sg.edu.ntu.scse.cz2002.objects.menuitem.ItemNotFoundException;
+import sg.edu.ntu.scse.cz2002.objects.person.Staff;
 import sg.edu.ntu.scse.cz2002.util.DateTimeFormatHelper;
 import sg.edu.ntu.scse.cz2002.util.ScannerHelper;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.stream.Stream;
 
 /**
  * Menu UI Flow for Checkout and Invoice Printing
@@ -114,13 +116,15 @@ public class CheckoutMenuUI extends BaseMenu {
 
         System.out.println("Generating Receipt...");
         // TODO: Set table to VACANT, move order to complete
-        // TODO: Print receipt, save receipt in data/receipts/ordernumber.txt
-        // TODO: Create invoice object that basically extends the order object with receipt path
         // TODO: Remove order from incomplete orders
         o.markPaid();
-        Invoice i = new Invoice(o, "path", paymentType, total, paid);
+        ArrayList<String> receipt = generateReceipt(o, total, paid, paymentType);
+        System.out.println();
+        receipt.forEach(System.out::println);
+        // TODO: Save receipt to file and update invoice path in invoice (datapath: data/receipts/ordernumber.txt)
+        Invoice i = new Invoice(o, "TODO: Add path", paymentType, total, paid);
         MainApp.invoices.add(i);
-        MainApp.saveAll();
+        System.out.println("\n");
         System.out.println("Returning to Main Menu...");
         return true;
     }
@@ -131,6 +135,56 @@ public class CheckoutMenuUI extends BaseMenu {
         // TODO: Get receipt from data/receipts/ordernumber.txt
         // TODO: If that fails, regenerate and save
         // TODO: Show receipt :D
+        System.out.println("Feature coming soon!");
+    }
+
+    private ArrayList<String> generateReceipt(@NotNull Order o, double total, double paid, Invoice.PaymentType type) {
+        // Max Length of receipt is 50
+        Table t = o.getTable();
+        Staff s = o.getStaff();
+        int tableNum = (t == null) ? -1 : t.getTableNum();
+        String staffName = (s == null) ? "Unknown" : s.getStaffName() + " (" + s.getStaffId() + ")";
+        ArrayList<String> receiptStrings = new ArrayList<>();
+        receiptStrings.add(centerText(MainApp.APP_NAME, 60, ' '));
+        receiptStrings.add(spacer(60, '_'));
+        receiptStrings.add(centerText("Block N4, SCSE, NTU Singapore", 60, ' '));
+        receiptStrings.add(centerText("50 Nanyang Ave, SG 639798", 60, ' '));
+        receiptStrings.add("");
+        receiptStrings.add(String.format("%-35s%-20s", "Check #: " + o.getOrderID(), "Server: " + staffName));
+        receiptStrings.add(String.format("%-35s%-20s", "Date: " + DateTimeFormatHelper.formatMillisToDateTime(o.getCompletedAt()),  "Table: " + tableNum));
+        receiptStrings.add(spacer(60, '_'));
+        // Print order items
+        o.getOrderItems().forEach((item) -> receiptStrings.add(String.format(" %-3sx %-45s $%6.2f", item.getQuantity(), item.getItemName(), item.getItemTotal())));
+        receiptStrings.add(spacer(60, '_'));
+        receiptStrings.add(String.format("%51s $%6.2f", "Order Subtotal: ", o.getSubtotal()));
+        receiptStrings.add(String.format("%51s $%6.2f", "GST (7%): ", total - o.getSubtotal()));
+        receiptStrings.add(spacer(60, '_'));
+        receiptStrings.add(String.format("%51s $%6.2f", "Total: ", total));
+        receiptStrings.add(spacer(60, '_'));
+        receiptStrings.add(String.format("%51s $%6.2f", "Paid (" + type.toString() + "): ", paid));
+        if (type == Invoice.PaymentType.PAYMENT_CASH) receiptStrings.add(String.format("%51s $%6.2f\n", "Change: ", (paid > total) ? Math.abs(total - paid) : 0));
+        receiptStrings.add(spacer(60, '_'));
+        receiptStrings.add("");
+        receiptStrings.add("");
+        receiptStrings.add(centerText("Thank you and have a nice day!", 60, ' '));
+        receiptStrings.add(centerText("Transaction Completed: " + DateTimeFormatHelper.formatMillisToDateTime(o.getCompletedAt()), 60, ' '));
+        return receiptStrings;
+    }
+
+    private String centerText(String toCenter, int length, char spacer) {
+        // Do fancy centering
+        StringBuilder sb = new StringBuilder();
+        int noOfSpaces = (toCenter.length() > length) ? 0 : (length - toCenter.length()) / 2;
+        Stream.generate(() -> spacer).limit(noOfSpaces).forEach(sb::append);
+        sb.append(toCenter);
+        return sb.toString();
+    }
+
+    private String spacer(int length, char spacer) {
+        // Do fancy centering
+        StringBuilder sb = new StringBuilder();
+        Stream.generate(() -> spacer).limit(length).forEach(sb::append);
+        return sb.toString();
     }
 
     private double requestCashPayment(double total) {
