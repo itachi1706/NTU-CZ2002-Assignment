@@ -41,7 +41,7 @@ public class MenuItem implements ICsvSerializable {
     public MenuItem(int id, String name, int type, String description, double price) {
         this.id = id;
         this.name = name;
-        this.type = type;
+        this.eType = convertToItemType(type);
         this.description = description;
         this.price = price;
     }

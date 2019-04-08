@@ -54,11 +54,10 @@ public class FoodMenuUI extends BaseMenu {
 				System.out.println("Enter new menu item name: ");
 				newItemName = sc.nextLine();
 
-				System.out.println("Enter new menu item type: ");
-				newItemType = ScannerHelper.getIntegerInput("Enter new menu item type. " +
-						"(1) For Main, " +
-						"(2) For Dessert, " +
-						"(3) For Drink",
+				newItemType = ScannerHelper.getIntegerInput("Enter the number of the new menu item type: \n" +
+						"(1) Main | " +
+						"(2) Dessert | " +
+						"(3) Drink\n",
 						0,5);
 
 				System.out.println("Enter new menu item description: ");
@@ -84,8 +83,7 @@ public class FoodMenuUI extends BaseMenu {
 				System.out.println("Enter the ID of the menu item to be edited: ");
 				editItemID = sc.nextInt();
 				sc.nextLine(); //clear for I.F.D.
-				
-				
+
 				//consideration: retrieve object first, then do edit later?
 				//CURRENT WAY: one shot do the edit and passing in of values.
 				
@@ -95,11 +93,10 @@ public class FoodMenuUI extends BaseMenu {
 				System.out.println("Enter new item name: ");
 				editItemName = sc.nextLine();
 
-				System.out.println("Enter new menu item type: ");
-				editItemType = ScannerHelper.getIntegerInput("Enter new menu item type. " +
-								"(1) For Main, " +
-								"(2) For Dessert, " +
-								"(3) For Drink",
+				editItemType = ScannerHelper.getIntegerInput("Enter the number of the new menu item type: \n" +
+								"(1) Main | " +
+								"(2) Dessert | " +
+								"(3) Drink\n",
 						0,5);
 
 				System.out.println("Enter new item description: ");
@@ -271,7 +268,7 @@ public class FoodMenuUI extends BaseMenu {
 		}
 
 		System.out.println("Target menu item not found.");	
-		return;		
+		return;
 	}
 
 	/**
@@ -295,32 +292,16 @@ public class FoodMenuUI extends BaseMenu {
 		return null; //"Target menu item not found."
 	}
 
+
+
+
 	/**
 	 * Method returning an ArrayList filtered by one menu item type.
 	 * @param targetItemType type of the menu item objects to be retrieved.
 	 * @return menuItemsFiltered ArrayList containing the menu item type selected
 	 */
-
 	@Deprecated
 	public static ArrayList<MenuItem> retrieveMenuItemListFiltered(String targetItemType) {
-		ArrayList<MenuItem> menuItemsFiltered = new ArrayList<MenuItem>(); //declare new empty arraylist
-
-		for (int i=0; i<(MainApp.menuItems.size()); i++) { //for loop to run through menuitems and to filter out
-
-			MenuItem menuItemObj = MainApp.menuItems.get(i); //gets a menu item object while the loop is running
-
-			//need to change to enum
-			if (menuItemObj.convertToItemType(targetItemType) == menuItemObj.getType()) { //"Menu item of target item types found."
-				menuItemsFiltered.add(menuItemObj); //add the found object into the filtered array list
-			}
-
-		}
-		return menuItemsFiltered;
-	}
-
-	@Nullable
-	public static ArrayList<MenuItem> retrieveMenuItemListFiltered(int targetItemType) {
-
 		ArrayList<MenuItem> menuItemsFiltered = new ArrayList<MenuItem>(); //declare new empty arraylist
 
 		for (int i=0; i<(MainApp.menuItems.size()); i++) { //for loop to run through menuitems and to filter out
@@ -349,6 +330,8 @@ public class FoodMenuUI extends BaseMenu {
 		for (int i=0; i<(MainApp.menuItems.size()); i++) { //for loop to run through menuitems and to filter out
 
 			MenuItem menuItemObj = MainApp.menuItems.get(i); //gets a menu item object while the loop is running
+
+
 
 			//need to change to enum
 			if (targetItemType == menuItemObj.getType()) { //"Menu item of target item types found."
