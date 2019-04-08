@@ -292,18 +292,16 @@ public class OrderMenuUI extends BaseMenu {
 
     private void addAlaCarteItem(@NotNull Order o) {
         System.out.println("Select Ala-Carte Item Types:");
-        System.out.println("1) Appetizers");
-        System.out.println("2) Mains");
-        System.out.println("3) Dessert");
-        System.out.println("4) Drinks");
+        System.out.println("1) Main Dishes");
+        System.out.println("2) Dessert");
+        System.out.println("3) Drinks");
         System.out.println("0) Cancel");
-        int selection = doMenuChoice(4, 0);
-        String type;
+        int selection = doMenuChoice(3, 0);
+        MenuItem.MenuItemType type;
         switch (selection) {
-            case 1: type = "Appetizer"; break;
-            case 2: type = "Main"; break;
-            case 3: type = "Dessert"; break;
-            case 4: type = "Drink"; break;
+            case 1: type = MenuItem.MenuItemType.MAIN; break;
+            case 2: type = MenuItem.MenuItemType.DESSERT; break;
+            case 3: type = MenuItem.MenuItemType.DRINK; break;
             case 0: return;
             default: throw new IllegalStateException("Invalid Choice (Order Ala Carte Item Add");
         }

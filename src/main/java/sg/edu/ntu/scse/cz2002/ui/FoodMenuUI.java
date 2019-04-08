@@ -292,31 +292,6 @@ public class FoodMenuUI extends BaseMenu {
 		return null; //"Target menu item not found."
 	}
 
-
-
-
-	/**
-	 * Method returning an ArrayList filtered by one menu item type.
-	 * @param targetItemType type of the menu item objects to be retrieved.
-	 * @return menuItemsFiltered ArrayList containing the menu item type selected
-	 */
-	@Deprecated
-	public static ArrayList<MenuItem> retrieveMenuItemListFiltered(String targetItemType) {
-		ArrayList<MenuItem> menuItemsFiltered = new ArrayList<MenuItem>(); //declare new empty arraylist
-
-		for (int i=0; i<(MainApp.menuItems.size()); i++) { //for loop to run through menuitems and to filter out
-
-			MenuItem menuItemObj = MainApp.menuItems.get(i); //gets a menu item object while the loop is running
-
-			//need to change to enum
-			if (menuItemObj.convertToItemType(targetItemType) == menuItemObj.getType()) { //"Menu item of target item types found."
-				menuItemsFiltered.add(menuItemObj); //add the found object into the filtered array list
-			}
-
-		}
-		return menuItemsFiltered;
-	}
-
 	/**
 	 * Method returning an ArrayList filtered by one menu item type.
 	 * @param targetItemType type of the menu item objects to be retrieved.
@@ -325,7 +300,7 @@ public class FoodMenuUI extends BaseMenu {
 	@Nullable
 	public static ArrayList<MenuItem> retrieveMenuItemListFiltered(MenuItem.MenuItemType targetItemType) {
 
-		ArrayList<MenuItem> menuItemsFiltered = new ArrayList<MenuItem>(); //declare new empty arraylist
+		ArrayList<MenuItem> menuItemsFiltered = new ArrayList<>(); //declare new empty arraylist
 
 		for (int i=0; i<(MainApp.menuItems.size()); i++) { //for loop to run through menuitems and to filter out
 

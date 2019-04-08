@@ -40,23 +40,6 @@ public class MenuItem implements ICsvSerializable {
         this.price = price;
     }
 
-    /*
-     * Constructor to pass in all required parameters for menu item.
-     * @param id This menu items's ID.
-     * @param name This menu item's name.
-     * @param type This menu item's type.
-     * @param description This menu item's description.
-     * @param price This menu item's price.
-     *
-    @Deprecated
-    public MenuItem(int id, String name, String type, String description, double price) {
-        this.id = id;
-        this.name = name;
-        this.eType = convertToItemType(type);
-        this.description = description;
-        this.price = price;
-    }*/
-
     /**
      * A method to read from a CSV string to convert to an object instance
      * This needs to be overridden if you need to retrieve CSV data from file
@@ -137,29 +120,12 @@ public class MenuItem implements ICsvSerializable {
         this.eType = convertToItemType(type);
     } //my setters can be integer
 
-    /*
-    @Deprecated
-    public void setType(String type) {
-        this.type = convertToItemType(type);
-    }*/
-
     // Compartmentalized method that takes in integer and converts
     public MenuItemType convertToItemType(int type) {
         return  type == 1   ? MenuItemType.MAIN     :
                 type == 2   ? MenuItemType.DESSERT  :
                         type == 3   ? MenuItemType.DRINK    :
                                 MenuItemType.TBA;
-    }
-
-    /**
-     * Dieded. Switch to {@link MenuItem#convertToItemType(int)}
-     * @deprecated Change the damn thing
-     * @param type type
-     * @return type
-     */
-    @Deprecated
-    public MenuItemType convertToItemType(String type) {
-        return MenuItemType.TBA;
     }
 
     /**
