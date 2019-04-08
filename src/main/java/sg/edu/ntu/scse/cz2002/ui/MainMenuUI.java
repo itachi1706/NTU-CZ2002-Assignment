@@ -3,7 +3,6 @@ package sg.edu.ntu.scse.cz2002.ui;
 import sg.edu.ntu.scse.cz2002.MainApp;
 import sg.edu.ntu.scse.cz2002.features.Table;
 import sg.edu.ntu.scse.cz2002.features.Table.TableState;
-import sg.edu.ntu.scse.cz2002.objects.menuitem.MenuItem;
 
 /**
  * The MAIN Menu UI
@@ -26,7 +25,7 @@ public class MainMenuUI extends BaseMenu {
         System.out.println("3) Order Management");
         System.out.println("4) Reservation Management");
         System.out.println("5) Check Table Availability");
-        System.out.println("6) Print Bill Invoice");
+        System.out.println("6) Checkout/Print Bill Invoice");
         System.out.println("7) Print sale revenue report");
         System.out.println("8) Staff Management");
         System.out.println("0) Exit");
@@ -51,7 +50,7 @@ public class MainMenuUI extends BaseMenu {
                 checkTableAvailability();
                 break;
             case 6:
-                // TODO: To Implement
+                if (new CheckoutMenuUI().startMainMenu()) return 1;
                 break;
             case 7:
                 // TODO: To Implement

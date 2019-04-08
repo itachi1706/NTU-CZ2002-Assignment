@@ -440,7 +440,7 @@ public class OrderMenuUI extends BaseMenu {
      * @param tag A tag to append to the header
      * @param tableSort Whether to sort by tables Number or by order ID
      */
-    private void printOrderList(@NotNull ArrayList<Order> orders, String tag, boolean tableSort) {
+    public static void printOrderList(@NotNull ArrayList<Order> orders, String tag, boolean tableSort) {
         printHeader("Order List (" + tag + ")", 110);
         if (orders.size() == 0) System.out.println("No orders found");
         else {
