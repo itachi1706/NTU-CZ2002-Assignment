@@ -21,9 +21,11 @@ public class CheckoutMenuUI extends BaseMenu {
         switch (choice) {
             case 1:
                 // TODO: Checkout
+                if (checkout()) return -1; // If completed, go back to main menu
                 break;
             case 2:
                 // TODO: Reprint Invoice for completed orders
+                reprint();
                 break;
             case 3:
                 return -1;
@@ -35,5 +37,27 @@ public class CheckoutMenuUI extends BaseMenu {
                 //throw new IllegalStateException("Invalid Choice (Checkout)");
         }
         return 0;
+    }
+
+    private boolean checkout() {
+        // TODO: Print list of unpaid orders by table
+        // TODO: Select table number to checkout (-1 to cancel)
+        // TODO: Show order details with subtotal and GST and final total
+        // TODO: Ask what payment mode
+        // TODO: If card, process immediately and skip next step
+        // TODO: If cash, get cash and find change (if cash < total, ask for more cash)
+        // TODO: Set table to VACANT, move order to complete
+        // TODO: Print receipt, save receipt in data/receipts/ordernumber.txt
+        // TODO: Create invoice object that basically extends the order object with receipt path
+
+        return true;
+    }
+
+    private void reprint() {
+        // TODO: Print list of invoices in a table
+        // TODO: Select invoice to reprint (by id)
+        // TODO: Get receipt from data/receipts/ordernumber.txt
+        // TODO: If that fails, regenerate and save
+        // TODO: Show receipt :D
     }
 }

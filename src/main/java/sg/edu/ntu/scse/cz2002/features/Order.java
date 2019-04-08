@@ -70,6 +70,21 @@ public class Order implements ICsvSerializable {
     }
 
     /**
+     * Internal method to be used by subclasses to init
+     * @param o Order object
+     */
+    protected Order(Order o) {
+        this.subtotal = o.getSubtotal();
+        this.orderItems = o.getOrderItems();
+        this.orderState = o.getOrderState();
+        this.orderID = o.getOrderID();
+        this.completedAt = o.getCompletedAt();
+        this.createdAt = o.getCreatedAt(); // Current Time
+        this.staffId = o.getStaffId();
+        this.tableId = o.getTableId();
+    }
+
+    /**
      * A method to read from a CSV string to convert to an object instance
      * This needs to be overridden if you need to retrieve CSV data from file
      * @param csv A string array of the CSV file

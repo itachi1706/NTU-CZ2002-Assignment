@@ -5,12 +5,6 @@ import sg.edu.ntu.scse.cz2002.features.Reservation;
 import sg.edu.ntu.scse.cz2002.features.Table;
 import sg.edu.ntu.scse.cz2002.objects.menuitem.MenuItem;
 import sg.edu.ntu.scse.cz2002.objects.menuitem.Promotion;
-import sg.edu.ntu.scse.cz2002.ui.MainMenuUI;
-import sg.edu.ntu.scse.cz2002.util.FileIOHelper;
-import sg.edu.ntu.scse.cz2002.util.MenuItemCSVHelper;
-import sg.edu.ntu.scse.cz2002.util.PromoCSVHelper;
-import sg.edu.ntu.scse.cz2002.util.ReservationCSVHelper;
-import sg.edu.ntu.scse.cz2002.util.TableCSVHelper;
 import sg.edu.ntu.scse.cz2002.objects.person.Staff;
 import sg.edu.ntu.scse.cz2002.ui.MainMenuUI;
 import sg.edu.ntu.scse.cz2002.util.*;
@@ -18,10 +12,8 @@ import sg.edu.ntu.scse.cz2002.util.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.text.ParseException;
-import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -48,7 +40,7 @@ public class MainApp {
     /**
      * List of completed orders (to be saved to CSV)
      */
-    public static ArrayList<Order> completedOrders;
+    public static ArrayList<Order> completedOrders; // TODO: Change to invoice here and adapt accordingly
 
     /**
      * The list of reservations loaded into the program
