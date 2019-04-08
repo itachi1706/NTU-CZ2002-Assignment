@@ -15,6 +15,7 @@ import sg.edu.ntu.scse.cz2002.util.DateTimeFormatHelper;
 import sg.edu.ntu.scse.cz2002.util.ScannerHelper;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.stream.IntStream;
 
 /**
@@ -189,22 +190,23 @@ public class OrderMenuUI extends BaseMenu {
         System.out.println("1) View Paid Orders");
         System.out.println("2) View Unpaid Orders");
         System.out.println("3) View All");
-        System.out.println("4) View Specific Order Details");
+        System.out.println("4) View Specific Order Details by Order ID");
+        System.out.println("5) View Specific Unpaid Order Details by Table Number");
         System.out.println("0) Cancel");
 
-        int choice = doMenuChoice(4, 0);
+        int choice = doMenuChoice(5, 0);
         switch (choice) {
             case 1:
-                printOrderList(MainApp.completedOrders, "Paid");
+                printOrderList(MainApp.completedOrders, "Paid", false);
                 break;
             case 2:
-                printOrderList(incompleteOrders, "Unpaid");
+                printOrderList(incompleteOrders, "Unpaid", false);
                 break;
             case 3:
                 ArrayList<Order> consolidate = new ArrayList<>();
                 consolidate.addAll(MainApp.completedOrders);
                 consolidate.addAll(incompleteOrders);
-                printOrderList(consolidate, "All");
+                printOrderList(consolidate, "All", false);
                 break;
             case 4:
                 int orderid = ScannerHelper.getIntegerInput("Enter Order ID: ");
@@ -213,6 +215,22 @@ public class OrderMenuUI extends BaseMenu {
                     System.out.println("No Orders found");
                 else
                     printOrderDetails(o);
+                break;
+            case 5:
+                if (incompleteOrders.size() == 0) {
+                    System.out.println("No orders found");
+                    System.out.println();
+                    break;
+                }
+                HashMap<Integer, Order> tOrders = new HashMap<>();
+                incompleteOrders.forEach((s) -> {
+                    Table c = s.getTable();
+                    if (c == null) return;
+                    tOrders.put(c.getTableNum(), s);
+                });
+                printOrderList(incompleteOrders, "Unpaid", true);
+                int table = ScannerHelper.getIntegerInput("Select table number: ", new ArrayList<>(tOrders.keySet()), "Invalid Input. Please make sure you selected a table number");
+                printOrderDetails(tOrders.get(table));
                 break;
             case 0:
                 return;
@@ -420,19 +438,36 @@ public class OrderMenuUI extends BaseMenu {
      * Prints the list of Orders
      * @param orders A list of order
      * @param tag A tag to append to the header
+     * @param tableSort Whether to sort by tables Number or by order ID
      */
-    private void printOrderList(@NotNull ArrayList<Order> orders, String tag) {
-        printHeader("Order List (" + tag + ")", 100);
+    private void printOrderList(@NotNull ArrayList<Order> orders, String tag, boolean tableSort) {
+        printHeader("Order List (" + tag + ")", 110);
         if (orders.size() == 0) System.out.println("No orders found");
-        else orders.forEach(o -> {
-            String date = DateTimeFormatHelper.formatMillisToDateTime(o.getCreatedAt());
-            String state = (o.getOrderState() == Order.OrderState.ORDER_PAID) ? "Paid" : "Unpaid";
-            System.out.print("Order #" + o.getOrderID() + ", No of Unique items: " + o.getOrderItems().size() + ", Created On: " + date + ", Status: " + state);
-            if (o.getOrderState() == Order.OrderState.ORDER_PAID)
-                System.out.print(", Paid On: " + DateTimeFormatHelper.formatMillisToDateTime(o.getCompletedAt()));
-            System.out.printf(", Subtotal: %.2f\n", o.getSubtotal());
-        });
-        printBreaks(100);
+        else {
+            // Sort orders by table number
+            if (tableSort) {
+                orders.sort((o1, o2) -> {
+                    if (o1.getTable() == null) return 1; // o2 higher
+                    if (o2.getTable() == null) return -1; // o1 higher
+                    return o1.getTable().getTableNum() - o2.getTable().getTableNum();
+                });
+            }
+            orders.forEach(o -> {
+                String date = DateTimeFormatHelper.formatMillisToDateTime(o.getCreatedAt());
+                String state = (o.getOrderState() == Order.OrderState.ORDER_PAID) ? "Paid" : "Unpaid";
+                Table t = o.getTable();
+                if (t == null) return; // Don't get no tables ones for some reason
+                if (tableSort)
+                    System.out.print("Table #" + t.getTableNum() + ": Order #" + o.getOrderID() + ", ");
+                else
+                    System.out.print("Order #" + o.getOrderID() + ": Table #" + t.getTableNum() + ", ");
+                System.out.print("No of Unique items: " + o.getOrderItems().size() + ", Created On: " + date + ", Status: " + state);
+                if (o.getOrderState() == Order.OrderState.ORDER_PAID)
+                    System.out.print(", Paid On: " + DateTimeFormatHelper.formatMillisToDateTime(o.getCompletedAt()));
+                System.out.printf(", Subtotal: %.2f\n", o.getSubtotal());
+            });
+        }
+        printBreaks(110);
     }
 
     /**
