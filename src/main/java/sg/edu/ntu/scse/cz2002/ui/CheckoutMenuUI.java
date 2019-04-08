@@ -1,6 +1,7 @@
 package sg.edu.ntu.scse.cz2002.ui;
 
 import org.jetbrains.annotations.NotNull;
+import sg.edu.ntu.scse.cz2002.MainApp;
 import sg.edu.ntu.scse.cz2002.features.Invoice;
 import sg.edu.ntu.scse.cz2002.features.Order;
 import sg.edu.ntu.scse.cz2002.features.Table;
@@ -115,7 +116,12 @@ public class CheckoutMenuUI extends BaseMenu {
         // TODO: Set table to VACANT, move order to complete
         // TODO: Print receipt, save receipt in data/receipts/ordernumber.txt
         // TODO: Create invoice object that basically extends the order object with receipt path
-
+        // TODO: Remove order from incomplete orders
+        o.markPaid();
+        Invoice i = new Invoice(o, "path", paymentType, total, paid);
+        MainApp.invoices.add(i);
+        MainApp.saveAll();
+        System.out.println("Returning to Main Menu...");
         return true;
     }
 

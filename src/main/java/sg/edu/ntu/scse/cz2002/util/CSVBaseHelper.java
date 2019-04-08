@@ -26,6 +26,7 @@ public class CSVBaseHelper {
      */
     protected List<String[]> readAll(BufferedReader reader, int skip) {
         List<String> tmp = reader.lines().collect(Collectors.toList());
+        if (tmp.size() == 0) return new ArrayList<>(); // Empty CSV file
         IntStream.range(0, skip).forEach((i) -> tmp.remove(0));
         List<String[]> result = new ArrayList<>();
         tmp.forEach((s) -> {
