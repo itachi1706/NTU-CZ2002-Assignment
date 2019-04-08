@@ -6,7 +6,7 @@ import sg.edu.ntu.scse.cz2002.features.Table.TableState;
 import sg.edu.ntu.scse.cz2002.objects.menuitem.MenuItem;
 
 /**
- * The Main Menu UI
+ * The MAIN Menu UI
  *
  * @author Kenneth Soh
  * @version 1.0
@@ -20,7 +20,7 @@ public class MainMenuUI extends BaseMenu {
      */
     @Override
     protected int generateMenuScreen() {
-        printHeader("Main Menu");
+        printHeader("MAIN Menu");
         System.out.println("1) Menu Items Management");
         System.out.println("2) Promotions Management");
         System.out.println("3) Order Management");
@@ -62,7 +62,7 @@ public class MainMenuUI extends BaseMenu {
             case 0:
                 return 1; // Shutdown
             default:
-                throw new IllegalStateException("Invalid Choice (Main Menu)");
+                throw new IllegalStateException("Invalid Choice (MAIN Menu)");
         }
         return 0;
     }

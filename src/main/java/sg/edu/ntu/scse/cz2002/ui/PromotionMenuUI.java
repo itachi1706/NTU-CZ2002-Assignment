@@ -149,9 +149,9 @@ public class PromotionMenuUI extends BaseMenu {
 			System.out.println("Promotion ID: " + promotion.getPromoID());
 			System.out.println("Promotion Name: " + promotion.getPromoName());
 			System.out.println("Promotion Price: " + promotion.getPromoPrice());
-			System.out.println("Promotion Main: [" + promotion.getPromoMain() + "] "+ mainItem.getName());
-			System.out.println("Promotion Dessert: [" + promotion.getPromoDessert() + "] "+ dessertItem.getName());
-			System.out.println("Promotion Drink: [" + promotion.getPromoDrink() + "] "+ drinkItem.getName());
+			System.out.println("Promotion MAIN: [" + promotion.getPromoMain() + "] "+ mainItem.getName());
+			System.out.println("Promotion DESSERT: [" + promotion.getPromoDessert() + "] "+ dessertItem.getName());
+			System.out.println("Promotion DRINK: [" + promotion.getPromoDrink() + "] "+ drinkItem.getName());
 			
 		}
 	}
@@ -189,9 +189,9 @@ public class PromotionMenuUI extends BaseMenu {
 	 * @param targetPromoID ID of the promotion to be edited.
 	 * @param editPromoName Name of the promotion to be edited.
 	 * @param editPromoPrice Price of the promotion to be edited.
-	 * @param editPromoMain Main of the promotion to be edited.
-	 * @param editPromoDessert Dessert of the promotion to be edited.
-	 * @param editPromoDrink Drink of the promotion to be edited.
+	 * @param editPromoMain MAIN of the promotion to be edited.
+	 * @param editPromoDessert DESSERT of the promotion to be edited.
+	 * @param editPromoDrink DRINK of the promotion to be edited.
 	 */
 	public void editPromotion(int targetPromoID, String editPromoName, double editPromoPrice, int editPromoMain, int editPromoDessert, int editPromoDrink) {
 
@@ -272,9 +272,8 @@ public class PromotionMenuUI extends BaseMenu {
 			}
 			
 		}
-		
-		System.out.println("Target promotion not found.");
-		return null;
+
+		return null; //"Target promotion not found."
 	}
 	
 
