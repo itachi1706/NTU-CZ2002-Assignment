@@ -82,6 +82,42 @@ public class ScannerHelper {
     }
 
     /**
+     * Double input with validation of invalid characters entered
+     * @param prompt Text to prompt for the input, pass in empty string for no prompt
+     * @return Double input value
+     */
+    public static double getDoubleInput(String prompt) {
+        Scanner input = getScannerInput();
+        double val;
+        while (true) {
+            System.out.print(prompt);
+            try {
+                val = input.nextDouble();
+                break;
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid Input. Please enter numbers only");
+            } finally {
+                input.nextLine();
+            }
+        }
+        return val;
+    }
+
+    /**
+     * Integer input with a minimum double
+     * @param prompt Text to prompt for the input, pass in empty string for no prompt
+     * @param min Minimum input (exclusive)
+     * @return Validated Input
+     */
+    public static double getDoubleInput(String prompt, int min) {
+        while (true) {
+            double val = getDoubleInput(prompt);
+            if (val > min) return val;
+            System.out.println("Invalid Input. Please ensure you enter a number greater than " + min);
+        }
+    }
+
+    /**
      * Yes/No Prompt
      * @param prompt Text to prompt for the input, pass in empty string for no prompt
      * @return true if yes, false if no

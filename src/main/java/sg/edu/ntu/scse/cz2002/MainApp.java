@@ -1,16 +1,10 @@
 package sg.edu.ntu.scse.cz2002;
 
-import sg.edu.ntu.scse.cz2002.features.Order;
+import sg.edu.ntu.scse.cz2002.features.Invoice;
 import sg.edu.ntu.scse.cz2002.features.Reservation;
 import sg.edu.ntu.scse.cz2002.features.Table;
 import sg.edu.ntu.scse.cz2002.objects.menuitem.MenuItem;
 import sg.edu.ntu.scse.cz2002.objects.menuitem.Promotion;
-import sg.edu.ntu.scse.cz2002.ui.MainMenuUI;
-import sg.edu.ntu.scse.cz2002.util.FileIOHelper;
-import sg.edu.ntu.scse.cz2002.util.MenuItemCSVHelper;
-import sg.edu.ntu.scse.cz2002.util.PromoCSVHelper;
-import sg.edu.ntu.scse.cz2002.util.ReservationCSVHelper;
-import sg.edu.ntu.scse.cz2002.util.TableCSVHelper;
 import sg.edu.ntu.scse.cz2002.objects.person.Staff;
 import sg.edu.ntu.scse.cz2002.ui.MainMenuUI;
 import sg.edu.ntu.scse.cz2002.util.*;
@@ -18,10 +12,8 @@ import sg.edu.ntu.scse.cz2002.util.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.text.ParseException;
-import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -34,6 +26,8 @@ import java.util.stream.Collectors;
  * @since 2019-03-29
  */
 public class MainApp {
+
+    public static final String APP_NAME = "BMT Cookhouse";
 
     /**
      * The list of tables available in the restaurant
@@ -48,7 +42,7 @@ public class MainApp {
     /**
      * List of completed orders (to be saved to CSV)
      */
-    public static ArrayList<Order> completedOrders;
+    public static ArrayList<Invoice> invoices; //
 
     /**
      * The list of reservations loaded into the program
@@ -86,7 +80,7 @@ public class MainApp {
         ReservationCSVHelper reservationCsv = ReservationCSVHelper.getInstance();
         TableCSVHelper tableCsv = TableCSVHelper.getInstance();
         StaffCSVHelper staffCsv = StaffCSVHelper.getInstance();
-        OrderCSVHelper orderCsv = OrderCSVHelper.getInstance();
+        InvoiceCSVHelper invoiceCsv = InvoiceCSVHelper.getInstance();
         try {
             System.out.println("Loading Menu Items from file...");
             menuItems = menuItemCsv.readFromCsv();
@@ -108,9 +102,9 @@ public class MainApp {
             staffs = staffCsv.readFromCsv();
             System.out.println(staffs.size() + " staffs loaded successfully.");
 
-            System.out.println("Loading Completed Orders from file...");
-            completedOrders = orderCsv.readFromCsv();
-            System.out.println(completedOrders.size() + " completed orders loaded successfully.");
+            System.out.println("Loading Completed Invoices from file...");
+            invoices = invoiceCsv.readFromCsv();
+            System.out.println(invoices.size() + " completed invoices loaded successfully.");
 
             System.out.println(checkTodayReservations() + " reservations have since expired, and deleted from the system.");
         } catch (IOException e) {
@@ -141,7 +135,7 @@ public class MainApp {
         ReservationCSVHelper reservationCsvHelper = ReservationCSVHelper.getInstance();
         //TableCSVHelper tableCsvHelper = TableCSVHelper.getInstance();
         StaffCSVHelper staffCsvHelper = StaffCSVHelper.getInstance();
-        OrderCSVHelper orderCSVHelper = OrderCSVHelper.getInstance();
+        InvoiceCSVHelper invoiceCSVHelper = InvoiceCSVHelper.getInstance();
         try {
             System.out.println("Saving current menu item list to file...");
             menuItemCSVHelper.writeToCsv(menuItems);
@@ -163,9 +157,9 @@ public class MainApp {
             staffCsvHelper.writeToCsv(staffs);
             System.out.println("Staff List Saved!");
 
-            System.out.println("Saving completed orders to file...");
-            orderCSVHelper.writeToCsv(completedOrders);
-            System.out.println("Completed Orders List Saved!");
+            System.out.println("Saving completed invoices to file...");
+            invoiceCSVHelper.writeToCsv(invoices);
+            System.out.println("Completed Invoices List Saved!");
         } catch (IOException e) {
             //e.printStackTrace();
             System.out.println("[ERROR] Failed to save items to file. (" + e.getLocalizedMessage() + ")");

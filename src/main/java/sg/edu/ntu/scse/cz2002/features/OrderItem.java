@@ -68,7 +68,7 @@ public class OrderItem {
      * @return A String array of the CSV file
      */
     public String toCompiledString() {
-        return this.itemId + ":" + this.quantity + ":" + this.itemTotal + ((this.itemType == OrderItemType.TYPE_MENU) ? "M" : "P");
+        return this.itemId + ":" + this.quantity + ":" + this.itemTotal + ":" + ((this.itemType == OrderItemType.TYPE_MENU) ? "M" : "P");
     }
 
     /**

@@ -123,8 +123,8 @@ public class OrderMenuUI extends BaseMenu {
         printHeader("Staff List");
         IntStream.range(0, MainApp.staffs.size()).forEach((i) -> System.out.println((i+1) + ") " + MainApp.staffs.get(i).getStaffName()));
         printBreaks();
-        int staffId = ScannerHelper.getIntegerInput("Enter Staff ID to create the order in (0 to cancel): ", -1);
-        if (staffId == 0) {
+        int staffId = ScannerHelper.getIntegerInput("Enter Staff ID to create the order in (0 to cancel): ", -1) - 1;
+        if (staffId == -1) {
             System.out.println("Create Order Operation Cancelled");
             System.out.println();
             return; // Cancel Operation
@@ -168,8 +168,8 @@ public class OrderMenuUI extends BaseMenu {
         int newId = 1;
         if (incompleteOrders.size() > 0) {
             newId = incompleteOrders.get(incompleteOrders.size() - 1).getOrderID() + 1;
-        } else if (MainApp.completedOrders.size() > 0) {
-            newId = MainApp.completedOrders.get(MainApp.completedOrders.size() - 1).getOrderID() + 1;
+        } else if (MainApp.invoices.size() > 0) {
+            newId = MainApp.invoices.get(MainApp.invoices.size() - 1).getOrderID() + 1;
         }
         Order o = new Order(newId);
         o.setStaffId(selectedStaff.getStaffId());
@@ -197,14 +197,15 @@ public class OrderMenuUI extends BaseMenu {
         int choice = doMenuChoice(5, 0);
         switch (choice) {
             case 1:
-                printOrderList(MainApp.completedOrders, "Paid", false);
+                // Convert all invoices to a Order arraylist
+                printOrderList(new ArrayList<>(MainApp.invoices), "Paid", false);
                 break;
             case 2:
                 printOrderList(incompleteOrders, "Unpaid", false);
                 break;
             case 3:
                 ArrayList<Order> consolidate = new ArrayList<>();
-                consolidate.addAll(MainApp.completedOrders);
+                consolidate.addAll(MainApp.invoices);
                 consolidate.addAll(incompleteOrders);
                 printOrderList(consolidate, "All", false);
                 break;
@@ -427,7 +428,7 @@ public class OrderMenuUI extends BaseMenu {
         }
         if (allowFromPaid) {
             // Check completed orders
-            for (Order o : MainApp.completedOrders) {
+            for (Order o : MainApp.invoices) {
                 if (o.getOrderID() == id) return o;
             }
         }
@@ -440,7 +441,7 @@ public class OrderMenuUI extends BaseMenu {
      * @param tag A tag to append to the header
      * @param tableSort Whether to sort by tables Number or by order ID
      */
-    private void printOrderList(@NotNull ArrayList<Order> orders, String tag, boolean tableSort) {
+    public static void printOrderList(@NotNull ArrayList<Order> orders, String tag, boolean tableSort) {
         printHeader("Order List (" + tag + ")", 110);
         if (orders.size() == 0) System.out.println("No orders found");
         else {
@@ -519,7 +520,7 @@ public class OrderMenuUI extends BaseMenu {
      * @param prettyPrint Whether or not we should format the string (for displaying in a table format) or as a list format
      * @throws ItemNotFoundException Item not found in the order
      */
-    private void printOrderItems(@NotNull ArrayList<OrderItem> items, boolean prettyPrint) throws ItemNotFoundException {
+    public static void printOrderItems(@NotNull ArrayList<OrderItem> items, boolean prettyPrint) throws ItemNotFoundException {
         int imm = 1;
         for (OrderItem i : items) {
             Object item = i.getItem();

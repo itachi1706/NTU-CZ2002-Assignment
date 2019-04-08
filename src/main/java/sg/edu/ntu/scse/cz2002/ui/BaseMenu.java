@@ -1,5 +1,6 @@
 package sg.edu.ntu.scse.cz2002.ui;
 
+import sg.edu.ntu.scse.cz2002.MainApp;
 import sg.edu.ntu.scse.cz2002.util.ScannerHelper;
 
 import java.util.InputMismatchException;
@@ -35,9 +36,14 @@ public abstract class BaseMenu {
     public boolean startMainMenu() {
         // Only exit if <>0, otherwise continue looping
         while (true) {
-            int exit = generateMenuScreen();
-            if (exit < 0) return false;
-            else if (exit > 0) return true;
+            try {
+                int exit = generateMenuScreen();
+                if (exit < 0) return false;
+                else if (exit > 0) return true;
+            } catch (MenuChoiceInvalidException e) {
+                System.out.println(e.getLocalizedMessage());
+                if (MainApp.DEBUG) e.printStackTrace();
+            }
         }
     }
 
@@ -58,7 +64,7 @@ public abstract class BaseMenu {
     protected static void printHeader(String headerName, int length) {
         printBreaks(length);
         // Do fancy parsing of header to center it (size 40)
-        int noOfSpaces = (length - headerName.length()) / 2;
+        int noOfSpaces = (headerName.length() > length) ? 0 : ((length - headerName.length()) / 2);
         Stream.generate(() -> " ").limit(noOfSpaces).forEach(System.out::print);
         System.out.println(headerName);
         printBreaks(length);
