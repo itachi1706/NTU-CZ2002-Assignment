@@ -1,6 +1,6 @@
 package sg.edu.ntu.scse.cz2002.util;
 
-import sg.edu.ntu.scse.cz2002.features.Order;
+import sg.edu.ntu.scse.cz2002.features.Invoice;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -16,7 +16,7 @@ import java.util.List;
  * @since 2019-03-19
  */
 @SuppressWarnings("Duplicates")
-public class OrderCSVHelper extends CSVBaseHelper {
+public class InvoiceCSVHelper extends CSVBaseHelper {
 
     /**
      * Path to Menu Items CSV File in the data folder. Defaults to menu.csv
@@ -26,20 +26,20 @@ public class OrderCSVHelper extends CSVBaseHelper {
     /**
      * Singleton instance of this class
      */
-    private static OrderCSVHelper mInstance;
+    private static InvoiceCSVHelper mInstance;
 
     /**
      * Default Constructor to initialize this class with menu.csv as the CSV file
      */
-    private OrderCSVHelper() {}
+    private InvoiceCSVHelper() {}
 
     /**
      * Initialize the Helper object
-     * @deprecated Call {@link OrderCSVHelper#getInstance()} instead
+     * @deprecated Call {@link InvoiceCSVHelper#getInstance()} instead
      * @param filename Path to MenuItems CSV File
      */
     @Deprecated
-    public OrderCSVHelper(String filename) {
+    public InvoiceCSVHelper(String filename) {
         this.orderCsv = filename;
     }
 
@@ -47,8 +47,8 @@ public class OrderCSVHelper extends CSVBaseHelper {
      * Gets the singleton instance of MenuItemCSVHelper that reads from menu.csv
      * @return Instance of this class
      */
-    public static OrderCSVHelper getInstance() {
-        if (mInstance == null) mInstance = new OrderCSVHelper();
+    public static InvoiceCSVHelper getInstance() {
+        if (mInstance == null) mInstance = new InvoiceCSVHelper();
         return mInstance;
     }
 
@@ -57,13 +57,13 @@ public class OrderCSVHelper extends CSVBaseHelper {
      * @return ArrayList of Menu Item Objects
      * @throws IOException Unable to read from file
      */
-    public ArrayList<Order> readFromCsv() throws IOException {
+    public ArrayList<Invoice> readFromCsv() throws IOException {
         if (!FileIOHelper.exists(this.orderCsv)) return new ArrayList<>(); // Empty array list
         BufferedReader csvFile = FileIOHelper.getFileBufferedReader(this.orderCsv);
         List<String[]> csvLines = readAll(csvFile, 1);
-        ArrayList<Order> items = new ArrayList<>();
+        ArrayList<Invoice> items = new ArrayList<>();
         if (csvLines.size() == 0) return items;
-        csvLines.forEach((str) -> items.add(new Order(str)));
+        csvLines.forEach((str) -> items.add(new Invoice(str)));
         return items;
     }
 
@@ -72,8 +72,8 @@ public class OrderCSVHelper extends CSVBaseHelper {
      * @param items ArrayList of items to save
      * @throws IOException Unable to write to file
      */
-    public void writeToCsv(ArrayList<Order> items) throws IOException {
-        String[] header = {"ID", "Items", "Subtotal", "State", "CreatedAt", "CompletedAt", "StaffID", "TableID"};
+    public void writeToCsv(ArrayList<Invoice> items) throws IOException {
+        String[] header = {"ID", "Items", "Subtotal", "State", "CreatedAt", "CompletedAt", "StaffID", "TableID", "Total", "AmountPaid", "PaymentType", "Receipt"};
         BufferedWriter csvFile = FileIOHelper.getFileBufferedWriter(this.orderCsv);
         ArrayList<String[]> toWrite = new ArrayList<>();
         toWrite.add(header);

@@ -168,8 +168,8 @@ public class OrderMenuUI extends BaseMenu {
         int newId = 1;
         if (incompleteOrders.size() > 0) {
             newId = incompleteOrders.get(incompleteOrders.size() - 1).getOrderID() + 1;
-        } else if (MainApp.completedOrders.size() > 0) {
-            newId = MainApp.completedOrders.get(MainApp.completedOrders.size() - 1).getOrderID() + 1;
+        } else if (MainApp.invoices.size() > 0) {
+            newId = MainApp.invoices.get(MainApp.invoices.size() - 1).getOrderID() + 1;
         }
         Order o = new Order(newId);
         o.setStaffId(selectedStaff.getStaffId());
@@ -197,14 +197,15 @@ public class OrderMenuUI extends BaseMenu {
         int choice = doMenuChoice(5, 0);
         switch (choice) {
             case 1:
-                printOrderList(MainApp.completedOrders, "Paid", false);
+                // Convert all invoices to a Order arraylist
+                printOrderList(new ArrayList<>(MainApp.invoices), "Paid", false);
                 break;
             case 2:
                 printOrderList(incompleteOrders, "Unpaid", false);
                 break;
             case 3:
                 ArrayList<Order> consolidate = new ArrayList<>();
-                consolidate.addAll(MainApp.completedOrders);
+                consolidate.addAll(MainApp.invoices);
                 consolidate.addAll(incompleteOrders);
                 printOrderList(consolidate, "All", false);
                 break;
@@ -427,7 +428,7 @@ public class OrderMenuUI extends BaseMenu {
         }
         if (allowFromPaid) {
             // Check completed orders
-            for (Order o : MainApp.completedOrders) {
+            for (Order o : MainApp.invoices) {
                 if (o.getOrderID() == id) return o;
             }
         }
