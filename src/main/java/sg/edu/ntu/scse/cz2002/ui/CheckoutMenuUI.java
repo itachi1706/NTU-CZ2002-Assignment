@@ -1,6 +1,7 @@
 package sg.edu.ntu.scse.cz2002.ui;
 
 import org.jetbrains.annotations.NotNull;
+import sg.edu.ntu.scse.cz2002.features.Invoice;
 import sg.edu.ntu.scse.cz2002.features.Order;
 import sg.edu.ntu.scse.cz2002.features.Table;
 import sg.edu.ntu.scse.cz2002.objects.menuitem.ItemNotFoundException;
@@ -31,7 +32,11 @@ public class CheckoutMenuUI extends BaseMenu {
         switch (choice) {
             case 1:
                 // TODO: Checkout
-                if (checkout()) return -1; // If completed, go back to main menu
+                if (checkout()) {
+                    System.out.println();
+                    return -1; // If completed, go back to main menu
+                }
+                System.out.println();
                 break;
             case 2:
                 // TODO: Reprint Invoice for completed orders
@@ -65,14 +70,48 @@ public class CheckoutMenuUI extends BaseMenu {
         int tableNo = ScannerHelper.getIntegerInput("Select Table to checkout (-1 to cancel): ", new ArrayList<>(tOrders.keySet()), "Invalid Table Number. Please select a valid table number or enter -1 to cancel");
         if (tableNo == -1) {
             System.out.println("Checkout Operation Cancelled");
-            System.out.println();
             return false;
         }
         Order o = tOrders.get(tableNo);
-        printOrderDetails(o);
-        // TODO: Ask what payment mode
-        // TODO: If card, process immediately and skip next step
-        // TODO: If cash, get cash and find change (if cash < total, ask for more cash)
+        double total = printOrderDetails(o);
+        System.out.println();
+        System.out.println("Payment Mode");
+        System.out.println("1) Cash");
+        System.out.println("2) NETS");
+        System.out.println("3) Debit/Credit Card");
+        System.out.println("4) EZ-Link");
+        System.out.println("0) Cancel");
+        int choice = ScannerHelper.getIntegerInput("Select Payment Mode (0 to cancel): ", -1, 5);
+        double paid;
+        Invoice.PaymentType paymentType;
+        switch (choice) {
+            case 1:
+                paid = requestCashPayment(total);
+                paymentType = Invoice.PaymentType.PAYMENT_CASH;
+                break;
+            case 2:
+                paymentType = Invoice.PaymentType.PAYMENT_NETS;
+                paid = total; // All card payments are presumed paid fully
+                break;
+            case 3:
+                paymentType = Invoice.PaymentType.PAYMENT_CARD;
+                paid = total; // All card payments are presumed paid fully
+                break;
+            case 4:
+                paymentType = Invoice.PaymentType.PAYMENT_EZLINK;
+                paid = total; // All card payments are presumed paid fully
+                break;
+            case 0:
+                System.out.println("Operation Cancelled");
+                return false;
+            default: throw new MenuChoiceInvalidException("Checkout Payment");
+        }
+        System.out.println("Payment Complete! Payment Mode: " + paymentType.toString());
+        if (paymentType == Invoice.PaymentType.PAYMENT_CASH) {
+            System.out.println("Change: $" + String.format("%.2f", (paid - total)));
+        }
+
+        System.out.println("Generating Receipt...");
         // TODO: Set table to VACANT, move order to complete
         // TODO: Print receipt, save receipt in data/receipts/ordernumber.txt
         // TODO: Create invoice object that basically extends the order object with receipt path
@@ -88,12 +127,22 @@ public class CheckoutMenuUI extends BaseMenu {
         // TODO: Show receipt :D
     }
 
+    private double requestCashPayment(double total) {
+        double paid = 0;
+        while (paid < total) {
+            double entered = ScannerHelper.getDoubleInput("Enter amount paid: ", 0);
+            paid += entered;
+            System.out.printf("Accepted $%.2f in cash, Remaining amount to pay: $%.2f\n", entered, (total - paid >= 0) ? total - paid : 0);
+        }
+        return paid;
+    }
+
     /**
      * Print specific order details for invoice
      * @param o Order object to print details of
      */
     @SuppressWarnings("Duplicates")
-    private void printOrderDetails(@NotNull Order o) {
+    private double printOrderDetails(@NotNull Order o) {
         printHeader("Order #" + o.getOrderID() + "", 60);
         System.out.println("Order ID: " + o.getOrderID());
         System.out.println("Order State: " + ((o.getOrderState() == Order.OrderState.ORDER_PAID) ? "Paid" : "Unpaid"));
@@ -122,5 +171,6 @@ public class CheckoutMenuUI extends BaseMenu {
         System.out.printf("%50s $%-6.2f\n", "Total: ", total);
         printBreaks(60);
         System.out.println("\n");
+        return total;
     }
 }
