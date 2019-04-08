@@ -519,7 +519,7 @@ public class OrderMenuUI extends BaseMenu {
      * @param prettyPrint Whether or not we should format the string (for displaying in a table format) or as a list format
      * @throws ItemNotFoundException Item not found in the order
      */
-    private void printOrderItems(@NotNull ArrayList<OrderItem> items, boolean prettyPrint) throws ItemNotFoundException {
+    public static void printOrderItems(@NotNull ArrayList<OrderItem> items, boolean prettyPrint) throws ItemNotFoundException {
         int imm = 1;
         for (OrderItem i : items) {
             Object item = i.getItem();
