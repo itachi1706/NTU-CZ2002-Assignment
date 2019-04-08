@@ -1,7 +1,6 @@
 package sg.edu.ntu.scse.cz2002.util;
 
-import java.util.InputMismatchException;
-import java.util.Scanner;
+import java.util.*;
 
 /**
  * Helper class for Scanner inputs
@@ -67,6 +66,22 @@ public class ScannerHelper {
     }
 
     /**
+     * Integer input with a list of accepted values
+     * @param prompt Text to prompt for the input, pass in empty string for no prompt
+     * @param acceptedValues List of accepted values
+     * @param errorMsg Error Message to provide to the user
+     * @return Validated Input
+     */
+    public static int getIntegerInput(String prompt, ArrayList<Integer> acceptedValues, String errorMsg) {
+        Set<Integer> unique = new HashSet<>(acceptedValues);
+        while (true) {
+            int val = getIntegerInput(prompt);
+            if (unique.contains(val)) return val;
+            System.out.println(errorMsg);
+        }
+    }
+
+    /**
      * Yes/No Prompt
      * @param prompt Text to prompt for the input, pass in empty string for no prompt
      * @return true if yes, false if no
@@ -93,6 +108,6 @@ public class ScannerHelper {
      */
     public static Scanner getScannerInput() {
         if (instance == null) instance = new Scanner(System.in);
-        return new Scanner(System.in);
+        return instance;
     }
 }
