@@ -6,6 +6,7 @@ import sg.edu.ntu.scse.cz2002.features.Table;
 import sg.edu.ntu.scse.cz2002.util.DateTimeFormatHelper;
 import sg.edu.ntu.scse.cz2002.util.ScannerHelper;
 
+import java.awt.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeParseException;
@@ -69,7 +70,7 @@ public class ReservationMenuUI extends BaseMenu {
             case 0:
                 return 1;
             default:
-                throw new IllegalStateException("Invalid Choice (Reservation Menu)");
+                throw new MenuChoiceInvalidException("Reservation Menu");
         }
         return 0;
     }

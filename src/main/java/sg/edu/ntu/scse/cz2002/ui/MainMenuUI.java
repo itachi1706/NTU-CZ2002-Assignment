@@ -19,7 +19,7 @@ public class MainMenuUI extends BaseMenu {
      */
     @Override
     protected int generateMenuScreen() {
-        printHeader("MAIN Menu");
+        printHeader("Main Menu");
         System.out.println("1) Menu Items Management");
         System.out.println("2) Promotions Management");
         System.out.println("3) Order Management");
@@ -61,7 +61,7 @@ public class MainMenuUI extends BaseMenu {
             case 0:
                 return 1; // Shutdown
             default:
-                throw new IllegalStateException("Invalid Choice (MAIN Menu)");
+                throw new MenuChoiceInvalidException("Main Menu");
         }
         return 0;
     }

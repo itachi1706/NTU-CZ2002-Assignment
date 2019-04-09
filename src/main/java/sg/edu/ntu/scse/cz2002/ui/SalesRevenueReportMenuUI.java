@@ -2,22 +2,17 @@ package sg.edu.ntu.scse.cz2002.ui;
 
 import sg.edu.ntu.scse.cz2002.MainApp;
 import sg.edu.ntu.scse.cz2002.features.Invoice;
-import sg.edu.ntu.scse.cz2002.features.Reservation;
-import sg.edu.ntu.scse.cz2002.objects.person.Staff;
+import sg.edu.ntu.scse.cz2002.features.OrderItem;
 import sg.edu.ntu.scse.cz2002.util.DateTimeFormatHelper;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Scanner;
-import java.util.stream.Stream;
+import java.util.*;
 
 /**
  * Menu UI Flow for Sales Revenue Printing
  *
- * @author Wei Bin
- * @version 1.0
+ * @author Wei Bin, Kenneth
+ * @version 1.1
  * @since 2019-04-09
  */
 public class SalesRevenueReportMenuUI extends BaseMenu {
@@ -42,10 +37,8 @@ public class SalesRevenueReportMenuUI extends BaseMenu {
 			return -1;
 		case 0:
 			return 1;
-
 		default:
-			throw new MenuChoiceInvalidException("Checkout");
-			// throw new IllegalStateException("Invalid Choice (Checkout)");
+			throw new MenuChoiceInvalidException("Sales Revenue");
 		}
 		return 0;
 	}
@@ -57,13 +50,11 @@ public class SalesRevenueReportMenuUI extends BaseMenu {
 	 */
 	private void generateDayReport() {
 		ArrayList<Invoice> invoiceOrders = new ArrayList<>();
-		String userDate = "";
+		String userDate;
 		boolean correctDate = false;
 		LocalDate date = LocalDate.now();
 		Scanner input = new Scanner(System.in);
-		int d;
-		int m;
-		int y;
+		int d, m, y;
 		// While loop to check for a valid date
 		while (!correctDate) {
 			System.out.println("Enter date to generate report");
@@ -76,7 +67,7 @@ public class SalesRevenueReportMenuUI extends BaseMenu {
 			correctDate = DateTimeFormatHelper.validateDate(userDate);
 
 			if (correctDate) {
-				String[] dateSplit = new String[3];
+				String[] dateSplit;
 				dateSplit = userDate.split("/");
 				d = Integer.parseInt(dateSplit[0]);
 				m = Integer.parseInt(dateSplit[1]) - 1;
@@ -109,7 +100,8 @@ public class SalesRevenueReportMenuUI extends BaseMenu {
 				}
 
 				printHeader("Sales Revenue Report for " + userDate);
-				//TODO: Print Individual sales item & quantity
+				generateItemList(invoiceOrders).forEach(System.out::println);
+				printBreaks();
 				System.out.println("Total number of order: " + noOfOrder);
 				System.out.printf("Total sales amount: $%-6.2f\n", total);
 
@@ -126,17 +118,12 @@ public class SalesRevenueReportMenuUI extends BaseMenu {
 	 */
 	private void generatePeriodReport() {
 		ArrayList<Invoice> invoiceOrders = new ArrayList<>();
-		String userStartDate = "";
-		String userEndDate = "";
+		String userStartDate;
+		String userEndDate;
 		boolean correctDate = false;
 		LocalDate date = LocalDate.now();
 		Scanner input = new Scanner(System.in);
-		int d;
-		int m;
-		int y;
-		int eD;
-		int eM;
-		int eY;
+		int d, m, y, eD, eM, eY;
 
 		// While loop to check for a valid date
 		while (!correctDate) {
@@ -160,13 +147,13 @@ public class SalesRevenueReportMenuUI extends BaseMenu {
 				correctDate = DateTimeFormatHelper.validateDate(userEndDate);
 
 				if (correctDate) {
-					String[] sDateSplit = new String[3];
+					String[] sDateSplit;
 					sDateSplit = userStartDate.split("/");
 					d = Integer.parseInt(sDateSplit[0]);
 					m = Integer.parseInt(sDateSplit[1]) - 1;
 					y = Integer.parseInt(sDateSplit[2]);
 
-					String[] eDateSplit = new String[3];
+					String[] eDateSplit;
 					eDateSplit = userEndDate.split("/");
 					eD = Integer.parseInt(eDateSplit[0]);
 					eM = Integer.parseInt(eDateSplit[1]) - 1;
@@ -208,7 +195,8 @@ public class SalesRevenueReportMenuUI extends BaseMenu {
 						}
 					}
 					printHeader("Sales Revenue Report for " + userStartDate + " - " + userEndDate);
-					//TODO: Print Individual sales item & quantity
+					generateItemList(invoiceOrders).forEach(System.out::println);
+					printBreaks();
 					System.out.println("Total number of order: " + noOfOrder);
 					System.out.printf("Total sales amount: $%-6.2f\n", total);
 				}
@@ -217,5 +205,46 @@ public class SalesRevenueReportMenuUI extends BaseMenu {
 				System.out.println("[ERROR] Received invalid date input.");
 			}
 		}
+	}
+
+	/**
+	 * Generates the item list for the sales report
+	 * @param invoices List of invoices to generate the item list from
+	 * @return Array List of generated items to print out
+	 */
+	private ArrayList<String> generateItemList(ArrayList<Invoice> invoices) {
+		HashMap<String, Integer> store = new HashMap<>();
+		invoices.forEach((i) -> {
+			ArrayList<OrderItem> orderItems = i.getOrderItems();
+			orderItems.forEach((item) -> {
+				int itemId = item.getItemId();
+				if (itemId == -1) return; // Ignore, unknown item
+				String tag;
+				if (item.isPromotion()) tag = "P:";
+				else tag = "M:";
+				tag += itemId;
+				tag += ":" + item.getItemName();
+				// Check if exist in map
+				int count = 0;
+				if (store.containsKey(tag)) count = store.get(tag);
+				store.put(tag, count + item.getQuantity());
+			});
+		});
+
+		// Generate the strings (40)
+		ArrayList<String> result = new ArrayList<>();
+		for (Map.Entry<String, Integer> k : store.entrySet()) {
+			// Extract name
+			String[] tagSplit = k.getKey().split(":");
+			if (tagSplit.length < 3) continue; // Ignore
+			String name = tagSplit[2];
+			String tag = tagSplit[0];
+			StringBuilder sb = new StringBuilder();
+			sb.append(k.getValue()).append("x   ");
+			if (tag.equals("P")) sb.append("[SET] ");
+			sb.append(name);
+			result.add(sb.toString());
+		}
+		return result;
 	}
 }
