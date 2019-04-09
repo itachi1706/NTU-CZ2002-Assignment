@@ -8,10 +8,16 @@ import sg.edu.ntu.scse.cz2002.features.Table;
 import sg.edu.ntu.scse.cz2002.objects.menuitem.ItemNotFoundException;
 import sg.edu.ntu.scse.cz2002.objects.person.Staff;
 import sg.edu.ntu.scse.cz2002.util.DateTimeFormatHelper;
+import sg.edu.ntu.scse.cz2002.util.FileIOHelper;
 import sg.edu.ntu.scse.cz2002.util.ScannerHelper;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -22,6 +28,8 @@ import java.util.stream.Stream;
  * @since 2019-04-08
  */
 public class CheckoutMenuUI extends BaseMenu {
+
+    private static final String RECEIPT_SUBFOLDER = "receipts" + File.separator;
     @Override
     protected int generateMenuScreen() {
         printHeader("Checkout");
@@ -34,7 +42,6 @@ public class CheckoutMenuUI extends BaseMenu {
         int choice = doMenuChoice(34, 0);
         switch (choice) {
             case 1:
-                // TODO: Checkout
                 if (checkout()) {
                     System.out.println();
                     return -1; // If completed, go back to main menu
@@ -42,7 +49,6 @@ public class CheckoutMenuUI extends BaseMenu {
                 System.out.println();
                 break;
             case 2:
-                // TODO: Reprint Invoice for completed orders
                 reprint();
                 break;
             case 3:
@@ -115,14 +121,16 @@ public class CheckoutMenuUI extends BaseMenu {
         }
 
         System.out.println("Generating Receipt...");
-        // TODO: Set table to VACANT, move order to complete
-        // TODO: Remove order from incomplete orders
         o.markPaid();
+        OrderMenuUI.incompleteOrders.remove(o);
         ArrayList<String> receipt = generateReceipt(o, total, paid, paymentType);
         System.out.println();
         receipt.forEach(System.out::println);
-        // TODO: Save receipt to file and update invoice path in invoice (datapath: data/receipts/ordernumber.txt)
-        Invoice i = new Invoice(o, "TODO: Add path", paymentType, total, paid);
+        String receiptName = "-";
+        if (writeReceipt(receipt, o.getOrderID())) {
+            receiptName = o.getOrderID() + ".txt";
+        }
+        Invoice i = new Invoice(o, receiptName, paymentType, total, paid);
         MainApp.invoices.add(i);
         System.out.println("\n");
         System.out.println("Returning to Main Menu...");
@@ -130,12 +138,40 @@ public class CheckoutMenuUI extends BaseMenu {
     }
 
     private void reprint() {
-        // TODO: Print list of invoices in a table
-        // TODO: Select invoice to reprint (by id)
-        // TODO: Get receipt from data/receipts/ordernumber.txt
-        // TODO: If that fails, regenerate and save
-        // TODO: Show receipt :D
-        System.out.println("Feature coming soon!");
+        HashMap<Integer, Invoice> invoiceHashMap = new HashMap<>();
+        printHeader("List of Invoices");
+        MainApp.invoices.forEach((invoice -> {
+            System.out.println("Receipt #" + invoice.getOrderID() + ", Paid On: " + DateTimeFormatHelper.formatMillisToDateTime(invoice.getCompletedAt()));
+            invoiceHashMap.put(invoice.getOrderID(), invoice);
+        }));
+        printBreaks();
+        invoiceHashMap.put(-1, null);
+        int selection = ScannerHelper.getIntegerInput("Select invoice to reprint receipt: ", new ArrayList<>(invoiceHashMap.keySet()), "Invalid Receipt Number. Please select a valid receipt number or enter -1 to cancel");
+        if (selection == -1) {
+            System.out.println("Receipt Cancelled");
+            return;
+        }
+        Invoice selected = invoiceHashMap.get(selection);
+        ArrayList<String> receipts;
+        if (selected.getReceipt().equals("-")) {
+            // No receipt, generate and save
+            receipts = generateReceipt(selected, selected.getTotal(), selected.getAmountPaid(), selected.getPaymentType());
+        } else {
+            String filePath = RECEIPT_SUBFOLDER + selected.getReceipt();
+            try {
+                BufferedReader reader = FileIOHelper.getFileBufferedReader(filePath);
+                receipts = reader.lines().collect(Collectors.toCollection(ArrayList::new));
+            } catch (IOException e) {
+                System.out.println("Failed to load receipt. Regenerating");
+                receipts = generateReceipt(selected, selected.getTotal(), selected.getAmountPaid(), selected.getPaymentType());
+            }
+        }
+
+        System.out.println("Reprinting Receipt...");
+        System.out.println();
+        System.out.println();
+        receipts.forEach(System.out::println);
+        System.out.println("\n");
     }
 
     private ArrayList<String> generateReceipt(@NotNull Order o, double total, double paid, Invoice.PaymentType type) {
@@ -195,6 +231,17 @@ public class CheckoutMenuUI extends BaseMenu {
             System.out.printf("Accepted $%.2f in cash, Remaining amount to pay: $%.2f\n", entered, (total - paid >= 0) ? total - paid : 0);
         }
         return paid;
+    }
+
+    private boolean writeReceipt(ArrayList<String> receipt, int receiptId) {
+        FileIOHelper.createFolder(RECEIPT_SUBFOLDER);
+        try (PrintWriter w = new PrintWriter(FileIOHelper.getFileBufferedWriter(RECEIPT_SUBFOLDER + receiptId + ".txt"))) {
+            receipt.forEach(w::println);
+        } catch (IOException e) {
+            System.out.println("Error saving receipt to file");
+            return false;
+        }
+        return true;
     }
 
     /**

@@ -58,5 +58,21 @@ public class Invoice extends Order {
         stuff.add(this.receipt);
         return stuff.toArray(new String[0]);
     }
+
+    public String getReceipt() {
+        return receipt;
+    }
+
+    public PaymentType getPaymentType() {
+        return paymentType;
+    }
+
+    public double getTotal() {
+        return total;
+    }
+
+    public double getAmountPaid() {
+        return amountPaid;
+    }
 }
 

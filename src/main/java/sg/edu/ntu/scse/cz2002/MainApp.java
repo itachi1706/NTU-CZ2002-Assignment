@@ -74,7 +74,6 @@ public class MainApp {
      * Items include loading saved menu items etc
      */
     private static void init() {
-        // TODO: Init Items
         MenuItemCSVHelper menuItemCsv = MenuItemCSVHelper.getInstance();
         PromoCSVHelper promotionCsv = PromoCSVHelper.getInstance();
         ReservationCSVHelper reservationCsv = ReservationCSVHelper.getInstance();
@@ -175,12 +174,10 @@ public class MainApp {
      */
     public static void main(String... args) {
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            // TODO: Do pre shutdown items
             saveAll();
             System.out.println("Shutting down program...");
         }));
         init();
-        // TODO: Staff login (move if necessary) This is placed here in case we want to "login" to a staff here. If we are not doing so remove this
         new MainMenuUI().startMainMenu();
         System.exit(0);
     }
