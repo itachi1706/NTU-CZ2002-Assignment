@@ -264,7 +264,7 @@ public class PromotionMenuUI extends BaseMenu {
 			Promotion promoObj = MainApp.promotions.get(i);
 			
 			if (targetPromoID == promoObj.getPromoID()) {
-				System.out.println("Target promotion found.");
+				//System.out.println("Target promotion found.");
 				return promoObj;
 			}
 			
