@@ -36,6 +36,18 @@ public class FileIOHelper {
     }
 
     /**
+     * Creates a folder in the data directory
+     * @param name File Name
+     * @return true if created
+     */
+    public static boolean createFolder(String name) {
+        File folder = init();
+        File f = new File(folder.getAbsolutePath() + File.separator + name);
+        if (!f.exists()) return f.mkdirs();
+        return f.exists();
+    }
+
+    /**
      * Gets the file object in the data folder
      * @param name Filename with extension
      * @return File object if valid, null otherwise

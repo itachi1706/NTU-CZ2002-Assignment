@@ -8,8 +8,12 @@ import sg.edu.ntu.scse.cz2002.features.Table;
 import sg.edu.ntu.scse.cz2002.objects.menuitem.ItemNotFoundException;
 import sg.edu.ntu.scse.cz2002.objects.person.Staff;
 import sg.edu.ntu.scse.cz2002.util.DateTimeFormatHelper;
+import sg.edu.ntu.scse.cz2002.util.FileIOHelper;
 import sg.edu.ntu.scse.cz2002.util.ScannerHelper;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.stream.Stream;
@@ -22,6 +26,8 @@ import java.util.stream.Stream;
  * @since 2019-04-08
  */
 public class CheckoutMenuUI extends BaseMenu {
+
+    private static final String RECEIPT_SUBFOLDER = "receipts" + File.separator;
     @Override
     protected int generateMenuScreen() {
         printHeader("Checkout");
@@ -34,7 +40,6 @@ public class CheckoutMenuUI extends BaseMenu {
         int choice = doMenuChoice(34, 0);
         switch (choice) {
             case 1:
-                // TODO: Checkout
                 if (checkout()) {
                     System.out.println();
                     return -1; // If completed, go back to main menu
@@ -115,14 +120,16 @@ public class CheckoutMenuUI extends BaseMenu {
         }
 
         System.out.println("Generating Receipt...");
-        // TODO: Set table to VACANT, move order to complete
-        // TODO: Remove order from incomplete orders
         o.markPaid();
+        OrderMenuUI.incompleteOrders.remove(o);
         ArrayList<String> receipt = generateReceipt(o, total, paid, paymentType);
         System.out.println();
         receipt.forEach(System.out::println);
-        // TODO: Save receipt to file and update invoice path in invoice (datapath: data/receipts/ordernumber.txt)
-        Invoice i = new Invoice(o, "TODO: Add path", paymentType, total, paid);
+        String receiptName = "-";
+        if (writeReceipt(receipt, o.getOrderID())) {
+            receiptName = o.getOrderID() + ".txt";
+        }
+        Invoice i = new Invoice(o, receiptName, paymentType, total, paid);
         MainApp.invoices.add(i);
         System.out.println("\n");
         System.out.println("Returning to Main Menu...");
@@ -195,6 +202,17 @@ public class CheckoutMenuUI extends BaseMenu {
             System.out.printf("Accepted $%.2f in cash, Remaining amount to pay: $%.2f\n", entered, (total - paid >= 0) ? total - paid : 0);
         }
         return paid;
+    }
+
+    private boolean writeReceipt(ArrayList<String> receipt, int receiptId) {
+        FileIOHelper.createFolder(RECEIPT_SUBFOLDER);
+        try (PrintWriter w = new PrintWriter(FileIOHelper.getFileBufferedWriter(RECEIPT_SUBFOLDER + receiptId + ".txt"))) {
+            receipt.forEach(w::println);
+        } catch (IOException e) {
+            System.out.println("Error saving receipt to file");
+            return false;
+        }
+        return true;
     }
 
     /**

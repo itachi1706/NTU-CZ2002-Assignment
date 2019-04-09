@@ -190,6 +190,7 @@ public class Order implements ICsvSerializable {
     public void markPaid() {
         this.orderState = OrderState.ORDER_PAID;
         this.completedAt = System.currentTimeMillis();
+        this.getTable().setState(Table.TableState.TABLE_VACATED);
     }
 
     /**
