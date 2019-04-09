@@ -29,7 +29,15 @@ import java.util.stream.Stream;
  */
 public class CheckoutMenuUI extends BaseMenu {
 
+    /**
+     * Receipt Subfolder path
+     */
     private static final String RECEIPT_SUBFOLDER = "receipts" + File.separator;
+
+    /**
+     * Generate the menu for checking out orders
+     * @return Exit Code. Return 1 to exit the program and -1 to exit to main menu
+     */
     @Override
     protected int generateMenuScreen() {
         printHeader("Checkout");
@@ -63,6 +71,10 @@ public class CheckoutMenuUI extends BaseMenu {
         return 0;
     }
 
+    /**
+     * Code for checking out created orders that have not been paid
+     * @return true if completed, false otherwise
+     */
     private boolean checkout() {
         if (OrderMenuUI.incompleteOrders == null || OrderMenuUI.incompleteOrders.size() == 0) {
             System.out.println("No orders ready for checkout. Cancelling Operation");
@@ -137,6 +149,9 @@ public class CheckoutMenuUI extends BaseMenu {
         return true;
     }
 
+    /**
+     * Method used to reprint any receipts of paid and completed orders
+     */
     private void reprint() {
         HashMap<Integer, Invoice> invoiceHashMap = new HashMap<>();
         printHeader("List of Invoices");
@@ -174,6 +189,14 @@ public class CheckoutMenuUI extends BaseMenu {
         System.out.println("\n");
     }
 
+    /**
+     * Generates receipt from data given
+     * @param o Order object
+     * @param total Total amount of the order
+     * @param paid Total amount of money paid
+     * @param type Payment Type
+     * @return An arraylist containing the strings required to generate the receipt
+     */
     private ArrayList<String> generateReceipt(@NotNull Order o, double total, double paid, Invoice.PaymentType type) {
         // Max Length of receipt is 50
         Table t = o.getTable();
@@ -207,6 +230,16 @@ public class CheckoutMenuUI extends BaseMenu {
         return receiptStrings;
     }
 
+    /**
+     * Centers the text and gives it to you
+     * The text will be centered based on the length passed in and will be centered by appending the spacers before it
+     *
+     * Note: This will only append BEFORE the text inserted. It will not do so AFTER
+     * @param toCenter Text to center
+     * @param length Width of your "screen"
+     * @param spacer Spacing used for the "centering"
+     * @return Centered String
+     */
     private String centerText(String toCenter, int length, char spacer) {
         // Do fancy centering
         StringBuilder sb = new StringBuilder();
@@ -216,6 +249,12 @@ public class CheckoutMenuUI extends BaseMenu {
         return sb.toString();
     }
 
+    /**
+     * Appends a spacer character to the entire line
+     * @param length Length of the line
+     * @param spacer Character to append
+     * @return Spacer Appended String
+     */
     private String spacer(int length, char spacer) {
         // Do fancy centering
         StringBuilder sb = new StringBuilder();
@@ -223,6 +262,12 @@ public class CheckoutMenuUI extends BaseMenu {
         return sb.toString();
     }
 
+    /**
+     * Requests cash payment from the user
+     * This will keep requesting for payment until the total amount paid exceeds the total passed into the method
+     * @param total Total amount to request cash payment from
+     * @return Total amount paid by the user
+     */
     private double requestCashPayment(double total) {
         double paid = 0;
         while (paid < total) {
@@ -233,6 +278,12 @@ public class CheckoutMenuUI extends BaseMenu {
         return paid;
     }
 
+    /**
+     * Writes the receipt to a file in the data directory
+     * @param receipt ArrayList of Receipt Strings to write to file
+     * @param receiptId Receipt ID to save the file as
+     * @return true if written successfully
+     */
     private boolean writeReceipt(ArrayList<String> receipt, int receiptId) {
         FileIOHelper.createFolder(RECEIPT_SUBFOLDER);
         try (PrintWriter w = new PrintWriter(FileIOHelper.getFileBufferedWriter(RECEIPT_SUBFOLDER + receiptId + ".txt"))) {
