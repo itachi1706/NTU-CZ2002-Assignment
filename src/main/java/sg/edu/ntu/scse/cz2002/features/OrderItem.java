@@ -114,6 +114,20 @@ public class OrderItem {
     }
 
     /**
+     * Internally tries and get the item ID from the item stored in this entry
+     * @return The ID of the item if possible
+     */
+    public int getItemId() {
+        Object o = this.getItem();
+        if (o instanceof MenuItem) {
+            return ((MenuItem) o).getId();
+        } else if (o instanceof Promotion) {
+            return ((Promotion) o).getPromoID();
+        }
+        return -1;
+    }
+
+    /**
      * Gets the quantity of item in this entry
      * @return Quantity of the item
      */
