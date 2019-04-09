@@ -2,16 +2,12 @@ package sg.edu.ntu.scse.cz2002.ui;
 
 import sg.edu.ntu.scse.cz2002.MainApp;
 import sg.edu.ntu.scse.cz2002.features.Invoice;
-import sg.edu.ntu.scse.cz2002.features.Reservation;
-import sg.edu.ntu.scse.cz2002.objects.person.Staff;
 import sg.edu.ntu.scse.cz2002.util.DateTimeFormatHelper;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.Scanner;
-import java.util.stream.Stream;
 
 /**
  * Menu UI Flow for Sales Revenue Printing
@@ -42,10 +38,8 @@ public class SalesRevenueReportMenuUI extends BaseMenu {
 			return -1;
 		case 0:
 			return 1;
-
 		default:
-			throw new MenuChoiceInvalidException("Checkout");
-			// throw new IllegalStateException("Invalid Choice (Checkout)");
+			throw new MenuChoiceInvalidException("Sales Revenue");
 		}
 		return 0;
 	}

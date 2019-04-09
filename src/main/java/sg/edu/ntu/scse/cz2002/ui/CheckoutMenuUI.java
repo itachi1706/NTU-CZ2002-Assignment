@@ -66,7 +66,6 @@ public class CheckoutMenuUI extends BaseMenu {
 
             default:
                 throw new MenuChoiceInvalidException("Checkout");
-                //throw new IllegalStateException("Invalid Choice (Checkout)");
         }
         return 0;
     }

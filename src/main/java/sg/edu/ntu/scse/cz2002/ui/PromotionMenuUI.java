@@ -1,16 +1,13 @@
 package sg.edu.ntu.scse.cz2002.ui;
 
-import java.io.IOException;
-import java.util.Scanner;
-
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import sg.edu.ntu.scse.cz2002.MainApp;
-import sg.edu.ntu.scse.cz2002.objects.menuitem.Promotion;
 import sg.edu.ntu.scse.cz2002.objects.menuitem.MenuItem;
-import sg.edu.ntu.scse.cz2002.ui.FoodMenuUI;
-import sg.edu.ntu.scse.cz2002.util.MenuItemCSVHelper;
+import sg.edu.ntu.scse.cz2002.objects.menuitem.Promotion;
 import sg.edu.ntu.scse.cz2002.util.PromoCSVHelper;
+
+import java.io.IOException;
+import java.util.Scanner;
 
 /**
  * The Promotion Menu UI
@@ -127,7 +124,7 @@ public class PromotionMenuUI extends BaseMenu {
             case 0:
                 return 1;
             default:
-                throw new IllegalStateException("Invalid Choice (Promotion Menu)");
+                throw new MenuChoiceInvalidException("Promotion Menu");
         }
         return 0;
     }

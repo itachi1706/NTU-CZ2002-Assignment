@@ -131,7 +131,7 @@ public class FoodMenuUI extends BaseMenu {
                 return 1;
                 
             default:
-                throw new IllegalStateException("Invalid Choice (Food Item Menu)");
+                throw new MenuChoiceInvalidException("Food Item Menu");
         }
         return 0;
     }

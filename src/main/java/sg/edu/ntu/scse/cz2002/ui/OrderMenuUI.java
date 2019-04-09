@@ -66,7 +66,7 @@ public class OrderMenuUI extends BaseMenu {
             case 0:
                 return 1;
             default:
-                throw new IllegalStateException("Invalid Choice (Order Menu)");
+                throw new MenuChoiceInvalidException("Order Menu");
         }
         return 0;
     }
@@ -107,7 +107,7 @@ public class OrderMenuUI extends BaseMenu {
                 case 0:
                     return;
                 default:
-                    throw new IllegalStateException("Invalid Choice (Order Edit Menu)");
+                    throw new MenuChoiceInvalidException("Order Edit Menu");
             }
         }
     }
@@ -235,7 +235,7 @@ public class OrderMenuUI extends BaseMenu {
                 break;
             case 0:
                 return;
-            default: throw new IllegalStateException("Invalid Choice (View Order Sub Menu)");
+            default: throw new MenuChoiceInvalidException("View Order Sub Menu");
         }
     }
 
@@ -305,7 +305,7 @@ public class OrderMenuUI extends BaseMenu {
                 }
                 break;
             case 0: return;
-            default: throw new IllegalStateException("Invalid Choice (Order Item Add)");
+            default: throw new MenuChoiceInvalidException("Order Item Add");
         }
     }
 
@@ -322,7 +322,7 @@ public class OrderMenuUI extends BaseMenu {
             case 2: type = MenuItem.MenuItemType.DESSERT; break;
             case 3: type = MenuItem.MenuItemType.DRINK; break;
             case 0: return;
-            default: throw new IllegalStateException("Invalid Choice (Order Ala Carte Item Add");
+            default: throw new MenuChoiceInvalidException("Order Ala Carte Item Add");
         }
         ArrayList<MenuItem> foodItems = FoodMenuUI.retrieveMenuItemListFiltered(type);
         if (foodItems.size() == 0) {

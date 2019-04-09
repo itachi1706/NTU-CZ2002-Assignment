@@ -1,7 +1,6 @@
 package sg.edu.ntu.scse.cz2002.ui;
 
 import sg.edu.ntu.scse.cz2002.MainApp;
-import sg.edu.ntu.scse.cz2002.features.Reservation;
 import sg.edu.ntu.scse.cz2002.objects.person.Staff;
 
 import java.util.InputMismatchException;
@@ -51,7 +50,7 @@ public class StaffMgmtMenuUI extends BaseMenu {
 		case 0:
 			return 1;
 		default:
-			throw new IllegalStateException("Invalid Choice (Staff Menu)");
+			throw new MenuChoiceInvalidException("Staff Menu");
 		}
 		return 0;
 	}
