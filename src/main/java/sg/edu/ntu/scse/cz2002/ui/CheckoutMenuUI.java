@@ -11,11 +11,13 @@ import sg.edu.ntu.scse.cz2002.util.DateTimeFormatHelper;
 import sg.edu.ntu.scse.cz2002.util.FileIOHelper;
 import sg.edu.ntu.scse.cz2002.util.ScannerHelper;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -47,7 +49,6 @@ public class CheckoutMenuUI extends BaseMenu {
                 System.out.println();
                 break;
             case 2:
-                // TODO: Reprint Invoice for completed orders
                 reprint();
                 break;
             case 3:
@@ -137,12 +138,40 @@ public class CheckoutMenuUI extends BaseMenu {
     }
 
     private void reprint() {
-        // TODO: Print list of invoices in a table
-        // TODO: Select invoice to reprint (by id)
-        // TODO: Get receipt from data/receipts/ordernumber.txt
-        // TODO: If that fails, regenerate and save
-        // TODO: Show receipt :D
-        System.out.println("Feature coming soon!");
+        HashMap<Integer, Invoice> invoiceHashMap = new HashMap<>();
+        printHeader("List of Invoices");
+        MainApp.invoices.forEach((invoice -> {
+            System.out.println("Receipt #" + invoice.getOrderID() + ", Paid On: " + DateTimeFormatHelper.formatMillisToDateTime(invoice.getCompletedAt()));
+            invoiceHashMap.put(invoice.getOrderID(), invoice);
+        }));
+        printBreaks();
+        invoiceHashMap.put(-1, null);
+        int selection = ScannerHelper.getIntegerInput("Select invoice to reprint receipt: ", new ArrayList<>(invoiceHashMap.keySet()), "Invalid Receipt Number. Please select a valid receipt number or enter -1 to cancel");
+        if (selection == -1) {
+            System.out.println("Receipt Cancelled");
+            return;
+        }
+        Invoice selected = invoiceHashMap.get(selection);
+        ArrayList<String> receipts;
+        if (selected.getReceipt().equals("-")) {
+            // No receipt, generate and save
+            receipts = generateReceipt(selected, selected.getTotal(), selected.getAmountPaid(), selected.getPaymentType());
+        } else {
+            String filePath = RECEIPT_SUBFOLDER + selected.getReceipt();
+            try {
+                BufferedReader reader = FileIOHelper.getFileBufferedReader(filePath);
+                receipts = reader.lines().collect(Collectors.toCollection(ArrayList::new));
+            } catch (IOException e) {
+                System.out.println("Failed to load receipt. Regenerating");
+                receipts = generateReceipt(selected, selected.getTotal(), selected.getAmountPaid(), selected.getPaymentType());
+            }
+        }
+
+        System.out.println("Reprinting Receipt...");
+        System.out.println();
+        System.out.println();
+        receipts.forEach(System.out::println);
+        System.out.println("\n");
     }
 
     private ArrayList<String> generateReceipt(@NotNull Order o, double total, double paid, Invoice.PaymentType type) {
