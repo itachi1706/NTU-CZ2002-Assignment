@@ -53,7 +53,7 @@ public class MainMenuUI extends BaseMenu {
                 if (new CheckoutMenuUI().startMainMenu()) return 1;
                 break;
             case 7:
-                // TODO: To Implement
+            	if (new SalesRevenueReportMenuUI().startMainMenu()) return 1;
                 break;
             case 8:
                 if (new StaffMgmtMenuUI().startMainMenu()) return 1;
