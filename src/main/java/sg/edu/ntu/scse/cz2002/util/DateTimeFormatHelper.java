@@ -188,9 +188,10 @@ public class DateTimeFormatHelper {
      * @param date String value unsplit containing date
      * @return Boolean value determining if the date is valid or invalid
      * @throws InputMismatchException If parsing to integer failed (e.g. received String input)
+     * @throws NumberFormatException If received String input
      * @throws ArrayIndexOutOfBoundsException If user input is anything other than dd/MM/yyyy (e.g. 08/2019343, 08/202019)
      */
-    public static boolean validateDate(String date) throws InputMismatchException, ArrayIndexOutOfBoundsException
+    public static boolean validateDate(String date) throws InputMismatchException, NumberFormatException, ArrayIndexOutOfBoundsException
     {
         try {
             String[] dateSplit = new String[3];
@@ -228,8 +229,12 @@ public class DateTimeFormatHelper {
                 return true;
         }
         catch (InputMismatchException e) {
-            System.out.println("[ERROR] Date has an invalid input. (" + e.getLocalizedMessage() + "}");
+            System.out.println("[ERROR] Date has an invalid input. (" + e.getLocalizedMessage() + ")");
             return false;
+        }
+        catch (NumberFormatException e) {
+        	System.out.println("[ERROR] Invalid input. (" + e.getLocalizedMessage() + ")");
+        	return false;
         }
         catch (ArrayIndexOutOfBoundsException e) {
             System.out.println("[ERROR] Date is unable to be parsed through formatter. (" + e.getLocalizedMessage() + "}");
