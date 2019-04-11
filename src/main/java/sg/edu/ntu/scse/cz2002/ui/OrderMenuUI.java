@@ -260,7 +260,7 @@ public class OrderMenuUI extends BaseMenu {
     private void addOrderItem(@NotNull Order o) {
         System.out.println("Select Item Type:");
         System.out.println("1) Ala-carte Items");
-        System.out.println("2) PromotionItem Set");
+        System.out.println("2) Promotion Set");
         System.out.println("0) Cancel");
         int selection = doMenuChoice(2, 0);
 
@@ -273,7 +273,7 @@ public class OrderMenuUI extends BaseMenu {
                     System.out.println("No promotions available");
                     return;
                 }
-                printHeader("PromotionItem Sets", 40);
+                printHeader("Promotion Sets", 40);
                 int i = 0;
                 for (PromotionItem p : MainApp.promotions) {
                     // Get each item in promotion
@@ -296,12 +296,12 @@ public class OrderMenuUI extends BaseMenu {
                 System.out.println("Quantity: " + quantity + "");
                 System.out.printf("Total Set Price: $%.2f\n", (quantity * p.getPrice()));
                 printBreaks(60);
-                boolean confirm = ScannerHelper.getYesNoInput("Confirm PromotionItem Set Selection?");
+                boolean confirm = ScannerHelper.getYesNoInput("Confirm Promotion Set Selection?");
                 if (confirm) {
                     // Add to Order
                     o.getOrderItems().add(new OrderItem(p.getId(), quantity, OrderItem.OrderItemType.TYPE_PROMO));
                     o.calculateSubtotal();
-                    System.out.println("PromotionItem Set Added to Order");
+                    System.out.println("Promotion Set Added to Order");
                 }
                 break;
             case 0: return;
@@ -538,7 +538,7 @@ public class OrderMenuUI extends BaseMenu {
                 MenuItem mi = (MenuItem) item;
                 itemName = mi.getName();
                 price = mi.getPrice();
-            } else throw new ItemNotFoundException("Item is not PromotionItem or MenuItem"); // Exception for invalid item in database. Exception as we need to handle and fix
+            } else throw new ItemNotFoundException("Item is not Promotion Item or Menu Item"); // Exception for invalid item in database. Exception as we need to handle and fix
             if (prettyPrint) System.out.printf("%3dx %-45s $%-6.2f\n", i.getQuantity(), itemName, price);
             else System.out.println(imm + ") " + i.getQuantity() + "x " + itemName + "\t$" + String.format("%.2f", price));
             imm++;

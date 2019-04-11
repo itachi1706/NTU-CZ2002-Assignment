@@ -18,9 +18,6 @@ import java.util.Scanner;
  * @since 2019-03-22
  */
 public class FoodMenuUI extends BaseMenu {
-
-	@SuppressWarnings("resource")
-	Scanner sc = new Scanner(System.in);
 	
     /**
      * The Food Menu Items Management Menu
@@ -28,7 +25,9 @@ public class FoodMenuUI extends BaseMenu {
      */
 	@Override
     protected int generateMenuScreen() {
-		
+
+		Scanner sc = ScannerHelper.getScannerInput();
+
 		printHeader("Menu Items Management");
 		System.out.println("1) Print existing menu");
 		System.out.println("2) Create a new menu item");
@@ -52,6 +51,7 @@ public class FoodMenuUI extends BaseMenu {
 				double newItemPrice;
 				
 				System.out.println("Enter new menu item name: ");
+				sc.next(); //required if previous scanner takes in int, and now string is required
 				newItemName = sc.nextLine();
 
 				newItemType = ScannerHelper.getIntegerInput("Enter the number of the new menu item type: \n" +
@@ -142,9 +142,9 @@ public class FoodMenuUI extends BaseMenu {
 	 * Prints the CSV File Menu.
 	 * (uses the globally defined "menuItems" ArrayList from MainApp)
 	 */
-	public void printMenu() {
+	private void printMenu() {
 		for (int i = 0; i < MainApp.menuItems.size(); i++) {
-			MenuItem menuItem = (MenuItem) MainApp.menuItems.get(i);
+			MenuItem menuItem = MainApp.menuItems.get(i);
 			System.out.println("|============================|");
 			System.out.println("ID: " + menuItem.getId());
 			System.out.println("Name: " + menuItem.getName());
@@ -163,7 +163,7 @@ public class FoodMenuUI extends BaseMenu {
 	 * @param newItemDescription Description of the new menu item to be added.
 	 * @param newItemPrice Price of the new menu item to be added.
 	 */
-	public void addNewMenuItem(String newItemName, int newItemType, String newItemDescription, double newItemPrice) {
+	private void addNewMenuItem(String newItemName, int newItemType, String newItemDescription, double newItemPrice) {
 		
 		try {
 			
@@ -202,21 +202,20 @@ public class FoodMenuUI extends BaseMenu {
 	 * @param editItemDescription Description of the existing menu item to be edited.
 	 * @param editItemPrice Price of the existing menu item to be edited.
 	 */
-	public void editMenuItem(int targetItemID, String editItemName, int editItemType, String editItemDescription, double editItemPrice) {
+	private void editMenuItem(int targetItemID, String editItemName, int editItemType, String editItemDescription, double editItemPrice) {
 
 		MenuItemCSVHelper menuHelper = MenuItemCSVHelper.getInstance();
 		
 		for (int i=0; i<(MainApp.menuItems.size()); i++) {
 			
-			MenuItem menuItemObj = MainApp.menuItems.get(i);
+			MenuItem menuItemObj = MainApp.menuItems.get(i); //when you do this, you actually retrieve the whole object
+
 			if (targetItemID == menuItemObj.getId()) {
 				try {
-					MenuItem menuItem = retrieveMenuItem(targetItemID); //retrieve target object
-					
-					menuItem.setName(editItemName);
-					menuItem.setType(editItemType);
-					menuItem.setDescription(editItemDescription);
-					menuItem.setPrice(editItemPrice);
+					menuItemObj.setName(editItemName);
+					menuItemObj.setType(editItemType);
+					menuItemObj.setDescription(editItemDescription);
+					menuItemObj.setPrice(editItemPrice);
 					//at this point, the object has been edited with the new values
 					
 					menuHelper.writeToCsv(MainApp.menuItems); // calls IO method to save the array into the CSV file
@@ -230,8 +229,7 @@ public class FoodMenuUI extends BaseMenu {
 	
 		}
 
-		System.out.println("Edit failed. Target menu item not found.");	
-		return;		
+		System.out.println("Edit failed. Target menu item not found.");
 	}	
 	
 	/**
@@ -239,7 +237,7 @@ public class FoodMenuUI extends BaseMenu {
 	 * (uses "writeToCsv" to facilitate I/O operations)
 	 * @param targetItemID ID of the menu item to be deleted.
 	 */
-	public void deleteMenuItem(int targetItemID) {
+	private void deleteMenuItem(int targetItemID) {
 
 		// logic for this would be
 		// to do a search using menu item ID
@@ -267,8 +265,7 @@ public class FoodMenuUI extends BaseMenu {
 	
 		}
 
-		System.out.println("Target menu item not found.");	
-		return;
+		System.out.println("Target menu item not found.");
 	}
 
 	/**
