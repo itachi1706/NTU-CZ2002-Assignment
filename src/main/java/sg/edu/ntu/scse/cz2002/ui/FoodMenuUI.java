@@ -19,16 +19,13 @@ import java.util.Scanner;
  */
 public class FoodMenuUI extends BaseMenu {
 
-	@SuppressWarnings("resource")
-	Scanner sc = new Scanner(System.in);
-	
     /**
      * The Food Menu Items Management Menu
      * @return Exit Code. Return 1 to exit the program and -1 to exit to main menu
      */
 	@Override
     protected int generateMenuScreen() {
-		
+		Scanner sc = ScannerHelper.getScannerInput();
 		printHeader("Menu Items Management");
 		System.out.println("1) Print existing menu");
 		System.out.println("2) Create a new menu item");
@@ -144,7 +141,7 @@ public class FoodMenuUI extends BaseMenu {
 	 */
 	public void printMenu() {
 		for (int i = 0; i < MainApp.menuItems.size(); i++) {
-			MenuItem menuItem = (MenuItem) MainApp.menuItems.get(i);
+			MenuItem menuItem = MainApp.menuItems.get(i);
 			System.out.println("|============================|");
 			System.out.println("ID: " + menuItem.getId());
 			System.out.println("Name: " + menuItem.getName());

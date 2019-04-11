@@ -6,7 +6,6 @@ import sg.edu.ntu.scse.cz2002.features.Invoice;
 import sg.edu.ntu.scse.cz2002.features.Order;
 import sg.edu.ntu.scse.cz2002.features.Table;
 import sg.edu.ntu.scse.cz2002.objects.person.Staff;
-import sg.edu.ntu.scse.cz2002.objects.restaurantItem.ItemNotFoundException;
 import sg.edu.ntu.scse.cz2002.util.DateTimeFormatHelper;
 import sg.edu.ntu.scse.cz2002.util.FileIOHelper;
 import sg.edu.ntu.scse.cz2002.util.ScannerHelper;
@@ -212,7 +211,7 @@ public class CheckoutMenuUI extends BaseMenu {
         receiptStrings.add(String.format("%-35s%-20s", "Date: " + DateTimeFormatHelper.formatMillisToDateTime(o.getCompletedAt()),  "Table: " + tableNum));
         receiptStrings.add(spacer(60, '_'));
         // Print order items
-        o.getOrderItems().forEach((item) -> receiptStrings.add(String.format(" %-3sx %-45s $%6.2f", item.getQuantity(), item.getItemName(), item.getItemTotal())));
+        o.getOrderItems().forEach((item) -> receiptStrings.add(String.format(" %-3sx %-45s $%6.2f", item.getQuantity(), item.getItem().getName(), item.getItemTotal())));
         receiptStrings.add(spacer(60, '_'));
         receiptStrings.add(String.format("%51s $%6.2f", "Order Subtotal: ", o.getSubtotal()));
         receiptStrings.add(String.format("%51s $%6.2f", "GST (7%): ", total - o.getSubtotal()));
@@ -311,11 +310,7 @@ public class CheckoutMenuUI extends BaseMenu {
         if (o.getOrderItems().size() == 0) System.out.println("No Items in Order");
         else {
             o.calculateSubtotal(); // Calculate Subtotal
-            try {
-                OrderMenuUI.printOrderItems(o.getOrderItems(), true);
-            } catch (ItemNotFoundException e) {
-                System.out.println("An error occurred retrieving Order Items. A brief description of the error is listed below\n" + e.getLocalizedMessage());
-            }
+            OrderMenuUI.printOrderItems(o.getOrderItems(), true);
         }
         printBreaks(60);
         // Do final caclulation
