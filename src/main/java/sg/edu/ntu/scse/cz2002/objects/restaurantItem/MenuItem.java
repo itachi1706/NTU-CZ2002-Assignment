@@ -1,27 +1,19 @@
-package sg.edu.ntu.scse.cz2002.objects.menuitem;
+package sg.edu.ntu.scse.cz2002.objects.restaurantItem;
 import sg.edu.ntu.scse.cz2002.util.ICsvSerializable;
+
+import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * @author Arthur
  *
  */
-public class MenuItem implements ICsvSerializable {
+public class MenuItem extends RestaurantItem implements ICsvSerializable {
 
-
-
-    protected int id;
-    protected String name;
-    protected int type;
-
-    //use caps for enum just like final
-    //remember that enums are actually classes e.g.
-    //public num Class
     public enum MenuItemType {TBA, MAIN, DESSERT, DRINK} //these values actually correspond to 0,1,2,3
-    protected String description;
-    protected double price;
-
 
     private MenuItemType eType;
+    protected String description;
 
 
     /**
@@ -33,11 +25,11 @@ public class MenuItem implements ICsvSerializable {
      * @param price This menu item's price.
      */
     public MenuItem(int id, String name, int type, String description, double price) {
-        this.id = id;
-        this.name = name;
+
+        super(id, name, price); //called from parent
+
         this.eType = convertToItemType(type);
         this.description = description;
-        this.price = price;
     }
 
     /**
@@ -46,12 +38,8 @@ public class MenuItem implements ICsvSerializable {
      * @param csv A string array of the CSV file
      */
     public MenuItem(String[] csv) {
-        this.id = Integer.parseInt(csv[0]);
-        this.name = csv[1];
-
-        this.eType = convertToItemType(Integer.parseInt(csv[2]));
-
-        this.price = Double.parseDouble(csv[3]);
+        super(csv);
+        this.eType = convertToItemType(Integer.parseInt(csv[3]));
         this.description = csv[4];
     }
 
@@ -62,63 +50,30 @@ public class MenuItem implements ICsvSerializable {
      */
     @Override
     public String[] toCsv() {
-        String[] s = new String[5];
-        s[0] = this.id + "";
-        s[1] = this.name;
-
-        //this is based on what enum it is, converts to the right
-        s[2] =  this.eType == MenuItemType.MAIN      ? "1"    :
+        ArrayList<String> stuff = new ArrayList<>();
+        Collections.addAll(stuff, super.toCsv()); //these are the details called from the super class
+        stuff.add(this.eType == MenuItemType.MAIN      ? "1"    :
                 this.eType == MenuItemType.DESSERT   ? "2" :
-                this.eType ==  MenuItemType.DRINK    ? "3"   :
-                                                        "0";
-
-        s[3] = this.price + "";
-        s[4] = this.description;
-        return s;
+                        this.eType ==  MenuItemType.DRINK    ? "3"   :
+                                "0"); //this is for the 5th column
+        stuff.add(this.description); //this is for the 6th column
+        return stuff.toArray(new String[0]);
     }
 
-    /**
-     * @return  Gets the menu item's ID.
-     */
-    public int getId() {
-        return id;
-    }
 
     /**
-     * @param id Sets the menu item's ID.
-     */
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    /**
-     * @return Gets the menu item's name.
-     */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * @param name Sets the menu item's name.
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    /**
-     * @return Gets the menu item's type.
+     * @return Gets the menu item's type. 
      */
     public MenuItemType getType() {
         return eType;
-    } //my getters return MenuItemType
-
+    }
 
     /**
      * @param type Sets the menu item's type.
      */
     public void setType(int type) {
         this.eType = convertToItemType(type);
-    } //my setters can be integer
+    }
 
     // Compartmentalized method that takes in integer and converts
     public MenuItemType convertToItemType(int type) {
@@ -142,19 +97,6 @@ public class MenuItem implements ICsvSerializable {
         this.description = description;
     }
 
-    /**
-     * @return Gets the menu item's price.
-     */
-    public double getPrice() {
-        return price;
-    }
-
-    /**
-     * @param price Sets the menu item's price.
-     */
-    public void setPrice(double price) {
-        this.price = price;
-    }
 
     /**
      * Prints details regarding this item
@@ -162,8 +104,8 @@ public class MenuItem implements ICsvSerializable {
      * @return Parsed string of the Menu Item
      */
     public String printItemDetail() {
-        return "Name: " + this.getName() + "\n" +
+        return "Name: " + super.getName() + "\n" + //correct implementation of calling super, instead of this.getName()
                 "Description: " + this.getDescription() + "\n" +
-                "Price: $" + String.format("%.2f", this.getPrice());
+                "Price: $" + String.format("%.2f", super.getPrice());
     }
 }

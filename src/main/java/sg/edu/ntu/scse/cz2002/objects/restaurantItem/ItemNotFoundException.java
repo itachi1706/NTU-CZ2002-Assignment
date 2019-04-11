@@ -1,4 +1,4 @@
-package sg.edu.ntu.scse.cz2002.objects.menuitem;
+package sg.edu.ntu.scse.cz2002.objects.restaurantItem;
 
 /**
  * Exception when an Order Item cannot be found in the order

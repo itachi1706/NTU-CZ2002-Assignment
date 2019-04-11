@@ -1,6 +1,7 @@
 package sg.edu.ntu.scse.cz2002.features;
 
 import org.jetbrains.annotations.NotNull;
+import sg.edu.ntu.scse.cz2002.util.ICsvSerializable;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,7 +13,7 @@ import java.util.Collections;
  * @version 1.0
  * @since 2019-04-08
  */
-public class Invoice extends Order {
+public class Invoice extends Order implements ICsvSerializable {
 
     /**
      * Enum for the payment types you can select

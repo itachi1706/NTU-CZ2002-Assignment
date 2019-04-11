@@ -3,9 +3,9 @@ package sg.edu.ntu.scse.cz2002;
 import sg.edu.ntu.scse.cz2002.features.Invoice;
 import sg.edu.ntu.scse.cz2002.features.Reservation;
 import sg.edu.ntu.scse.cz2002.features.Table;
-import sg.edu.ntu.scse.cz2002.objects.menuitem.MenuItem;
-import sg.edu.ntu.scse.cz2002.objects.menuitem.Promotion;
 import sg.edu.ntu.scse.cz2002.objects.person.Staff;
+import sg.edu.ntu.scse.cz2002.objects.restaurantItem.MenuItem;
+import sg.edu.ntu.scse.cz2002.objects.restaurantItem.PromotionItem;
 import sg.edu.ntu.scse.cz2002.ui.MainMenuUI;
 import sg.edu.ntu.scse.cz2002.util.*;
 
@@ -52,7 +52,7 @@ public class MainApp {
     /**
      * The list of promotions loaded into the program
      */
-    public static ArrayList<Promotion> promotions;
+    public static ArrayList<PromotionItem> promotions;
     
     /**
      * The list of reservations loaded into the program
@@ -142,7 +142,7 @@ public class MainApp {
             
             System.out.println("Saving current promotion list to file...");
             promoCSVHelper.writeToCsv(promotions);
-            System.out.println("Promotion List Saved!");
+            System.out.println("PromotionItem List Saved!");
             
             System.out.println("Saving current reservation list to file...");
             reservationCsvHelper.writeToCsv(reservations);

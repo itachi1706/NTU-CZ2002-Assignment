@@ -1,6 +1,6 @@
 package sg.edu.ntu.scse.cz2002.util;
 
-import sg.edu.ntu.scse.cz2002.objects.menuitem.MenuItem;
+import sg.edu.ntu.scse.cz2002.objects.restaurantItem.MenuItem;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
