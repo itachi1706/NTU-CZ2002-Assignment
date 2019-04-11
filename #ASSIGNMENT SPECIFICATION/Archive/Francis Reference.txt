@@ -1,0 +1,77 @@
+/* READ-ME: For the following nested if-else condition fragments,
+         * only ONE if-else condition will be entered, depending on the number of pax that has
+         * been passed into this function.
+         * Therefore, for the respective if-condition fragments, for-loops will be done in-order to:
+         * 1. Ensure number of seats at the table is less than or equal to the number of pax
+         * which thereafter retrieves uses that Table object to retrieve its table number.
+         * 2. This table number will then be passed into another for-loop to determine if that table
+         * has also been booked by another reservation on that same date.
+         * If it has been booked, the for-loop in the above premise (premise 1) will be repeated
+         *
+         * The for-loops will continue until an available table on that date has been found.
+         */
+        /*//Checking for 2-seater tables
+        if (numPax <= 2) {
+            for (Table t : MainApp.tables) {
+                if (t.getNumSeats() == Table.TableSeats.TWO_SEATER) {
+                    for (int tn : tablesBookedForDate)
+                        if (t.getTableNum() == tn) {
+                            booked = true;
+                            break;
+                        }
+
+                    if (!booked) {
+                        tableNum = t.getTableNum();
+                        break;
+                    }
+                }
+            }
+            //Checking for 4-seater tables
+        } else if (numPax <= 4) {
+            for (Table t : MainApp.tables) {
+                if (t.getNumSeats() == Table.TableSeats.FOUR_SEATER) {
+                    for (int tn : tablesBookedForDate)
+                        if (t.getTableNum() == tn) {
+                            booked = true;
+                            break;
+                        }
+
+                    if (!booked) {
+                        tableNum = t.getTableNum();
+                        break;
+                    }
+                }
+            }
+            //Checking for 8-seater tables
+        } else if (numPax <= 8) {
+            for (Table t : MainApp.tables) {
+                if (t.getNumSeats() == Table.TableSeats.EIGHT_SEATER) {
+                    for (int tn : tablesBookedForDate)
+                        if (t.getTableNum() == tn) {
+                            booked = true;
+                            break;
+                        }
+
+                    if (!booked) {
+                        tableNum = t.getTableNum();
+                        break;
+                    }
+                }
+            }
+            //Checking for 10-seater tables
+        } else if (numPax <= 10) {
+            for (Table t : MainApp.tables) {
+                if (t.getNumSeats() == Table.TableSeats.TEN_SEATER) {
+                    for (int tn : tablesBookedForDate)
+                        if (t.getTableNum() == tn) {
+                            booked = true;
+                            break;
+                        }
+
+                    if (!booked) {
+                        tableNum = t.getTableNum();
+                        break;
+                    }
+                }
+            }
+        }*/

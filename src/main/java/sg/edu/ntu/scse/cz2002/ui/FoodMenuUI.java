@@ -18,16 +18,15 @@ import java.util.Scanner;
  * @since 2019-03-22
  */
 public class FoodMenuUI extends BaseMenu {
-	
     /**
      * The Food Menu Items Management Menu
      * @return Exit Code. Return 1 to exit the program and -1 to exit to main menu
      */
-	@Override
+	  @Override
     protected int generateMenuScreen() {
-
+  
 		Scanner sc = ScannerHelper.getScannerInput();
-
+  
 		printHeader("Menu Items Management");
 		System.out.println("1) Print existing menu");
 		System.out.println("2) Create a new menu item");

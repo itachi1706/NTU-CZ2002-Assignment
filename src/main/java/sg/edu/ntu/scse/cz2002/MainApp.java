@@ -142,7 +142,7 @@ public class MainApp {
             
             System.out.println("Saving current promotion list to file...");
             promoCSVHelper.writeToCsv(promotions);
-            System.out.println("PromotionItem List Saved!");
+            System.out.println("Promotion List Saved!");
             
             System.out.println("Saving current reservation list to file...");
             reservationCsvHelper.writeToCsv(reservations);
@@ -209,8 +209,7 @@ public class MainApp {
         //char session = 'A';
         Reservation r;
         Iterator<Reservation> iter = reservations.iterator();
-
-        //TODO: Check if AM or PM session using current time.
+        
         if (LocalTime.now().isBefore(LocalTime.of(15, 00)) || LocalTime.now().isAfter(LocalTime.of(22,00)))
             restaurantSession = 'A';
         else restaurantSession = 'P';

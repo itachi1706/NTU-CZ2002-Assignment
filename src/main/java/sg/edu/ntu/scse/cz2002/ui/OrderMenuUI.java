@@ -7,10 +7,10 @@ import sg.edu.ntu.scse.cz2002.features.Order;
 import sg.edu.ntu.scse.cz2002.features.OrderItem;
 import sg.edu.ntu.scse.cz2002.features.Reservation;
 import sg.edu.ntu.scse.cz2002.features.Table;
-import sg.edu.ntu.scse.cz2002.objects.restaurantItem.ItemNotFoundException;
+import sg.edu.ntu.scse.cz2002.objects.person.Staff;
 import sg.edu.ntu.scse.cz2002.objects.restaurantItem.MenuItem;
 import sg.edu.ntu.scse.cz2002.objects.restaurantItem.PromotionItem;
-import sg.edu.ntu.scse.cz2002.objects.person.Staff;
+import sg.edu.ntu.scse.cz2002.objects.restaurantItem.RestaurantItem;
 import sg.edu.ntu.scse.cz2002.util.DateTimeFormatHelper;
 import sg.edu.ntu.scse.cz2002.util.ScannerHelper;
 
@@ -369,13 +369,7 @@ public class OrderMenuUI extends BaseMenu {
         }
 
         // View list of order items
-        int selection;
-        try {
-            selection = getOrderItemToEdit(o,"Select an item to change quantity: ");
-        } catch (ItemNotFoundException e) {
-            System.out.println("An error occurred obtaining items in the order. A brief description of the error is listed below\n" + e.getLocalizedMessage());
-            return;
-        }
+        int selection = getOrderItemToEdit(o,"Select an item to change quantity: ");
         int quantity = ScannerHelper.getIntegerInput("Enter the new Quantity for the item. (Current Qty: " + o.getOrderItems().get(selection).getQuantity() + "): ", 0);
         // Update quantity
         o.getOrderItems().get(selection).setQuantity(quantity);
@@ -393,15 +387,9 @@ public class OrderMenuUI extends BaseMenu {
             return;
         }
 
-        int sel;
-        try {
-            sel = getOrderItemToEdit(o,"Select an item to remove from order: ");
-        } catch (ItemNotFoundException e) {
-            System.out.println("An error occurred obtaining items in the order. A brief description of the error is listed below\n" + e.getLocalizedMessage());
-            return;
-        }
+        int sel = getOrderItemToEdit(o,"Select an item to remove from order: ");
         OrderItem i = o.getOrderItems().get(sel);
-        String itemName = i.getItemName();
+        String itemName = i.getItem().getName();
         System.out.println(itemName + " (Qty: " + i.getQuantity() + ") is about to be removed from the order");
         if (ScannerHelper.getYesNoInput("Confirm?")) {
             o.getOrderItems().remove(sel);
@@ -488,11 +476,7 @@ public class OrderMenuUI extends BaseMenu {
         if (o.getOrderItems().size() == 0) System.out.println("No Items in Order");
         else {
             o.calculateSubtotal(); // Calculate Subtotal
-            try {
-                printOrderItems(o.getOrderItems(), true);
-            } catch (ItemNotFoundException e) {
-                System.out.println("An error occurred retrieving Order Items. A brief description of the error is listed below\n" + e.getLocalizedMessage());
-            }
+            printOrderItems(o.getOrderItems(), true);
         }
         printBreaks(60);
         System.out.println("Order Subtotal: $" + String.format("%.2f", o.getSubtotal()));
@@ -505,9 +489,8 @@ public class OrderMenuUI extends BaseMenu {
      * @param o Order object
      * @param prompt The prompt to prompt the user. If no prompt pass in an empty string
      * @return the ID of the item they are selecting (based against the arraylist index, NOT the order item's respective ID
-     * @throws ItemNotFoundException An item cannot be found in the order
      */
-    private int getOrderItemToEdit(@NotNull Order o, String prompt) throws ItemNotFoundException {
+    private int getOrderItemToEdit(@NotNull Order o, String prompt) {
         System.out.println("List of items from the order:");
         printOrderItems(o.getOrderItems(), false);
         System.out.println();
@@ -518,16 +501,15 @@ public class OrderMenuUI extends BaseMenu {
      * Prints the list of items in the order
      * @param items An array list of the items in the order
      * @param prettyPrint Whether or not we should format the string (for displaying in a table format) or as a list format
-     * @throws ItemNotFoundException Item not found in the order
      */
-    public static void printOrderItems(@NotNull ArrayList<OrderItem> items, boolean prettyPrint) throws ItemNotFoundException {
+    public static void printOrderItems(@NotNull ArrayList<OrderItem> items, boolean prettyPrint) {
         int imm = 1;
         for (OrderItem i : items) {
-            Object item = i.getItem();
+            RestaurantItem item = i.getItem();
             if (item == null) {
                 System.out.println("Item Not Found in Database");
                 continue; // Cannot find item, print Unknown Item
-            }
+
             String itemName;
             double price;
             if (i.isPromotion() && item instanceof PromotionItem) {
@@ -539,6 +521,7 @@ public class OrderMenuUI extends BaseMenu {
                 itemName = mi.getName();
                 price = mi.getPrice();
             } else throw new ItemNotFoundException("Item is not Promotion Item or Menu Item"); // Exception for invalid item in database. Exception as we need to handle and fix
+
             if (prettyPrint) System.out.printf("%3dx %-45s $%-6.2f\n", i.getQuantity(), itemName, price);
             else System.out.println(imm + ") " + i.getQuantity() + "x " + itemName + "\t$" + String.format("%.2f", price));
             imm++;

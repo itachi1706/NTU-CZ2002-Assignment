@@ -217,13 +217,12 @@ public class SalesRevenueReportMenuUI extends BaseMenu {
 		invoices.forEach((i) -> {
 			ArrayList<OrderItem> orderItems = i.getOrderItems();
 			orderItems.forEach((item) -> {
-				int itemId = item.getItemId();
+				int itemId = item.getItem().getId();
 				if (itemId == -1) return; // Ignore, unknown item
 				String tag;
 				if (item.isPromotion()) tag = "P:";
 				else tag = "M:";
-				tag += itemId;
-				tag += ":" + item.getItemName();
+				tag += itemId + ":" + item.getItem().getName();
 				// Check if exist in map
 				int count = 0;
 				if (store.containsKey(tag)) count = store.get(tag);

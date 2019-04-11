@@ -1,6 +1,7 @@
 package sg.edu.ntu.scse.cz2002.ui;
 
 import sg.edu.ntu.scse.cz2002.MainApp;
+import sg.edu.ntu.scse.cz2002.util.DateTimeFormatHelper;
 import sg.edu.ntu.scse.cz2002.util.ScannerHelper;
 
 import java.util.InputMismatchException;
@@ -37,6 +38,9 @@ public abstract class BaseMenu {
         // Only exit if <>0, otherwise continue looping
         while (true) {
             try {
+                System.out.println("Time now: " + DateTimeFormatHelper.
+                        formatToStringDate(DateTimeFormatHelper.getTodayDate(false))
+                        + " " + DateTimeFormatHelper.getTimeNow());
                 int exit = generateMenuScreen();
                 if (exit < 0) return false;
                 else if (exit > 0) return true;
