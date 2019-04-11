@@ -142,7 +142,7 @@ public class MainApp {
             
             System.out.println("Saving current promotion list to file...");
             promoCSVHelper.writeToCsv(promotions);
-            System.out.println("PromotionItem List Saved!");
+            System.out.println("Promotion List Saved!");
             
             System.out.println("Saving current reservation list to file...");
             reservationCsvHelper.writeToCsv(reservations);

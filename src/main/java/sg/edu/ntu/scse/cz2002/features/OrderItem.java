@@ -3,6 +3,7 @@ package sg.edu.ntu.scse.cz2002.features;
 import org.jetbrains.annotations.NotNull;
 import sg.edu.ntu.scse.cz2002.objects.restaurantItem.MenuItem;
 import sg.edu.ntu.scse.cz2002.objects.restaurantItem.PromotionItem;
+import sg.edu.ntu.scse.cz2002.objects.restaurantItem.RestaurantItem;
 import sg.edu.ntu.scse.cz2002.ui.FoodMenuUI;
 import sg.edu.ntu.scse.cz2002.ui.PromotionMenuUI;
 
@@ -94,37 +95,9 @@ public class OrderItem {
      * This object can either be a {@link MenuItem} or a {@link PromotionItem}
      * @return {@link MenuItem} or {@link PromotionItem} object
      */
-    public Object getItem() {
+    public RestaurantItem getItem() {
         if (this.isPromotion()) return getPromo();
         return getMenuItem();
-    }
-
-    /**
-     * Internally tries and get the item name from the item stored in this entry
-     * @return The name of the item if possible
-     */
-    public String getItemName() {
-        Object o = this.getItem();
-        if (o instanceof MenuItem) {
-            return ((MenuItem) o).getName();
-        } else if (o instanceof PromotionItem) {
-            return ((PromotionItem) o).getName();
-        }
-        return "Invalid Item";
-    }
-
-    /**
-     * Internally tries and get the item ID from the item stored in this entry
-     * @return The ID of the item if possible
-     */
-    public int getItemId() {
-        Object o = this.getItem();
-        if (o instanceof MenuItem) {
-            return ((MenuItem) o).getId();
-        } else if (o instanceof PromotionItem) {
-            return ((PromotionItem) o).getId();
-        }
-        return -1;
     }
 
     /**
