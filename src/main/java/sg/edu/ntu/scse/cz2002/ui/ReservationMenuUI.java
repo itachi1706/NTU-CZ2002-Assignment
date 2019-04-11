@@ -6,7 +6,6 @@ import sg.edu.ntu.scse.cz2002.features.Table;
 import sg.edu.ntu.scse.cz2002.util.DateTimeFormatHelper;
 import sg.edu.ntu.scse.cz2002.util.ScannerHelper;
 
-import java.awt.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeParseException;
@@ -286,6 +285,8 @@ public class ReservationMenuUI extends BaseMenu {
     private void removeReservationBooking() {
         //Scanner input = new Scanner(System.in);
         int count = 0;
+        int resvId = 0;
+
         this.listReservations();
         printHeader("Remove Reservation Booking");
         System.out.print("Enter telephone number linked to the reservation to be deleted: ");
@@ -299,7 +300,6 @@ public class ReservationMenuUI extends BaseMenu {
             switch (Character.toUpperCase(input.nextLine().charAt(0))) {
                 case 'Y':
                     Reservation.removeReservationFromList(telNo);
-
                     break;
                 case 'N':
                     break;
@@ -310,9 +310,11 @@ public class ReservationMenuUI extends BaseMenu {
         } else if (count > 1) {
             System.out.println("System has found " + count + " reservations under the telephone number " + telNo + ".");
 
-            int resvId = ScannerHelper.getIntegerInput("\nEnter the Reservation ID that is to be deleted: ");
-            Reservation.removeReservationFromList(telNo, resvId);
-
+            while (resvId != -1) {
+                resvId = ScannerHelper.getIntegerInput("\nEnter the Reservation ID that is to be deleted, or input -1 to exit function: ");
+                Reservation.removeReservationFromList(telNo, resvId);
+                return;
+            }
         }
         else
             System.out.println("There are no reservation bookings linked to the telephone number.");

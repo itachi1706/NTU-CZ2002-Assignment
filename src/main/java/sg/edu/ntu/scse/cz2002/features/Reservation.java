@@ -323,20 +323,24 @@ public class Reservation implements ICsvSerializable {
      * 1. telephone number and 2. reservation id
      * This function will be invoked from {@link sg.edu.ntu.scse.cz2002.ui.ReservationMenuUI} if there are more than one reservation
      * found that is linked to the same telephone number
+     * If resvId input given is -1, exit function immediately.
      * @param telNo Customer telephone number
      * @param resvId Reservation index number
      */
     public static void removeReservationFromList(String telNo, int resvId) {
+        if (resvId == -1) return;
+
         Iterator<Reservation> iter = MainApp.reservations.iterator();
         while (iter.hasNext()) {
             Reservation r = iter.next();
             if (r.getCustTelNo().equals(telNo) && r.getResvId() == resvId) {
                 iter.remove();
-                break;
+                System.out.println("Reservation ID " + resvId +
+                        " under telephone number " + telNo + " has been successfully removed.");
+                return;
             }
         }
-        System.out.println("Reservation ID " + resvId +
-                " under telephone number " + telNo + " has been successfully removed.");
+        System.out.println("Invalid Reservation ID under telephone number " + telNo + ".");
     }
 
 }
