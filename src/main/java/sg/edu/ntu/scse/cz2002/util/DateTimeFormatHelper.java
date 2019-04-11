@@ -98,11 +98,12 @@ public class DateTimeFormatHelper {
     }
 
     /**
-     * Function to get time now (without date), in UTC+8 (Singapore Time)
+     * Function to get time now (without date), in UTC+8 (Singapore Time),
+     * truncated to include seconds, without nanoseconds
      * @return LocalTime variable containing the time now.
      */
     public static LocalTime getTimeNow() {
-        return LocalTime.now().plusHours(8);
+        return LocalTime.now().truncatedTo(ChronoUnit.SECONDS);
     }
 
     /**
