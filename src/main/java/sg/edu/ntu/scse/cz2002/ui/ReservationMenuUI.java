@@ -318,17 +318,6 @@ public class ReservationMenuUI extends BaseMenu {
 
 
     }
-    /**
-     * Method for listing all reservations made by customers, in ascending order of Reservation ID.
-     */
-    private void listReservations() {
-        printHeader("List of all Reservations");
-        System.out.printf("%-4s %-15s %-10s %-10s %-15s %-30s %-3s %-9s\n", "ID", "Date", "Session", "Time", "Tel. No", "Name", "Pax", "Table No.");
-        printBreaks();
-        for (Reservation r : MainApp.reservations) {
-            printReservationLine(r);
-        }
-    }
 
     /**
      * Checks if the current Reservation object has expired
@@ -351,6 +340,34 @@ public class ReservationMenuUI extends BaseMenu {
     }
 
     /**
+     * Method for listing all reservations made by customers, in ascending order of Reservation ID.
+     */
+    private void listReservations() {
+        printHeader("List of all Reservations");
+        System.out.printf("%-6s %-15s %-10s %-10s %-15s %-30s %-3s %-9s\n", "ID", "Date", "Session", "Time", "Tel. No", "Name", "Pax", "Table No.");
+        printBreaks();
+        for (Reservation r : MainApp.reservations) {
+            printReservationLine(r);
+        }
+    }
+
+    /**
+     * Overloaded method to print details of a single reservation
+     * @param r Reservation object
+     */
+    private void printReservationLine(Reservation r) {
+        System.out.printf("%-6d %-15s %-10s %-10s %-15s %-30s %-3d %-9d\n",
+                r.getResvId(),
+                DateTimeFormatHelper.formatToStringDate(r.getResvDate()),
+                r.getResvSession() == Reservation.ReservationSession.AM_SESSION ? 'A' : 'P',
+                DateTimeFormatHelper.formatToStringTime(r.getResvTime()),
+                r.getCustTelNo(),
+                r.getCustName(),
+                r.getNumPax(),
+                r.getTableNum());
+    }
+
+    /**
      * Method to print details of reservation lines by phone number.
      * Uses overloaded method of same name {@link ReservationMenuUI#printReservationLine(Reservation)} that passes in Reservation object
      * @param telNo String variable containing customer's telephone number
@@ -360,7 +377,7 @@ public class ReservationMenuUI extends BaseMenu {
     {
         int count = 0;
         System.out.println("Below are the reservations linked to the number " + telNo);
-        System.out.printf("%-4s %-15s %-10s %-10s %-15s %-30s %-3s %-9s\n", "ID", "Date", "Session", "Time", "Tel. No", "Name", "Pax", "Table No.");
+        System.out.printf("%-6s %-15s %-10s %-10s %-15s %-30s %-3s %-9s\n", "ID", "Date", "Session", "Time", "Tel. No", "Name", "Pax", "Table No.");
         printBreaks();
         for(Reservation r : MainApp.reservations) {
             if (telNo.equals(r.getCustTelNo())) {
@@ -369,22 +386,6 @@ public class ReservationMenuUI extends BaseMenu {
             }
         }
         return count;
-    }
-
-    /**
-     * Overloaded method to print details of a single reservation
-     * @param r Reservation object
-     */
-    private void printReservationLine(Reservation r) {
-        System.out.printf("%-4d %-15s %-10s %-10s %-15s %-30s %-3d %-9d\n",
-                r.getResvId(),
-                DateTimeFormatHelper.formatToStringDate(r.getResvDate()),
-                r.getResvSession() == Reservation.ReservationSession.AM_SESSION ? 'A' : 'P',
-                DateTimeFormatHelper.formatToStringTime(r.getResvTime()),
-                r.getCustTelNo(),
-                r.getCustName(),
-                r.getNumPax(),
-                r.getTableNum());
     }
 
     /**
