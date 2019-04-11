@@ -10,6 +10,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Iterator;
 
 /**
  * The Reservation Class
@@ -302,4 +303,40 @@ public class Reservation implements ICsvSerializable {
         tablesBooked.sort(Comparator.comparingInt(o -> o.getTableNum()));
         return tablesBooked;
     }
+
+    /**
+     * Removes a reservation from the main reservation list based on solely telephone numbre
+     * @param telNo Customer telephone number
+     */
+    public static void removeReservationFromList(String telNo) {
+        Iterator<Reservation> i = MainApp.reservations.iterator();
+        while (i.hasNext()) {
+            Reservation r = i.next();
+            if (r.getCustTelNo().equals(telNo))
+                i.remove();
+        }
+        System.out.println("Reservation has been successfully removed.");
+    }
+
+    /**
+     * Removes a reservation from them ain reservation list based on two varaibles:
+     * 1. telephone number and 2. reservation id
+     * This function will be invoked from {@link sg.edu.ntu.scse.cz2002.ui.ReservationMenuUI} if there are more than one reservation
+     * found that is linked to the same telephone number
+     * @param telNo Customer telephone number
+     * @param resvId Reservation index number
+     */
+    public static void removeReservationFromList(String telNo, int resvId) {
+        Iterator<Reservation> iter = MainApp.reservations.iterator();
+        while (iter.hasNext()) {
+            Reservation r = iter.next();
+            if (r.getCustTelNo().equals(telNo) && r.getResvId() == resvId) {
+                iter.remove();
+                break;
+            }
+        }
+        System.out.println("Reservation ID " + resvId +
+                " under telephone number " + telNo + " has been successfully removed.");
+    }
+
 }

@@ -256,84 +256,6 @@ public class ReservationMenuUI extends BaseMenu {
         tablesBookedOnDateBySession = Reservation.getTablesBookedOnDateBySession(resvDate, resvSession);
         tablesByNumPax = Table.getVacantTablesByNumPax(numPax, tablesBookedOnDateBySession);
 
-        /* READ-ME: For the following nested if-else condition fragments,
-         * only ONE if-else condition will be entered, depending on the number of pax that has
-         * been passed into this function.
-         * Therefore, for the respective if-condition fragments, for-loops will be done in-order to:
-         * 1. Ensure number of seats at the table is less than or equal to the number of pax
-         * which thereafter retrieves uses that Table object to retrieve its table number.
-         * 2. This table number will then be passed into another for-loop to determine if that table
-         * has also been booked by another reservation on that same date.
-         * If it has been booked, the for-loop in the above premise (premise 1) will be repeated
-         *
-         * The for-loops will continue until an available table on that date has been found.
-         */
-        /*//Checking for 2-seater tables
-        if (numPax <= 2) {
-            for (Table t : MainApp.tables) {
-                if (t.getNumSeats() == Table.TableSeats.TWO_SEATER) {
-                    for (int tn : tablesBookedForDate)
-                        if (t.getTableNum() == tn) {
-                            booked = true;
-                            break;
-                        }
-
-                    if (!booked) {
-                        tableNum = t.getTableNum();
-                        break;
-                    }
-                }
-            }
-            //Checking for 4-seater tables
-        } else if (numPax <= 4) {
-            for (Table t : MainApp.tables) {
-                if (t.getNumSeats() == Table.TableSeats.FOUR_SEATER) {
-                    for (int tn : tablesBookedForDate)
-                        if (t.getTableNum() == tn) {
-                            booked = true;
-                            break;
-                        }
-
-                    if (!booked) {
-                        tableNum = t.getTableNum();
-                        break;
-                    }
-                }
-            }
-            //Checking for 8-seater tables
-        } else if (numPax <= 8) {
-            for (Table t : MainApp.tables) {
-                if (t.getNumSeats() == Table.TableSeats.EIGHT_SEATER) {
-                    for (int tn : tablesBookedForDate)
-                        if (t.getTableNum() == tn) {
-                            booked = true;
-                            break;
-                        }
-
-                    if (!booked) {
-                        tableNum = t.getTableNum();
-                        break;
-                    }
-                }
-            }
-            //Checking for 10-seater tables
-        } else if (numPax <= 10) {
-            for (Table t : MainApp.tables) {
-                if (t.getNumSeats() == Table.TableSeats.TEN_SEATER) {
-                    for (int tn : tablesBookedForDate)
-                        if (t.getTableNum() == tn) {
-                            booked = true;
-                            break;
-                        }
-
-                    if (!booked) {
-                        tableNum = t.getTableNum();
-                        break;
-                    }
-                }
-            }
-        }*/
-
         return (!tablesByNumPax.isEmpty()) ?
                 tablesByNumPax.get(0).getTableNum() : -1;
     }
@@ -376,13 +298,8 @@ public class ReservationMenuUI extends BaseMenu {
             System.out.print("Are you sure you want to delete this reservation (Y/N)? ");
             switch (Character.toUpperCase(input.nextLine().charAt(0))) {
                 case 'Y':
-                    Iterator<Reservation> i = MainApp.reservations.iterator();
-                    while (i.hasNext()) {
-                        Reservation r = i.next();
-                        if (r.getCustTelNo().equals(telNo))
-                            i.remove();
-                    }
-                    System.out.println("Reservation has been successfully removed.");
+                    Reservation.removeReservationFromList(telNo);
+
                     break;
                 case 'N':
                     break;
@@ -394,16 +311,8 @@ public class ReservationMenuUI extends BaseMenu {
             System.out.println("System has found " + count + " reservations under the telephone number " + telNo + ".");
 
             int resvId = ScannerHelper.getIntegerInput("\nEnter the Reservation ID that is to be deleted: ");
-            Iterator<Reservation> iter = MainApp.reservations.iterator();
-            while (iter.hasNext()) {
-                Reservation r = iter.next();
-                if (r.getCustTelNo().equals(telNo) && r.getResvId() == resvId) {
-                    iter.remove();
-                    break;
-                }
-            }
-            System.out.println("Reservation ID " + resvId +
-                    " under telephone number " + telNo + " has been successfully removed.");
+            Reservation.removeReservationFromList(telNo, resvId);
+
         }
         else
             System.out.println("There are no reservation bookings linked to the telephone number.");
@@ -415,7 +324,7 @@ public class ReservationMenuUI extends BaseMenu {
      */
     private void listReservations() {
         printHeader("List of all Reservations");
-        System.out.printf("%-4s %-15s %-10s %-10s %-10s %-20s %-3s %-9s\n", "ID", "Date", "Session", "Time", "Tel. No", "Name", "Pax", "Table No.");
+        System.out.printf("%-4s %-15s %-10s %-10s %-15s %-30s %-3s %-9s\n", "ID", "Date", "Session", "Time", "Tel. No", "Name", "Pax", "Table No.");
         printBreaks();
         for (Reservation r : MainApp.reservations) {
             printReservationLine(r);
@@ -452,7 +361,7 @@ public class ReservationMenuUI extends BaseMenu {
     {
         int count = 0;
         System.out.println("Below are the reservations linked to the number " + telNo);
-        System.out.printf("%-4s %-15s %-10s %-10s %-10s %-20s %-3s %-9s\n", "ID", "Date", "Session", "Time", "Tel. No", "Name", "Pax", "Table No.");
+        System.out.printf("%-4s %-15s %-10s %-10s %-15s %-30s %-3s %-9s\n", "ID", "Date", "Session", "Time", "Tel. No", "Name", "Pax", "Table No.");
         printBreaks();
         for(Reservation r : MainApp.reservations) {
             if (telNo.equals(r.getCustTelNo())) {
@@ -468,7 +377,7 @@ public class ReservationMenuUI extends BaseMenu {
      * @param r Reservation object
      */
     private void printReservationLine(Reservation r) {
-        System.out.printf("%-4d %-15s %-10s %-10s %-10s %-20s %-3d %-9d\n",
+        System.out.printf("%-4d %-15s %-10s %-10s %-15s %-30s %-3d %-9d\n",
                 r.getResvId(),
                 DateTimeFormatHelper.formatToStringDate(r.getResvDate()),
                 r.getResvSession() == Reservation.ReservationSession.AM_SESSION ? 'A' : 'P',
