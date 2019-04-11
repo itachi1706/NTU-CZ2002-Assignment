@@ -310,11 +310,8 @@ public class ReservationMenuUI extends BaseMenu {
         } else if (count > 1) {
             System.out.println("System has found " + count + " reservations under the telephone number " + telNo + ".");
 
-            while (resvId != -1) {
-                resvId = ScannerHelper.getIntegerInput("\nEnter the Reservation ID that is to be deleted, or input -1 to exit function: ");
-                Reservation.removeReservationFromList(telNo, resvId);
-                return;
-            }
+            resvId = ScannerHelper.getIntegerInput("\nEnter the Reservation ID that is to be deleted, or input -1 to exit function: ");
+            Reservation.removeReservationFromList(telNo, resvId);
         }
         else
             System.out.println("There are no reservation bookings linked to the telephone number.");

@@ -340,7 +340,7 @@ public class Reservation implements ICsvSerializable {
                 return;
             }
         }
-        System.out.println("Invalid Reservation ID under telephone number " + telNo + ".");
+        System.out.println("Invalid Reservation ID under telephone number " + telNo + ". No removals made.");
     }
 
 }
