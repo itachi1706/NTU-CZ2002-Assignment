@@ -209,8 +209,7 @@ public class MainApp {
         //char session = 'A';
         Reservation r;
         Iterator<Reservation> iter = reservations.iterator();
-
-        //TODO: Check if AM or PM session using current time.
+        
         if (LocalTime.now().isBefore(LocalTime.of(15, 00)) || LocalTime.now().isAfter(LocalTime.of(22,00)))
             restaurantSession = 'A';
         else restaurantSession = 'P';
