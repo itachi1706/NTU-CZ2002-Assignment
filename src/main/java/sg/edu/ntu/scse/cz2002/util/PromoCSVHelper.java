@@ -1,6 +1,7 @@
 package sg.edu.ntu.scse.cz2002.util;
 
-import sg.edu.ntu.scse.cz2002.objects.menuitem.Promotion;
+import sg.edu.ntu.scse.cz2002.objects.restaurantItem.PromotionItem;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -18,7 +19,7 @@ import java.util.List;
 public class PromoCSVHelper extends CSVBaseHelper {
 
 	/**
-	 * Path to Promotion CSV File in the data folder. Defaults to promotion.csv
+	 * Path to PromotionItem CSV File in the data folder. Defaults to promotion.csv
 	 */
 	private String promotionCsv = "promotion.csv";
 	
@@ -46,16 +47,16 @@ public class PromoCSVHelper extends CSVBaseHelper {
     
     /**
      * Reads the CSV file and parse it into an array list of promotion objects
-     * @return ArrayList of Promotion Objects
+     * @return ArrayList of PromotionItem Objects
      * @throws IOException Unable to read from file
      */
-    public ArrayList<Promotion> readFromCsv() throws IOException {
+    public ArrayList<PromotionItem> readFromCsv() throws IOException {
         BufferedReader csvFile = FileIOHelper.getFileBufferedReader(this.promotionCsv);
         List<String[]> csvLines = readAll(csvFile, 1);
-        ArrayList<Promotion> promotions = new ArrayList<>();
+        ArrayList<PromotionItem> promotions = new ArrayList<>();
         if (csvLines.size() == 0) return promotions;
         csvLines.forEach((str) -> {
-        	Promotion promotion = new Promotion(str); //Create based on type
+        	PromotionItem promotion = new PromotionItem(str); //Create based on type
             promotions.add(promotion); });
         return promotions;
     }
@@ -65,7 +66,7 @@ public class PromoCSVHelper extends CSVBaseHelper {
      * @param promotions ArrayList of items to save
      * @throws IOException Unable to write to file
      */
-    public void writeToCsv(ArrayList<Promotion> promotions) throws IOException {
+    public void writeToCsv(ArrayList<PromotionItem> promotions) throws IOException {
         String[] header = {"PromoID", "PromoName", "PromoPrice", "PromoMain", "PromoDessert", "PromoDrink"};
         BufferedWriter csvFile = FileIOHelper.getFileBufferedWriter(this.promotionCsv);
         ArrayList<String[]> toWrite = new ArrayList<>();

@@ -2,7 +2,7 @@ package sg.edu.ntu.scse.cz2002.ui;
 
 import org.jetbrains.annotations.Nullable;
 import sg.edu.ntu.scse.cz2002.MainApp;
-import sg.edu.ntu.scse.cz2002.objects.menuitem.MenuItem;
+import sg.edu.ntu.scse.cz2002.objects.restaurantItem.MenuItem;
 import sg.edu.ntu.scse.cz2002.util.MenuItemCSVHelper;
 import sg.edu.ntu.scse.cz2002.util.ScannerHelper;
 
@@ -174,7 +174,7 @@ public class FoodMenuUI extends BaseMenu {
 			int id = menuItemObj.getId()+1;
 			
 			MenuItem menuItem = new MenuItem(id, newItemName, newItemType, newItemDescription, newItemPrice);
-			MainApp.menuItems.add(menuItem); //adds the menuitem object to the menu array
+			MainApp.menuItems.add(menuItem); //adds the RestaurantItem object to the menu array
 			
 			MenuItemCSVHelper menuHelper = MenuItemCSVHelper.getInstance();
 			//getInstance does 2 things: 
@@ -244,7 +244,7 @@ public class FoodMenuUI extends BaseMenu {
 		// logic for this would be
 		// to do a search using menu item ID
 		// we will decompose every single object
-		// and then calling array.remove to remove the menuitem object
+		// and then calling array.remove to remove the RestaurantItem object
 		// this would change the id sequence
 		// and then the write.csv method IO would be called
 

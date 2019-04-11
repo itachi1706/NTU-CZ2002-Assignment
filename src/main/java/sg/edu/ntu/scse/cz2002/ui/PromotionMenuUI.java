@@ -1,16 +1,16 @@
 package sg.edu.ntu.scse.cz2002.ui;
 
-import org.jetbrains.annotations.Nullable;
-import sg.edu.ntu.scse.cz2002.MainApp;
-import sg.edu.ntu.scse.cz2002.objects.menuitem.MenuItem;
-import sg.edu.ntu.scse.cz2002.objects.menuitem.Promotion;
-import sg.edu.ntu.scse.cz2002.util.PromoCSVHelper;
-
 import java.io.IOException;
 import java.util.Scanner;
 
+import org.jetbrains.annotations.Nullable;
+import sg.edu.ntu.scse.cz2002.MainApp;
+import sg.edu.ntu.scse.cz2002.objects.restaurantItem.MenuItem;
+import sg.edu.ntu.scse.cz2002.objects.restaurantItem.PromotionItem;
+import sg.edu.ntu.scse.cz2002.util.PromoCSVHelper;
+
 /**
- * The Promotion Menu UI
+ * The PromotionItem Menu UI
  *
  * @author Kenneth Soh
  * @version 1.0
@@ -22,12 +22,12 @@ public class PromotionMenuUI extends BaseMenu {
 	Scanner sc = new Scanner(System.in);
 
 	/**
-	 * The Promotion Management Menu
+	 * The PromotionItem Management Menu
 	 * @return Exit Code. Return 1 to exit the program and -1 to exit to main menu
 	 */
     @Override
     protected int generateMenuScreen() {
-        printHeader("Promotion Management");
+        printHeader("PromotionItem Management");
         System.out.println("1) View existing promotions");
         System.out.println("2) Create a new promotion");
         System.out.println("3) Update an existing promotion");
@@ -69,6 +69,7 @@ public class PromotionMenuUI extends BaseMenu {
 				
 				System.out.println(newPromoName+" promotion has been successfully added.");
                 break;
+
             case 3: //Edit an existing promotion
 				int editPromoID;
 				String editPromoName;
@@ -102,7 +103,7 @@ public class PromotionMenuUI extends BaseMenu {
 				
 				editPromotion(editPromoID, editPromoName, editPromoPrice, editPromoMain, editPromoDessert, editPromoDrink);
 				
-				System.out.println("Promotion has been successfully edited.");
+				System.out.println("PromotionItem has been successfully edited.");
 				
             	break;
             case 4: //Delete an existing promotion
@@ -136,19 +137,19 @@ public class PromotionMenuUI extends BaseMenu {
 	 */
 	public void printPromotion() {
 		for (int i = 0; i < MainApp.promotions.size(); i++) {
-			Promotion promotion = (Promotion) MainApp.promotions.get(i);
+			PromotionItem promotion = (PromotionItem) MainApp.promotions.get(i);
 			
 			MenuItem mainItem = FoodMenuUI.retrieveMenuItem(promotion.getPromoMain());
 			MenuItem dessertItem = FoodMenuUI.retrieveMenuItem(promotion.getPromoDessert());
 			MenuItem drinkItem = FoodMenuUI.retrieveMenuItem(promotion.getPromoDrink());
 			
 			System.out.println("|============================|");
-			System.out.println("Promotion ID: " + promotion.getPromoID());
-			System.out.println("Promotion Name: " + promotion.getPromoName());
-			System.out.println("Promotion Price: " + promotion.getPromoPrice());
-			System.out.println("Promotion MAIN: [" + promotion.getPromoMain() + "] "+ mainItem.getName());
-			System.out.println("Promotion DESSERT: [" + promotion.getPromoDessert() + "] "+ dessertItem.getName());
-			System.out.println("Promotion DRINK: [" + promotion.getPromoDrink() + "] "+ drinkItem.getName());
+			System.out.println("PromotionItem ID: " + promotion.getId());
+			System.out.println("PromotionItem Name: " + promotion.getName());
+			System.out.println("PromotionItem Price: " + promotion.getPrice());
+			System.out.println("PromotionItem Main: [" + promotion.getPromoMain() + "] "+ mainItem.getName());
+			System.out.println("PromotionItem Dessert: [" + promotion.getPromoDessert() + "] "+ dessertItem.getName());
+			System.out.println("PromotionItem Drink: [" + promotion.getPromoDrink() + "] "+ drinkItem.getName());
 			
 		}
 	}
@@ -166,10 +167,10 @@ public class PromotionMenuUI extends BaseMenu {
 		
 		try {
 			
-			Promotion promotionObj = MainApp.promotions.get((MainApp.promotions.size())-1);
-			int promoID = promotionObj.getPromoID()+1;
+			PromotionItem promotionObj = MainApp.promotions.get((MainApp.promotions.size())-1);
+			int promoID = promotionObj.getId()+1;
 			
-			Promotion promotion = new Promotion(promoID, newPromoName, newPromoPrice, newPromoMain, newPromoDessert, newPromoDrink);
+			PromotionItem promotion = new PromotionItem(promoID, newPromoName, newPromoPrice, newPromoMain, newPromoDessert, newPromoDrink);
 			MainApp.promotions.add(promotion);
 			
 			PromoCSVHelper promotionHelper = PromoCSVHelper.getInstance();
@@ -196,14 +197,14 @@ public class PromotionMenuUI extends BaseMenu {
 		
 		for (int i=0; i<(MainApp.promotions.size()); i++) {
 			
-			Promotion promoObj = MainApp.promotions.get(i);
-			if (targetPromoID == promoObj.getPromoID()) {
+			PromotionItem promoObj = MainApp.promotions.get(i);
+			if (targetPromoID == promoObj.getId()) {
 				try {
 					
-					Promotion promo = retrievePromotion(targetPromoID);
+					PromotionItem promo = retrievePromotion(targetPromoID);
 					
-					promo.setPromoName(editPromoName);
-					promo.setPromoPrice(editPromoPrice);
+					promo.setName(editPromoName);
+					promo.setPrice(editPromoPrice);
 					promo.setPromoMain(editPromoMain);
 					promo.setPromoDessert(editPromoDessert);
 					promo.setPromoDrink(editPromoDrink);
@@ -233,8 +234,8 @@ public class PromotionMenuUI extends BaseMenu {
 		PromoCSVHelper promoHelper = PromoCSVHelper.getInstance();
 	
 		for (int i=0; i<(MainApp.promotions.size()); i++) {
-			Promotion promoObj = MainApp.promotions.get(i);
-			if (targetPromoID == promoObj.getPromoID()) {
+			PromotionItem promoObj = MainApp.promotions.get(i);
+			if (targetPromoID == promoObj.getId()) {
 				try {
 					MainApp.promotions.remove(i); //delete using i as for loop index
 					promoHelper.writeToCsv(MainApp.promotions); // calls IO method to save the new array into the CSV file
@@ -252,18 +253,18 @@ public class PromotionMenuUI extends BaseMenu {
 	}
 	
 	/**
-	 * Returns a Promotion object that matches the input targetPromoID. @ Arthur
+	 * Returns a PromotionItem object that matches the input targetPromoID. @ Arthur
 	 * @param targetPromoID ID of the promotion object to be retrieved.
 	 * @return promoObj Object containing a promotion's attributes.
 	 */	
 	@Nullable
-	public static Promotion retrievePromotion(int targetPromoID) {
+	public static PromotionItem retrievePromotion(int targetPromoID) {
 		
 		for (int i=0; i<(MainApp.promotions.size()); i++) {
 			
-			Promotion promoObj = MainApp.promotions.get(i);
+			PromotionItem promoObj = MainApp.promotions.get(i);
 			
-			if (targetPromoID == promoObj.getPromoID()) {
+			if (targetPromoID == promoObj.getId()) {
 				//System.out.println("Target promotion found.");
 				return promoObj;
 			}

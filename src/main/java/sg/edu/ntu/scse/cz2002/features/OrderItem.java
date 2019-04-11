@@ -1,8 +1,8 @@
 package sg.edu.ntu.scse.cz2002.features;
 
 import org.jetbrains.annotations.NotNull;
-import sg.edu.ntu.scse.cz2002.objects.menuitem.MenuItem;
-import sg.edu.ntu.scse.cz2002.objects.menuitem.Promotion;
+import sg.edu.ntu.scse.cz2002.objects.restaurantItem.MenuItem;
+import sg.edu.ntu.scse.cz2002.objects.restaurantItem.PromotionItem;
 import sg.edu.ntu.scse.cz2002.ui.FoodMenuUI;
 import sg.edu.ntu.scse.cz2002.ui.PromotionMenuUI;
 
@@ -21,7 +21,7 @@ public class OrderItem {
     public enum OrderItemType { TYPE_MENU, TYPE_PROMO }
 
     /**
-     * Item ID ({@link MenuItem}/{@link Promotion} Set)
+     * Item ID ({@link MenuItem}/{@link PromotionItem} Set)
      */
     private int itemId;
     /**
@@ -72,10 +72,10 @@ public class OrderItem {
     }
 
     /**
-     * Internal method for getting the {@link Promotion} object
-     * @return {@link Promotion} Object
+     * Internal method for getting the {@link PromotionItem} object
+     * @return {@link PromotionItem} Object
      */
-    private Promotion getPromo() {
+    private PromotionItem getPromo() {
         if (this.itemType != OrderItemType.TYPE_PROMO) return null; // Not a promotion
         return PromotionMenuUI.retrievePromotion(this.itemId);
     }
@@ -91,8 +91,8 @@ public class OrderItem {
 
     /**
      * Gets the object from this entry
-     * This object can either be a {@link MenuItem} or a {@link Promotion}
-     * @return {@link MenuItem} or {@link Promotion} object
+     * This object can either be a {@link MenuItem} or a {@link PromotionItem}
+     * @return {@link MenuItem} or {@link PromotionItem} object
      */
     public Object getItem() {
         if (this.isPromotion()) return getPromo();
@@ -107,8 +107,8 @@ public class OrderItem {
         Object o = this.getItem();
         if (o instanceof MenuItem) {
             return ((MenuItem) o).getName();
-        } else if (o instanceof Promotion) {
-            return ((Promotion) o).getPromoName();
+        } else if (o instanceof PromotionItem) {
+            return ((PromotionItem) o).getName();
         }
         return "Invalid Item";
     }
@@ -121,8 +121,8 @@ public class OrderItem {
         Object o = this.getItem();
         if (o instanceof MenuItem) {
             return ((MenuItem) o).getId();
-        } else if (o instanceof Promotion) {
-            return ((Promotion) o).getPromoID();
+        } else if (o instanceof PromotionItem) {
+            return ((PromotionItem) o).getId();
         }
         return -1;
     }
@@ -144,8 +144,8 @@ public class OrderItem {
     }
 
     /**
-     * Checks if the item in this entry is a {@link Promotion} object
-     * @return true if {@link Promotion}, false otherwise
+     * Checks if the item in this entry is a {@link PromotionItem} object
+     * @return true if {@link PromotionItem}, false otherwise
      */
     public boolean isPromotion() {
         return this.itemType == OrderItemType.TYPE_PROMO;
@@ -169,9 +169,9 @@ public class OrderItem {
         if (o instanceof MenuItem) {
             MenuItem mi = (MenuItem) o;
             this.itemTotal = mi.getPrice() * this.quantity;
-        } else if (o instanceof Promotion) {
-            Promotion p = (Promotion) o;
-            this.itemTotal = p.getPromoPrice() * this.quantity;
+        } else if (o instanceof PromotionItem) {
+            PromotionItem p = (PromotionItem) o;
+            this.itemTotal = p.getPrice() * this.quantity;
         }
     }
 }

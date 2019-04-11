@@ -7,9 +7,9 @@ import sg.edu.ntu.scse.cz2002.features.Order;
 import sg.edu.ntu.scse.cz2002.features.OrderItem;
 import sg.edu.ntu.scse.cz2002.features.Reservation;
 import sg.edu.ntu.scse.cz2002.features.Table;
-import sg.edu.ntu.scse.cz2002.objects.menuitem.ItemNotFoundException;
-import sg.edu.ntu.scse.cz2002.objects.menuitem.MenuItem;
-import sg.edu.ntu.scse.cz2002.objects.menuitem.Promotion;
+import sg.edu.ntu.scse.cz2002.objects.restaurantItem.ItemNotFoundException;
+import sg.edu.ntu.scse.cz2002.objects.restaurantItem.MenuItem;
+import sg.edu.ntu.scse.cz2002.objects.restaurantItem.PromotionItem;
 import sg.edu.ntu.scse.cz2002.objects.person.Staff;
 import sg.edu.ntu.scse.cz2002.util.DateTimeFormatHelper;
 import sg.edu.ntu.scse.cz2002.util.ScannerHelper;
@@ -260,7 +260,7 @@ public class OrderMenuUI extends BaseMenu {
     private void addOrderItem(@NotNull Order o) {
         System.out.println("Select Item Type:");
         System.out.println("1) Ala-carte Items");
-        System.out.println("2) Promotion Set");
+        System.out.println("2) PromotionItem Set");
         System.out.println("0) Cancel");
         int selection = doMenuChoice(2, 0);
 
@@ -273,11 +273,11 @@ public class OrderMenuUI extends BaseMenu {
                     System.out.println("No promotions available");
                     return;
                 }
-                printHeader("Promotion Sets", 40);
+                printHeader("PromotionItem Sets", 40);
                 int i = 0;
-                for (Promotion p : MainApp.promotions) {
+                for (PromotionItem p : MainApp.promotions) {
                     // Get each item in promotion
-                    System.out.printf("%3d) %-27s $%-6.2f\n", (i+1) , p.getPromoName(), p.getPromoPrice());
+                    System.out.printf("%3d) %-27s $%-6.2f\n", (i+1) , p.getName(), p.getPrice());
                     i++;
                 }
                 printBreaks(40);
@@ -289,19 +289,19 @@ public class OrderMenuUI extends BaseMenu {
                 int quantity = ScannerHelper.getIntegerInput("Enter Quantity: ", 0);
 
                 // Print promotion detail and ask if we really want to add this
-                Promotion p = MainApp.promotions.get(promotionSelected);
+                PromotionItem p = MainApp.promotions.get(promotionSelected);
                 System.out.println();
-                printHeader(p.getPromoName() + " Details", 60);
+                printHeader(p.getName() + " Details", 60);
                 System.out.println(p.printPromotionDetail());
                 System.out.println("Quantity: " + quantity + "");
-                System.out.printf("Total Set Price: $%.2f\n", (quantity * p.getPromoPrice()));
+                System.out.printf("Total Set Price: $%.2f\n", (quantity * p.getPrice()));
                 printBreaks(60);
-                boolean confirm = ScannerHelper.getYesNoInput("Confirm Promotion Set Selection?");
+                boolean confirm = ScannerHelper.getYesNoInput("Confirm PromotionItem Set Selection?");
                 if (confirm) {
                     // Add to Order
-                    o.getOrderItems().add(new OrderItem(p.getPromoID(), quantity, OrderItem.OrderItemType.TYPE_PROMO));
+                    o.getOrderItems().add(new OrderItem(p.getId(), quantity, OrderItem.OrderItemType.TYPE_PROMO));
                     o.calculateSubtotal();
-                    System.out.println("Promotion Set Added to Order");
+                    System.out.println("PromotionItem Set Added to Order");
                 }
                 break;
             case 0: return;
@@ -530,15 +530,15 @@ public class OrderMenuUI extends BaseMenu {
             }
             String itemName;
             double price;
-            if (i.isPromotion() && item instanceof Promotion) {
-                Promotion promo = (Promotion) item;
-                itemName = "[PROMO] " + promo.getPromoName();
-                price = promo.getPromoPrice();
+            if (i.isPromotion() && item instanceof PromotionItem) {
+                PromotionItem promo = (PromotionItem) item;
+                itemName = "[PROMO] " + promo.getName();
+                price = promo.getPrice();
             } else if (item instanceof MenuItem) {
                 MenuItem mi = (MenuItem) item;
                 itemName = mi.getName();
                 price = mi.getPrice();
-            } else throw new ItemNotFoundException("Item is not Promotion or MenuItem"); // Exception for invalid item in database. Exception as we need to handle and fix
+            } else throw new ItemNotFoundException("Item is not PromotionItem or MenuItem"); // Exception for invalid item in database. Exception as we need to handle and fix
             if (prettyPrint) System.out.printf("%3dx %-45s $%-6.2f\n", i.getQuantity(), itemName, price);
             else System.out.println(imm + ") " + i.getQuantity() + "x " + itemName + "\t$" + String.format("%.2f", price));
             imm++;
