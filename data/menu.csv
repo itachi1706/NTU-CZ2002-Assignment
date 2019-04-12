@@ -1,6 +1,7 @@
 ID|||Name|||Type|||Price|||Description
-1|||aaa|||1.0|||1|||aaa
-3|||Mexican Cheesy Fried Rice (Chicken)|||8.9|||1|||To Centrepoint
+1|||Deku|||2.0|||1|||Shoot Style
+2|||Bakugo|||11.0|||1|||Explosion
+3|||AllMight|||1.0E9|||1|||Detroit Smash
 4|||Oriental Macaroni (Chicken)|||8.9|||1|||Where we had lunch
 5|||Lor Mee (Chicken)|||7.9|||1|||At McDonalds
 6|||Braised Peanut Rice with Chicken|||7.9|||1|||We had fillet
@@ -24,7 +25,7 @@ ID|||Name|||Type|||Price|||Description
 24|||Honey Red Bean|||5.0|||2|||A favorite of bees.
 25|||Soya Peanut|||5.0|||2|||Drives people nuts.
 26|||Red Bean Nata De Coco|||5.0|||2|||Mr. Bean but native endian.
-27|||Green Bean Barley|||5.0|||2|||Mr. Bean with matcha.
+27|||Popstars|||98.0|||1|||okay
 28|||Red Bean Milk with Yam|||5.0|||2|||How does the milk not expire.
 29|||Sweet Potato Soup with Barley|||5.0|||2|||Not really sweet.
 30|||Mixed Bean Longan|||5.0|||2|||Mr. Bean but ang moh.
@@ -46,3 +47,6 @@ ID|||Name|||Type|||Price|||Description
 47|||John Titor|||987.0|||3|||Tuturu
 48|||Hell's Kitchen|||9.99|||3|||Not Sakura
 49|||God's Gift|||14.0|||3|||14 Days
+50|||1|||98.0|||1|||helpo
+51|||johnny|||98.9|||1|||jelly
+52|||Cold|||49.0|||1|||Slaw
