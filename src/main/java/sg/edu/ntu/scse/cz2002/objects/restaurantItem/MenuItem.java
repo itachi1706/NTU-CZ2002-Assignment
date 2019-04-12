@@ -10,7 +10,7 @@ import java.util.Collections;
  */
 public class MenuItem extends RestaurantItem implements ICsvSerializable {
 
-    public enum MenuItemType {TBA, MAIN, DESSERT, DRINK} //these values actually correspond to 0,1,2,3
+    public enum MenuItemType {ALL, MAIN, DESSERT, DRINK} //these values actually correspond to 0,1,2,3
 
     private MenuItemType eType;
     protected String description;
@@ -80,7 +80,7 @@ public class MenuItem extends RestaurantItem implements ICsvSerializable {
         return  type == 1   ? MenuItemType.MAIN     :
                 type == 2   ? MenuItemType.DESSERT  :
                         type == 3   ? MenuItemType.DRINK    :
-                                MenuItemType.TBA;
+                                MenuItemType.ALL;
     }
 
     /**

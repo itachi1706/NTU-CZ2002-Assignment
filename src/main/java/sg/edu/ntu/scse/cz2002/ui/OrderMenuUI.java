@@ -34,8 +34,10 @@ public class OrderMenuUI extends BaseMenu {
     public static ArrayList<Order> incompleteOrders = null;
 
     /* Menus */
+
     /**
      * The Order Management Menu
+     *
      * @return Exit Code. Return 1 to exit the program and -1 to exit to main menu
      */
     @Override
@@ -73,6 +75,7 @@ public class OrderMenuUI extends BaseMenu {
 
     /**
      * Edit Order Menu UI
+     *
      * @param orderNumber Order Number of the order currently being edited
      */
     private void editOrderMenuScreen(final int orderNumber) {
@@ -121,7 +124,7 @@ public class OrderMenuUI extends BaseMenu {
     private void createOrder() {
         // Ask for staff ID to add order
         printHeader("Staff List");
-        IntStream.range(0, MainApp.staffs.size()).forEach((i) -> System.out.println((i+1) + ") " + MainApp.staffs.get(i).getStaffName()));
+        IntStream.range(0, MainApp.staffs.size()).forEach((i) -> System.out.println((i + 1) + ") " + MainApp.staffs.get(i).getStaffName()));
         printBreaks();
         int staffId = ScannerHelper.getIntegerInput("Enter Staff ID to create the order in (0 to cancel): ", -1) - 1;
         if (staffId == -1) {
@@ -235,7 +238,8 @@ public class OrderMenuUI extends BaseMenu {
                 break;
             case 0:
                 return;
-            default: throw new MenuChoiceInvalidException("View Order Sub Menu");
+            default:
+                throw new MenuChoiceInvalidException("View Order Sub Menu");
         }
     }
 
@@ -255,6 +259,7 @@ public class OrderMenuUI extends BaseMenu {
 
     /**
      * Adds item to Order
+     *
      * @param o Order Object
      */
     private void addOrderItem(@NotNull Order o) {
@@ -277,7 +282,7 @@ public class OrderMenuUI extends BaseMenu {
                 int i = 0;
                 for (PromotionItem p : MainApp.promotions) {
                     // Get each item in promotion
-                    System.out.printf("%3d) %-27s $%-6.2f\n", (i+1) , p.getName(), p.getPrice());
+                    System.out.printf("%3d) %-27s $%-6.2f\n", (i + 1), p.getName(), p.getPrice());
                     i++;
                 }
                 printBreaks(40);
@@ -304,8 +309,10 @@ public class OrderMenuUI extends BaseMenu {
                     System.out.println("Promotion Set Added to Order");
                 }
                 break;
-            case 0: return;
-            default: throw new MenuChoiceInvalidException("Order Item Add");
+            case 0:
+                return;
+            default:
+                throw new MenuChoiceInvalidException("Order Item Add");
         }
     }
 
@@ -318,11 +325,19 @@ public class OrderMenuUI extends BaseMenu {
         int selection = doMenuChoice(3, 0);
         MenuItem.MenuItemType type;
         switch (selection) {
-            case 1: type = MenuItem.MenuItemType.MAIN; break;
-            case 2: type = MenuItem.MenuItemType.DESSERT; break;
-            case 3: type = MenuItem.MenuItemType.DRINK; break;
-            case 0: return;
-            default: throw new MenuChoiceInvalidException("Order Ala Carte Item Add");
+            case 1:
+                type = MenuItem.MenuItemType.MAIN;
+                break;
+            case 2:
+                type = MenuItem.MenuItemType.DESSERT;
+                break;
+            case 3:
+                type = MenuItem.MenuItemType.DRINK;
+                break;
+            case 0:
+                return;
+            default:
+                throw new MenuChoiceInvalidException("Order Ala Carte Item Add");
         }
         ArrayList<MenuItem> foodItems = FoodMenuUI.retrieveMenuItemListFiltered(type);
         if (foodItems.size() == 0) {
@@ -332,7 +347,7 @@ public class OrderMenuUI extends BaseMenu {
         printHeader("List of " + type, 60);
         IntStream.range(0, foodItems.size()).forEach((i) -> {
             MenuItem m = foodItems.get(i);
-            System.out.printf("%3d) %-47s $%-6.2f\n", (i+1) , m.getName(), m.getPrice());
+            System.out.printf("%3d) %-47s $%-6.2f\n", (i + 1), m.getName(), m.getPrice());
         });
         printBreaks(60);
         int itemSel = ScannerHelper.getIntegerInput("Enter Item ID: ", 0, foodItems.size() + 1) - 1;
@@ -360,6 +375,7 @@ public class OrderMenuUI extends BaseMenu {
 
     /**
      * Edits item from Order
+     *
      * @param o Order Object
      */
     private void editOrderItem(@NotNull Order o) {
@@ -369,7 +385,7 @@ public class OrderMenuUI extends BaseMenu {
         }
 
         // View list of order items
-        int selection = getOrderItemToEdit(o,"Select an item to change quantity: ");
+        int selection = getOrderItemToEdit(o, "Select an item to change quantity: ");
         int quantity = ScannerHelper.getIntegerInput("Enter the new Quantity for the item. (Current Qty: " + o.getOrderItems().get(selection).getQuantity() + "): ", 0);
         // Update quantity
         o.getOrderItems().get(selection).setQuantity(quantity);
@@ -379,6 +395,7 @@ public class OrderMenuUI extends BaseMenu {
 
     /**
      * Removes item from Order
+     *
      * @param o Order Object
      */
     private void removeOrderItem(@NotNull Order o) {
@@ -387,7 +404,7 @@ public class OrderMenuUI extends BaseMenu {
             return;
         }
 
-        int sel = getOrderItemToEdit(o,"Select an item to remove from order: ");
+        int sel = getOrderItemToEdit(o, "Select an item to remove from order: ");
         OrderItem i = o.getOrderItems().get(sel);
         String itemName = i.getItem().getName();
         System.out.println(itemName + " (Qty: " + i.getQuantity() + ") is about to be removed from the order");
@@ -404,7 +421,8 @@ public class OrderMenuUI extends BaseMenu {
 
     /**
      * Finds an order from its Order ID
-     * @param id Order ID to find
+     *
+     * @param id            Order ID to find
      * @param allowFromPaid Whether to check from the Paid Orders. Note that those orders cannot be edited
      * @return An order object if found, null otherwise
      */
@@ -425,8 +443,9 @@ public class OrderMenuUI extends BaseMenu {
 
     /**
      * Prints the list of Orders
-     * @param orders A list of order
-     * @param tag A tag to append to the header
+     *
+     * @param orders    A list of order
+     * @param tag       A tag to append to the header
      * @param tableSort Whether to sort by tables Number or by order ID
      */
     public static void printOrderList(@NotNull ArrayList<Order> orders, String tag, boolean tableSort) {
@@ -461,6 +480,7 @@ public class OrderMenuUI extends BaseMenu {
 
     /**
      * Print specific order details
+     *
      * @param o Order object to print details of
      */
     private void printOrderDetails(@NotNull Order o) {
@@ -470,7 +490,8 @@ public class OrderMenuUI extends BaseMenu {
         System.out.println("Order Started On: " + DateTimeFormatHelper.formatMillisToDateTime(o.getCreatedAt()));
         System.out.println("Staff Handling Order: " + ((o.getStaff() == null) ? "Unknown Staff" : "[" + o.getStaff().getStaffId() + "] " + o.getStaff().getStaffName()));
         System.out.println("Table Number: " + ((o.getTable() == null) ? "Unknown Table" : o.getTable().getTableNum()));
-        if (o.getOrderState() == Order.OrderState.ORDER_PAID) System.out.println("Order Completed On: " + DateTimeFormatHelper.formatMillisToDateTime(o.getCompletedAt()));
+        if (o.getOrderState() == Order.OrderState.ORDER_PAID)
+            System.out.println("Order Completed On: " + DateTimeFormatHelper.formatMillisToDateTime(o.getCompletedAt()));
         System.out.println("List of Order Items:");
         printBreaks(60);
         if (o.getOrderItems().size() == 0) System.out.println("No Items in Order");
@@ -486,7 +507,8 @@ public class OrderMenuUI extends BaseMenu {
 
     /**
      * Gets the list of item from the order and request the user to enter the ID of the item they are selecting
-     * @param o Order object
+     *
+     * @param o      Order object
      * @param prompt The prompt to prompt the user. If no prompt pass in an empty string
      * @return the ID of the item they are selecting (based against the arraylist index, NOT the order item's respective ID
      */
@@ -499,7 +521,8 @@ public class OrderMenuUI extends BaseMenu {
 
     /**
      * Prints the list of items in the order
-     * @param items An array list of the items in the order
+     *
+     * @param items       An array list of the items in the order
      * @param prettyPrint Whether or not we should format the string (for displaying in a table format) or as a list format
      */
     public static void printOrderItems(@NotNull ArrayList<OrderItem> items, boolean prettyPrint) {
@@ -513,9 +536,7 @@ public class OrderMenuUI extends BaseMenu {
             String itemName = item.getName();
             double price = item.getPrice();
             if (i.isPromotion()) itemName = "[PROMO] " + itemName;
-            if (prettyPrint) System.out.printf("%3dx %-45s $%-6.2f\n", i.getQuantity(), itemName, price);
-            else System.out.println(imm + ") " + i.getQuantity() + "x " + itemName + "\t$" + String.format("%.2f", price));
-            imm++;
         }
     }
 }
+
