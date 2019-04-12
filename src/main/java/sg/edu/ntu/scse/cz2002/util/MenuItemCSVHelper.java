@@ -72,7 +72,7 @@ public class MenuItemCSVHelper extends CSVBaseHelper {
      * @throws IOException Unable to write to file
      */
     public void writeToCsv(ArrayList<MenuItem> items) throws IOException {
-        String[] header = {"ID", "Name", "Type", "Price", "Description" };
+        String[] header = {"ID", "Name", "Price", "Type", "Description" };
         BufferedWriter csvFile = FileIOHelper.getFileBufferedWriter(this.menuItemCsv);
         ArrayList<String[]> toWrite = new ArrayList<>();
         toWrite.add(header);
