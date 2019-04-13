@@ -88,16 +88,25 @@ public class FoodMenuUI extends BaseMenu {
 			default: throw new MenuChoiceInvalidException("Choose menu to print");
 		}
 		ArrayList<MenuItem> filteredMenu = FoodMenuUI.retrieveMenuItemListFiltered(printType);
-		System.out.println("This is the current menu:");
+
+		switch (selection) {
+			case 1: printHeader("Mains"); break;
+			case 2: printHeader("Desserts"); break;
+			case 3: printHeader("Drinks"); break;
+			case 4: printHeader("All Items"); break;
+			case 0: return;
+			default: throw new MenuChoiceInvalidException("Choose menu to print");
+		}
+
 
 		for (int i = 0; i < filteredMenu.size(); i++) {
 			MenuItem menuItem = filteredMenu.get(i);
-			System.out.println("|============================|");
+			printHeader(menuItem.getName());
 			System.out.println("ID: " + menuItem.getId());
-			System.out.println("Name: " + menuItem.getName());
+			//System.out.println("Name: " + menuItem.getName());
 			System.out.println("Type: " + menuItem.getType());
 			System.out.println("Description: " + menuItem.getDescription());
-			System.out.println("Price: $" + menuItem.getPrice());
+			System.out.println("Price: $" + menuItem.getPrice()+"\n");
 		}
 	}
 

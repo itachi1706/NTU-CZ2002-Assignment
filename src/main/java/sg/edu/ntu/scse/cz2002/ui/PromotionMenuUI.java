@@ -78,15 +78,24 @@ public class PromotionMenuUI extends BaseMenu {
 			MenuItem mainItem = FoodMenuUI.retrieveMenuItem(promotion.getPromoMain());
 			MenuItem dessertItem = FoodMenuUI.retrieveMenuItem(promotion.getPromoDessert());
 			MenuItem drinkItem = FoodMenuUI.retrieveMenuItem(promotion.getPromoDrink());
-			
-			System.out.println("|============================|");
-			System.out.println("PromotionItem ID: " + promotion.getId());
-			System.out.println("PromotionItem Name: " + promotion.getName());
-			System.out.println("PromotionItem Price: $" + promotion.getPrice());
-			System.out.println("PromotionItem Main: [" + promotion.getPromoMain() + "] "+ mainItem.getName());
-			System.out.println("PromotionItem Dessert: [" + promotion.getPromoDessert() + "] "+ dessertItem.getName());
-			System.out.println("PromotionItem Drink: [" + promotion.getPromoDrink() + "] "+ drinkItem.getName());
-			
+
+			printHeader(promotion.getName());
+			//System.out.println("|============================|");
+			System.out.println("Promotion ID: " + promotion.getId());
+			//System.out.println("Promotion Name: " + promotion.getName());
+			System.out.println("Promotion Price: $" + promotion.getPrice());
+
+			/*
+			System.out.println("Promotion Main: [" + promotion.getPromoMain() + "] "+ mainItem.getName());
+			System.out.println("Promotion Dessert: [" + promotion.getPromoDessert() + "] "+ dessertItem.getName());
+			System.out.println("Promotion Drink: [" + promotion.getPromoDrink() + "] "+ drinkItem.getName());
+			 */
+
+			System.out.println("Promotion Description\n"+
+					"Served with these 3 items:\n"+
+					"Main: [" + promotion.getPromoMain() + "] "+ mainItem.getName()+
+					"\nDessert: [" + promotion.getPromoDessert() + "] "+ dessertItem.getName()+
+					"\nDrink: [" + promotion.getPromoDrink() + "] "+ drinkItem.getName());
 		}
 	}
 
@@ -115,15 +124,15 @@ public class PromotionMenuUI extends BaseMenu {
 
 		//need to find way to reprompt for input!
 		newPromoMain = ScannerHelper.getIntegerInput("Enter new promotion's main ID: ");
-		boolean mainFound = this.arrayChecker(filteredMainMenu, newPromoMain, "Main");
+		boolean mainFound = this.menuTypeChecker(filteredMainMenu, newPromoMain, "Main");
 		if (mainFound == false) return;
 
 		newPromoDessert = ScannerHelper.getIntegerInput("Enter new promotion's dessert ID: ");
-		boolean dessertFound = this.arrayChecker(filteredDessertMenu, newPromoDessert, "Dessert");
+		boolean dessertFound = this.menuTypeChecker(filteredDessertMenu, newPromoDessert, "Dessert");
 		if (dessertFound == false) return;
 
 		newPromoDrink = ScannerHelper.getIntegerInput("Enter new promotion's drink ID: ");
-		boolean drinkFound = this.arrayChecker(filteredDrinkMenu, newPromoDrink, "Drink");
+		boolean drinkFound = this.menuTypeChecker(filteredDrinkMenu, newPromoDrink, "Drink");
 		if (drinkFound == false) return;
 		//need to find way to reprompt for input!
 
@@ -279,7 +288,7 @@ public class PromotionMenuUI extends BaseMenu {
 	 * @param newPromoItemType type of the menu item added to the promotion
 	 * @param textParameter text for the menu item type
 	 */
-	public boolean arrayChecker(ArrayList<MenuItem> menuArrayList, int newPromoItemType, String textParameter){
+	public boolean menuTypeChecker(ArrayList<MenuItem> menuArrayList, int newPromoItemType, String textParameter){
 
 		boolean found = false;
 		for (int i=0; i<menuArrayList.size(); i++){
