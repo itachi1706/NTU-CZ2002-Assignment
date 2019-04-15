@@ -6,7 +6,6 @@ import sg.edu.ntu.scse.cz2002.objects.person.Staff;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-import lab4.PlaneSeat;
 
 /**
  * The Staff Management UI
