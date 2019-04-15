@@ -165,6 +165,9 @@ public class OrderMenuUI extends BaseMenu {
             t = vacantTables.get(0); // Allocate first possible table as it should be the least
             System.out.println("Allocated Table Number: " + t.getTableNum() + " (Table Size: " + t.getNumSeatsInt() + ")");
         }
+        else {
+
+        }
 
 
         // Create a new order (completed + incompleted check and get ID after)
