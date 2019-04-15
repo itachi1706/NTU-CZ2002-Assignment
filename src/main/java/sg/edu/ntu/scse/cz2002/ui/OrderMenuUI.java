@@ -536,6 +536,10 @@ public class OrderMenuUI extends BaseMenu {
             String itemName = item.getName();
             double price = item.getPrice();
             if (i.isPromotion()) itemName = "[PROMO] " + itemName;
+
+            if (prettyPrint) System.out.printf("%3dx %-45s $%-6.2f\n", i.getQuantity(), itemName, price);
+            else System.out.println(imm + ") " + i.getQuantity() + "x " + itemName + "\t$" + String.format("%.2f", price));
+            imm++;
         }
     }
 }
