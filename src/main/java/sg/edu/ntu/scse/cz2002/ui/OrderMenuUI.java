@@ -363,7 +363,7 @@ public class OrderMenuUI extends BaseMenu {
         System.out.println("You are about to add the following items to order: ");
         System.out.println(mi.printItemDetail());
         System.out.println("Quantity: " + quantity + "");
-        System.out.printf("Total Set Price: $%.2f\n", (quantity * mi.getPrice()));
+        System.out.printf("Total Item Price: $%.2f\n", (quantity * mi.getPrice()));
         boolean confirm = ScannerHelper.getYesNoInput("Confirm?");
         if (confirm) {
             // Add to Order
