@@ -120,7 +120,7 @@ public class PromotionMenuUI extends BaseMenu {
 		sc.nextLine(); //required if previous scanner takes in int, and now string is required
 		newPromoName = sc.nextLine();
 
-		newPromoPrice = ScannerHelper.getDoubleInput("Enter new menu item price: ");
+		newPromoPrice = ScannerHelper.getDoubleInput("Enter new promotion's price: ");
 
 		//need to find way to reprompt for input!
 		newPromoMain = ScannerHelper.getIntegerInput("Enter new promotion's main ID: ");
