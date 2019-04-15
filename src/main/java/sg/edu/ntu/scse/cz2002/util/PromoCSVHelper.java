@@ -51,6 +51,7 @@ public class PromoCSVHelper extends CSVBaseHelper {
      * @throws IOException Unable to read from file
      */
     public ArrayList<PromotionItem> readFromCsv() throws IOException {
+        if (!FileIOHelper.exists(this.promotionCsv)) return new ArrayList<>(); // Empty array list
         BufferedReader csvFile = FileIOHelper.getFileBufferedReader(this.promotionCsv);
         List<String[]> csvLines = readAll(csvFile, 1);
         ArrayList<PromotionItem> promotions = new ArrayList<>();
