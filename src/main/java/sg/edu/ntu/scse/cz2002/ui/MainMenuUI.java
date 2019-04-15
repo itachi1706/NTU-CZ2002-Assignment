@@ -71,17 +71,24 @@ public class MainMenuUI extends BaseMenu {
      */
     private void checkTableAvailability() {
         //TODO: Print out list of available tables from Tables ArrayList
+        int count = 0;
     	System.out.println("These are the tables available for the current session:");
 		for (int i = 0; i < MainApp.tables.size(); i++) {
 			Table tables = (Table) MainApp.tables.get(i);
 			if(tables.getState() == TableState.TABLE_VACATED)
 			{
-				System.out.println("Table " + tables.getTableNum());
-			
+			    int seat = (tables.getNumSeats() == Table.TableSeats.TWO_SEATER) ? 2 :
+                                (tables.getNumSeats() == Table.TableSeats.FOUR_SEATER) ? 4 :
+                                (tables.getNumSeats() == Table.TableSeats.EIGHT_SEATER) ? 8 : 10;
+				System.out.println("Table " + tables.getTableNum() + ": " + seat + " seats");
+			    count++;
 			}
 
         //TODO: If time executed is not within AM or PM session, get the details of the upcoming session.		
 		}
+
+		if (count == 0) System.out.println("There are no available tables for the current/upcoming session. We're sorry!");
+		else System.out.println("There are " + count + " tables available for the current/upcoming session.");
 
     }
 }
