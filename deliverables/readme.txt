@@ -59,3 +59,39 @@ The Program is split into various menu items:
 5) The receipt will be automatically generated
 5.1) Should you wish to view the receipt again, repeat Step (1) and select (2) Reprint Invoice
 5.2) Enter receipt ID and you can view the receipt again
+
+## Resrvation Flow ##
+1) Select (4) Reservation Management
+2) Select (1) Create a new reservation booking
+3) Enter name of customer which the reservation will be booked under
+4) Enter telephone number of the customer - identifier for reservations
+5) Enter date in dd/MM/yyyy for the intended date of reservation
+5.1) If date is invalid (e.g. 30th day in February, 31st day in April, 29th February when it is not leap year, invalid date, month, year, etc), user will be prompted to input date again.
+5.2) If input date is valid
+5.2.1) If input date has no reservation slots available, request user to input another date
+5.2.2) If input date has reservation slots
+5.2.2.1) Console will show number of AM session slots if AM session slots are available, and when PM slots are full.
+5.2.2.2) Console will show number of PM session slots if PM session slots are available, and when AM slots are full.
+5.2.2.3) Console will show number of AM and PM session slots if both sessions have available slots.
+6) Enter number of pax for the reservation
+6.1) If number of pax is invalid (i.e. number of pax <= 0 or number of pax > 10), prompt user to input another value.
+6.2) If number of pax is valid
+6.2.1) If appropriate tables for the number of pax is not available, system will show message that it is unavailable, and return to Reservation Menu.
+6.2.2) If appropriate tables are available, system will retrieve the first available table, assign it to the reservation. System will then display successful message and the assigned table number for that reservation, and return to Reservation Menu.
+7) User can also (2) Check for reservation booking
+8) User will be prompted to input their telephone number to identify reservation booking.
+8.1) If telephone number is not found within the list of reservation, display that the reservation is not found. Returns to Reservation menu.
+8.2) If telephone number is found, display all of the reservations linked under the single telephone number. Return to Reservation menu.
+9) User can also (3) Remove reservation booking.
+10) User will be prompted to input telephone number to identify reservation booking.
+10.1) If telephone number not found, system shows not found message and returns to Reservation menu,
+10.2) If telephone number is found
+10.2.1) If telephone number is linked to only 1 reservation, user is prompted to confirm whether they want to delete
+10.2.1.1) If yes, proceed with deletion, show successful message and return to Reservation menu
+10.2.1.2) If no, return to Reservation menu
+10.2.2) If telephone number is linked to more than 1 reservations, system displays all the reservations linked to the telephone number.
+10.2.2.1) Prompts user to input reservation ID from the list to delete. If invalid ID, return to reservation menu.
+10.2.2.2) Prompts user to input reservation Id from the list to delete. If valid ID, proceed with deletion, show successful message and return to reservation menu.
+11) If needed, user can (4) List all current reservations, which will list out every single reservation and return to Reservation Menu.
+12) User can (6) Check for expired reservations
+12.1) System checks and displays the number of reservatons expired and removed at that point of time.
