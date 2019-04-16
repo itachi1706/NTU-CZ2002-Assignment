@@ -126,7 +126,7 @@ public class OrderMenuUI extends BaseMenu {
         printHeader("Staff List");
         IntStream.range(0, MainApp.staffs.size()).forEach((i) -> System.out.println((i + 1) + ") " + MainApp.staffs.get(i).getStaffName()));
         printBreaks();
-        int staffId = ScannerHelper.getIntegerInput("Enter Staff ID to create the order in (0 to cancel): ", -1) - 1;
+        int staffId = ScannerHelper.getIntegerInput("Enter Staff ID to create the order in (0 to cancel): ", -1, MainApp.staffs.size() + 1) - 1;
         if (staffId == -1) {
             System.out.println("Create Order Operation Cancelled");
             System.out.println();
