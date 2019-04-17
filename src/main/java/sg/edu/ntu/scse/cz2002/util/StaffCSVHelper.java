@@ -34,16 +34,6 @@ public class StaffCSVHelper extends CSVBaseHelper {
     private StaffCSVHelper() {}
 
     /**
-     * Initialize the Helper object
-     * @deprecated Call {@link StaffCSVHelper#getInstance()} instead
-     * @param filename Path to MenuItems CSV File
-     */
-    @Deprecated
-    public StaffCSVHelper(String filename) {
-        this.staffCsv = filename;
-    }
-
-    /**
      * Gets the singleton instance of MenuItemCSVHelper that reads from menu.csv
      * @return Instance of this class
      */

@@ -36,16 +36,6 @@ public class TableCSVHelper extends CSVBaseHelper {
     private TableCSVHelper() {}
 
     /**
-     * Initialize the Helper object
-     * @deprecated Call {@link ReservationCSVHelper#getInstance()} instead
-     * @param filename Path to MenuItems CSV File
-     */
-    @Deprecated
-    public TableCSVHelper(String filename) {
-        this.tableCsv = filename;
-    }
-
-    /**
      * Gets the singleton instance of MenuItemCSVHelper that reads from menu.csv
      * @return Instance of this class
      */
@@ -71,20 +61,5 @@ public class TableCSVHelper extends CSVBaseHelper {
             tables.add(t);
         }
         return tables;
-    }
-
-    /**
-     * Writes to the CSV File
-     * @param tables ArrayList of items to save
-     * @throws IOException Unable to write to file
-     */
-    @Deprecated
-    public void writeToCsv(ArrayList<Table> tables) throws IOException {
-        String[] header = {"Table Num", "NumSeats", "IsReserved", "Table State"};
-        BufferedWriter csvFile = FileIOHelper.getFileBufferedWriter(this.tableCsv);
-        ArrayList<String[]> toWrite = new ArrayList<>();
-        toWrite.add(header);
-        tables.forEach((t) -> toWrite.add(t.toCsv()));
-        writeToCsvFile(toWrite, csvFile);
     }
 }

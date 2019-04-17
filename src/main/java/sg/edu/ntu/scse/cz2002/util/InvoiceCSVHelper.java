@@ -34,16 +34,6 @@ public class InvoiceCSVHelper extends CSVBaseHelper {
     private InvoiceCSVHelper() {}
 
     /**
-     * Initialize the Helper object
-     * @deprecated Call {@link InvoiceCSVHelper#getInstance()} instead
-     * @param filename Path to MenuItems CSV File
-     */
-    @Deprecated
-    public InvoiceCSVHelper(String filename) {
-        this.orderCsv = filename;
-    }
-
-    /**
      * Gets the singleton instance of MenuItemCSVHelper that reads from menu.csv
      * @return Instance of this class
      */
