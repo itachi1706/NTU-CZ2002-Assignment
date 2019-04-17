@@ -127,7 +127,6 @@ public class MenuItem extends RestaurantItem implements ICsvSerializable {
      * @param type The menu item's type, in integer form.
      * @return The menu item's type in its enum equivalent form.
      */
-    // Compartmentalized method that takes in integer and converts
     public MenuItemType convertToItemType(int type) {
         return  type == 1 ? MenuItemType.MAIN :
                 type == 2 ? MenuItemType.DESSERT :
