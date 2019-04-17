@@ -1,7 +1,7 @@
 ID|||Name|||Price|||Type|||Description
-1|||Deku|||2.0|||1|||Shoot Style
-2|||Bakugo|||11.0|||1|||Explosion
-3|||AllMight|||1.0E9|||1|||Detroit Smash
+1|||Chicken Borobudur Rice|||2.0|||1|||Down Orchard Road
+2|||Oregano Tomato Bean Stew (Chicken Sausage)|||8.9|||1|||Bypass Mandarin
+3|||Mexican Cheesy Fried Rice (Chicken)|||8.9|||1|||To Centrepoint
 4|||Oriental Macaroni (Chicken)|||8.9|||1|||Where we had lunch
 5|||Lor Mee (Chicken)|||7.9|||1|||At McDonalds
 6|||Braised Peanut Rice with Chicken|||7.9|||1|||We had fillet
@@ -25,9 +25,10 @@ ID|||Name|||Price|||Type|||Description
 24|||Honey Red Bean|||5.0|||2|||A favorite of bees.
 25|||Soya Peanut|||5.0|||2|||Drives people nuts.
 26|||Red Bean Nata De Coco|||5.0|||2|||Mr. Bean but native endian.
-27|||Popstars|||98.0|||1|||okay
+27|||Green Bean Barley|||5.0|||2|||Mr. Bean with matcha.
 28|||Red Bean Milk with Yam|||5.0|||2|||How does the milk not expire.
 29|||Sweet Potato Soup with Barley|||5.0|||2|||Not really sweet.
+30|||Mixed Bean Longan|||5.0|||2|||Mr. Bean, but with an ang mo twist.
 31|||Milo 3-in-1|||3.0|||3|||Not as good as it used to be.
 32|||Ovaltine 3-in-1|||3.0|||3|||The better milo.
 33|||Horlick 3-in-1|||3.0|||3|||Throwback Thursday.
@@ -37,17 +38,8 @@ ID|||Name|||Price|||Type|||Description
 37|||Mango 3|||4.0|||3|||Definitely not Marigold.
 38|||Red Date|||3.0|||3|||Red Flavor.
 39|||Longan Tea|||3.0|||3|||Drained tea.
-40|||Honeyed Chrysanthemum Tea|||3.0|||3|||Contrary to popular belief it is packed with sugar.
-41|||Vanilla Cereal Mix|||6.0|||3|||Definitely not NTR.
+40|||Honeyed Chrysanthemum Tea|||3.0|||3|||Contrary to popular belief, it is packed with sugar.
+41|||Vanilla Cereal Mix|||6.0|||3|||Definitely Vanilla..
 42|||Chocolate Cereal Mix|||6.0|||3|||Definitely not Coco Crunch.
 43|||Pocari Sweat|||3.0|||3|||Doesn't taste like sweat.
-44|||OCS Milo|||6.9|||0|||Also a laxative.
-46|||MP Fruit Cordial|||11.11|||0|||Break a leg.
-47|||John Titor|||987.0|||3|||Tuturu
-48|||Hell's Kitchen|||9.99|||3|||Not Sakura
-49|||God's Gift|||14.0|||3|||14 Days
-50|||1|||98.0|||1|||helpo
-51|||johnny|||98.9|||1|||jelly
-54|||Soy Bean Milk in Green Tea|||0.9|||3|||Exactly what it says, but more disgusting
-56|||Pho|||4.9|||1|||Also known as Boat Noodles
-57|||Chendol from Malaysia|||10.9|||2|||Not Singapore's Chendol
+44|||OCS Milo|||6.9|||3|||Also a laxative.
