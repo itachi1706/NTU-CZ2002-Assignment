@@ -151,31 +151,6 @@ public class DateTimeFormatHelper {
                 resvTime.equals(sessionStart) || resvTime.equals(sessionEnd));
     }
 
-
-    /**
-     * Method for formatting Calendar values for current date/time into formatted String
-     * Note that "today" is a GregorianCalendar date.
-     *
-     * Method provides the same function as getting today's date, albeit in a String object
-     * as compared to a Calendar object.
-     *
-     * To get today's date as a calendar object, call getTodayDate()
-     *
-     * @return String of date and time formatted in DD/MM/YYYYY and HH:MM:SS.
-     */
-    @Deprecated
-    public static String formatToStringTodayDateTime()
-    {
-        Calendar today = new GregorianCalendar();
-        int yr = today.get(Calendar.YEAR);
-        int mth = today.get(Calendar.MONTH)+1;
-        int day = today.get(Calendar.DATE);
-        int hr = today.get(Calendar.HOUR_OF_DAY);
-        int min = today.get(Calendar.MINUTE);
-        int sec = today.get(Calendar.SECOND);
-        return day + "/" + mth + "/" + yr + " at " + hr + ":" + min + ":" + sec;
-    }
-
     /**
      * Method for validating whether a user-input date is valid
      *
@@ -252,42 +227,5 @@ public class DateTimeFormatHelper {
         return System.currentTimeMillis() + TO_UTC_PLUS_8;
     }
 
-    /**
-     * Method for validating whether a user-input date is valid
-     *
-     * Method validates for the following:
-     * i) Months that only have 30 days
-     * ii) Years that are not leap-years.
-     * iii) For years that are leap-years, validate the date
-     * iv) Validates if month is valid
-     * v) Validates if the date is valid
-     *
-     * @param d Integer value containing 2-digit DATE
-     * @param m Integer value containing 2-digit MONTH
-     * @param y Integer value containing YEAR value
-     * @return Boolean value determining if the date is valid or invalid
-     */
-    @Deprecated
-    public static boolean validateDate(int d, int m, int y)
-    {
-        //Validate non-31 days months.
-        if ( (((m == 4) || (m == 6)) || ((m == 9) || (m == 11))) && (d >= 31))
-            return false;
-            //Validate non-leap years.
-        else if (( (y % 4 != 0) || ( (y % 100 == 0) && (y % 400 != 0) )) && ( (m == 2) && (d >= 29) ))
-            return false;
-            //Validate leap years invalid date.
-        else if (( (y % 4 == 0) || ( (y % 100 == 0) && (y % 400 == 0) )) && ( (m == 2) && (d >= 30) ))
-            return false;
-            //Validate invalid month.
-        else if (m < 1 || m > 12)
-            return false;
-            //Validate invalid date.
-        else if (d < 1 || d > 31)
-            return false;
-            //All validations have been passed, date has no errors.
-        else
-            return true;
-    }
 
 }

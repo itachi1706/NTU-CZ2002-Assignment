@@ -35,20 +35,8 @@ public class MenuItemCSVHelper extends CSVBaseHelper {
     }
 
     /**
-     * Initialize the Helper object.
-     *
-     * @param filename Path to MenuItems CSV File.
-     * @deprecated Call {@link MenuItemCSVHelper#getInstance()} instead.
-     */
-    @Deprecated
-    public MenuItemCSVHelper(String filename) {
-        this.menuItemCsv = filename;
-    }
-
-    /**
-     * Gets the singleton instance of MenuItemCSVHelper that reads from menu.csv.
-     *
-     * @return Instance of this class.
+     * Gets the singleton instance of MenuItemCSVHelper that reads from menu.csv
+     * @return Instance of this class
      */
     public static MenuItemCSVHelper getInstance() {
         if (mInstance == null) mInstance = new MenuItemCSVHelper();
