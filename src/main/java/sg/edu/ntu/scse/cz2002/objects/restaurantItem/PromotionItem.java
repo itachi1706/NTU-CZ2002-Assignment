@@ -1,4 +1,6 @@
 package sg.edu.ntu.scse.cz2002.objects.restaurantItem;
+import org.jetbrains.annotations.Nullable;
+import sg.edu.ntu.scse.cz2002.MainApp;
 import sg.edu.ntu.scse.cz2002.ui.FoodMenuUI;
 import sg.edu.ntu.scse.cz2002.util.ICsvSerializable;
 
@@ -144,9 +146,9 @@ public class PromotionItem extends RestaurantItem implements ICsvSerializable {
 	 */
 	public String printPromotionDetail() {
 		StringBuilder sb = new StringBuilder();
-		MenuItem main = FoodMenuUI.retrieveMenuItem(this.getPromoMain());
-		MenuItem drink = FoodMenuUI.retrieveMenuItem(this.getPromoDrink());
-		MenuItem dessert = FoodMenuUI.retrieveMenuItem(this.getPromoDessert());
+		MenuItem main = MenuItem.retrieveMenuItem(this.getPromoMain());
+		MenuItem drink = MenuItem.retrieveMenuItem(this.getPromoDrink());
+		MenuItem dessert = MenuItem.retrieveMenuItem(this.getPromoDessert());
 		sb.append("Name: ").append(super.getName()).append("\n")
 				.append("Price: $").append(String.format("%.2f", super.getPrice())).append("\n\n")
 				.append("Set Contains:").append("\n");
@@ -155,4 +157,29 @@ public class PromotionItem extends RestaurantItem implements ICsvSerializable {
 		if (dessert != null) sb.append(String.format("%-52s $%-6.2f", dessert.getName() + " (" + dessert.getDescription() + ") ", dessert.getPrice())).append("\n");
 		return sb.toString();
 	}
+
+
+
+	/**
+	 * Returns a PromotionItem object that matches the input targetPromoID.
+	 * @param targetPromoID ID of the promotion object to be retrieved.
+	 * @return promoObj Object containing a promotion item's attributes.
+	 */
+	@Nullable
+	public static PromotionItem retrievePromotion(int targetPromoID) {
+
+		for (int i = 0; i<(MainApp.promotions.size()); i++) {
+
+			PromotionItem promoObj = MainApp.promotions.get(i);
+
+			if (targetPromoID == promoObj.getId()) {
+				//System.out.println("Target promotion found.");
+				return promoObj;
+			}
+
+		}
+
+		return null; //"Target promotion not found."
+	}
+
 }

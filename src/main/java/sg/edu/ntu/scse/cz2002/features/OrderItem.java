@@ -4,8 +4,6 @@ import org.jetbrains.annotations.NotNull;
 import sg.edu.ntu.scse.cz2002.objects.restaurantItem.MenuItem;
 import sg.edu.ntu.scse.cz2002.objects.restaurantItem.PromotionItem;
 import sg.edu.ntu.scse.cz2002.objects.restaurantItem.RestaurantItem;
-import sg.edu.ntu.scse.cz2002.ui.FoodMenuUI;
-import sg.edu.ntu.scse.cz2002.ui.PromotionMenuUI;
 
 /**
  * Order Item Object
@@ -78,7 +76,7 @@ public class OrderItem {
      */
     private PromotionItem getPromo() {
         if (this.itemType != OrderItemType.TYPE_PROMO) return null; // Not a promotion
-        return PromotionMenuUI.retrievePromotion(this.itemId);
+        return PromotionItem.retrievePromotion(this.itemId);
     }
 
     /**
@@ -87,7 +85,7 @@ public class OrderItem {
      */
     private MenuItem getMenuItem() {
         if (this.itemType != OrderItemType.TYPE_MENU) return null; // Not a menu item
-        return FoodMenuUI.retrieveMenuItem(this.itemId);
+        return MenuItem.retrieveMenuItem(this.itemId);
     }
 
     /**

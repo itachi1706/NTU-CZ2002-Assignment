@@ -342,7 +342,7 @@ public class OrderMenuUI extends BaseMenu {
             default:
                 throw new MenuChoiceInvalidException("Order Ala Carte Item Add");
         }
-        ArrayList<MenuItem> foodItems = FoodMenuUI.retrieveMenuItemListFiltered(type);
+        ArrayList<MenuItem> foodItems = MenuItem.retrieveMenuItemListFiltered(type);
         if (foodItems.size() == 0) {
             System.out.println("No items in this category. Exiting....");
             return;

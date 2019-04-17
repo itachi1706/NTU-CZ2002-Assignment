@@ -103,7 +103,7 @@ public class FoodMenuUI extends BaseMenu {
             default:
                 throw new MenuChoiceInvalidException("Choose menu to print");
         }
-        ArrayList<MenuItem> filteredMenu = FoodMenuUI.retrieveMenuItemListFiltered(printType);
+        ArrayList<MenuItem> filteredMenu = MenuItem.retrieveMenuItemListFiltered(printType);
 
         switch (selection) {
             case 1:
@@ -193,26 +193,36 @@ public class FoodMenuUI extends BaseMenu {
 
     /**
      * Method to edit an existing item.
-     * Uses {@link FoodMenuUI#retrieveMenuItem(int)} to facilitate checking operations.
+     * Uses {@link MenuItem#retrieveMenuItem(int)} to facilitate checking operations.
      * Uses {@link MenuItemCSVHelper#writeToCsv(ArrayList)} to facilitate I/O operations.
      */
     private void editMenuItem() {
 
-        int editItemID;
+        int editItemID = 1;
         String editItemName;
         int editItemType;
         String editItemDescription;
         double editItemPrice;
 
         //probably need to check for targetItemID data type input
-        editItemID = ScannerHelper.getIntegerInput("Enter the ID of the menu item to be edited: \n");
         //sc.nextLine(); //clear for I.F.D.
 
+        boolean menuItemFound = false;
+
+        while (!menuItemFound) {
+            editItemID = ScannerHelper.getIntegerInput("Enter the ID of the menu item to be edited: \n");
+
+            if (MenuItem.retrieveMenuItem(editItemID) == null) System.out.println("Invalid ID. Please enter a valid menu item ID.");
+
+            else menuItemFound = true;
+        }
+
+        /*
         //retrieve menu item with editItemID check.
         if (retrieveMenuItem(editItemID) == null) {
             System.out.println("Invalid ID. Menu item not found.");
             return;
-        }
+        }*/
 
 
         //consideration: retrieve object first, then do edit later?
@@ -276,7 +286,6 @@ public class FoodMenuUI extends BaseMenu {
      */
     private void deleteMenuItem() {
 
-        int targetItemID = ScannerHelper.getIntegerInput("Enter the ID of the menu item to be deleted. Note: any promotions linked to this item will be deleted. \n");
 
         // logic for this would be
         // to do a search using menu item ID
@@ -284,6 +293,19 @@ public class FoodMenuUI extends BaseMenu {
         // and then calling array.remove to remove the RestaurantItem object
         // this would change the id sequence
         // and then the write.csv method IO would be called
+
+
+        int targetItemID = 1;
+
+        boolean menuItemFound = false;
+
+        while (!menuItemFound) {
+            targetItemID = ScannerHelper.getIntegerInput("Enter the ID of the menu item to be deleted. Note: any promotions linked to this item will be deleted. \n");
+
+            if (MenuItem.retrieveMenuItem(targetItemID) == null) System.out.println("Invalid ID. Please enter a valid menu item ID.");
+
+            else menuItemFound = true;
+        }
 
         MenuItemCSVHelper menuHelper = MenuItemCSVHelper.getInstance();
 
@@ -332,61 +354,6 @@ public class FoodMenuUI extends BaseMenu {
             return;
         }
 
-    }
-
-
-
-    /**
-     * Method returning a MenuItem object that matches the input targetItemID.
-     * Uses {@link MainApp#menuItems} to retrieval operations.
-     *
-     * @param targetItemID ID of the menu item object to be retrieved.
-     * @return menuItemObj Object containing menu item attributes.
-     */
-    @Nullable
-    public static MenuItem retrieveMenuItem(int targetItemID) {
-
-        for (int i = 0; i < (MainApp.menuItems.size()); i++) {
-
-            MenuItem menuItemObj = MainApp.menuItems.get(i);
-
-            if (targetItemID == menuItemObj.getId()) { //"Target menu item found."
-                return menuItemObj;
-            }
-
-        }
-
-        return null; //"Target menu item not found."
-    }
-
-    /**
-     * Method returning an ArrayList filtered by enum type.
-     * Uses {@link MainApp#menuItems} to retrieval operations.
-     *
-     * @param targetItemType type of the menu item objects to be retrieved.
-     * @return menuItemsFiltered ArrayList containing the menu item type selected
-     */
-    @Nullable
-    public static ArrayList<MenuItem> retrieveMenuItemListFiltered(MenuItem.MenuItemType targetItemType) {
-
-        ArrayList<MenuItem> menuItemsFiltered = new ArrayList<>(); //declare new empty arraylist
-
-        //send in master first if ALL
-        if (targetItemType == MenuItem.MenuItemType.ALL) {
-            return MainApp.menuItems; //returns original array if ALL is selected.
-        }
-
-        for (int i = 0; i < (MainApp.menuItems.size()); i++) { //for loop to run through menuitems and to filter out
-
-            MenuItem menuItemObj = MainApp.menuItems.get(i); //gets a menu item object while the loop is running
-
-            //need to change to enum
-            if (targetItemType == menuItemObj.getType()) { //"Menu item of target item types found."
-                menuItemsFiltered.add(menuItemObj); //add the found object into the filtered array list
-            }
-
-        }
-        return menuItemsFiltered;
     }
 
 }
