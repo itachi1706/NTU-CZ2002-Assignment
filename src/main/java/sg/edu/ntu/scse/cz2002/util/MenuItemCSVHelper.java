@@ -1,6 +1,7 @@
 package sg.edu.ntu.scse.cz2002.util;
 
 import sg.edu.ntu.scse.cz2002.objects.restaurantItem.MenuItem;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -18,19 +19,20 @@ import java.util.List;
 public class MenuItemCSVHelper extends CSVBaseHelper {
 
     /**
-     * Path to Menu Items CSV File in the data folder. Defaults to menu.csv
+     * Path to Menu Items CSV File in the data folder. Defaults to menu.csv.
      */
     private String menuItemCsv = "menu.csv";
 
     /**
-     * Singleton instance of this class
+     * Singleton instance of this class.
      */
     private static MenuItemCSVHelper mInstance;
 
     /**
-     * Default Constructor to initialize this class with menu.csv as the CSV file
+     * Default Constructor to initialize this class with menu.csv as the CSV file.
      */
-    private MenuItemCSVHelper() {}
+    private MenuItemCSVHelper() {
+    }
 
     /**
      * Gets the singleton instance of MenuItemCSVHelper that reads from menu.csv
@@ -42,9 +44,10 @@ public class MenuItemCSVHelper extends CSVBaseHelper {
     }
 
     /**
-     * Reads the CSV file and parse it into an array list of menu item objects
-     * @return ArrayList of Menu Item Objects
-     * @throws IOException Unable to read from file
+     * Reads the CSV file and parses it into an array list of menu item objects.
+     *
+     * @return ArrayList of Menu Item Objects.
+     * @throws IOException Unable to read from file.
      */
     public ArrayList<MenuItem> readFromCsv() throws IOException {
         if (!FileIOHelper.exists(this.menuItemCsv)) return new ArrayList<>(); // Empty array list
@@ -57,17 +60,18 @@ public class MenuItemCSVHelper extends CSVBaseHelper {
     }
 
     /**
-     * Writes to the CSV File
-     * @param items ArrayList of items to save
-     * @throws IOException Unable to write to file
+     * Writes to the CSV File.
+     *
+     * @param items ArrayList of Menu items to save.
+     * @throws IOException Unable to write to file.
      */
     public void writeToCsv(ArrayList<MenuItem> items) throws IOException {
-        String[] header = {"ID", "Name", "Price", "Type", "Description" };
+        String[] header = {"ID", "Name", "Price", "Type", "Description"};
         BufferedWriter csvFile = FileIOHelper.getFileBufferedWriter(this.menuItemCsv);
         ArrayList<String[]> toWrite = new ArrayList<>();
         toWrite.add(header);
         items.forEach((i) -> toWrite.add(i.toCsv()));
         writeToCsvFile(toWrite, csvFile);
     }
-    
+
 }
