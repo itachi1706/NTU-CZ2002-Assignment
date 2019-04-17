@@ -6,6 +6,7 @@ import sg.edu.ntu.scse.cz2002.objects.person.Staff;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+
 /**
  * The Staff Management UI
  *
@@ -57,8 +58,7 @@ public class StaffMgmtMenuUI extends BaseMenu {
 
 	/**
 	 * Method for creating a new Staff Staff's id will be generated starting from
-	 * '1001' Each Staff ID is unique, keep incrementing if already taken Assigned
-	 * ID once non-taken ID is found.
+	 * '1001' Each Staff ID is unique, find the max current taken ID, new ID = max + 1;
 	 */
 	private void createNewStaff() {
 		int newId = 1001; // ID starts from 1001
@@ -127,11 +127,16 @@ public class StaffMgmtMenuUI extends BaseMenu {
 			break;
 		}
 
+		int max = 1001;
 		for (Staff st : MainApp.staffs) {
-			if (st.getStaffId() == newId) {
-				newId++;
+			if (st.getStaffId() > max) {
+				max = st.getStaffId();
 			}
 		}
+
+		newId = max +1;
+		newId = max + 1;
+
 
 		s = new Staff(newId, name, gender, title);
 		MainApp.staffs.add(s);
@@ -140,6 +145,7 @@ public class StaffMgmtMenuUI extends BaseMenu {
 		printBreaks();
 		System.out.printf("%-5s %-20s %-6s %-9s\n", s.getStaffId(), s.getStaffName(), s.getGender(),
 				s.getJobTitle());
+		
 	}
 
 	/**

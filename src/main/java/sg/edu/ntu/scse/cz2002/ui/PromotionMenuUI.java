@@ -131,7 +131,7 @@ public class PromotionMenuUI extends BaseMenu {
 		sc.nextLine(); //required if previous scanner takes in int, and now string is required
 		newPromoName = sc.nextLine();
 
-		newPromoPrice = ScannerHelper.getDoubleInput("Enter new menu item price: ");
+		newPromoPrice = ScannerHelper.getDoubleInput("Enter new promotion's price: ");
 
 		//need to find way to reprompt for input!
 		while (!mainFound) {
@@ -185,7 +185,7 @@ public class PromotionMenuUI extends BaseMenu {
 		int editPromoDrink;
 
 		//probably need to check for targetItemID data type input
-		editPromoID = ScannerHelper.getIntegerInput("Enter the ID of the menu item to be edited: \n");
+		editPromoID = ScannerHelper.getIntegerInput("Enter the ID of the promotion to be edited: \n");
 		//sc.nextLine(); //clear for I.F.D.
 
 		//retrieve menu item with editItemID check.

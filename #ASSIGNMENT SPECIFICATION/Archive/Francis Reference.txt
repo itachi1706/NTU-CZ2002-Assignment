@@ -75,3 +75,23 @@
                 }
             }
         }*/
+		
+		/*Iterator<Reservation> iter = MainApp.reservations.iterator();
+            while (iter.hasNext()) {
+                Reservation r = iter.next();
+                if (r.getCustTelNo().equals(telNo) && r.getResvId() == resvId) {
+                    iter.remove();
+                    break;
+                }
+            }
+            System.out.println("Reservation ID " + resvId +
+                    " under telephone number " + telNo + " has been successfully removed.");*/
+					
+					/*Iterator<Reservation> i = MainApp.reservations.iterator();
+                    while (i.hasNext()) {
+                        Reservation r = i.next();
+                        if (r.getCustTelNo().equals(telNo))
+                            i.remove();
+                    }
+                    System.out.println("Reservation has been successfully removed.");
+                    */

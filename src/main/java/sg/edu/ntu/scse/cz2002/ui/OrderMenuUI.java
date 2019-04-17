@@ -126,7 +126,7 @@ public class OrderMenuUI extends BaseMenu {
         printHeader("Staff List");
         IntStream.range(0, MainApp.staffs.size()).forEach((i) -> System.out.println((i + 1) + ") " + MainApp.staffs.get(i).getStaffName()));
         printBreaks();
-        int staffId = ScannerHelper.getIntegerInput("Enter Staff ID to create the order in (0 to cancel): ", -1) - 1;
+        int staffId = ScannerHelper.getIntegerInput("Enter Staff ID to create the order in (0 to cancel): ", -1, MainApp.staffs.size() + 1) - 1;
         if (staffId == -1) {
             System.out.println("Create Order Operation Cancelled");
             System.out.println();
@@ -164,6 +164,9 @@ public class OrderMenuUI extends BaseMenu {
             }
             t = vacantTables.get(0); // Allocate first possible table as it should be the least
             System.out.println("Allocated Table Number: " + t.getTableNum() + " (Table Size: " + t.getNumSeatsInt() + ")");
+        }
+        else {
+
         }
 
 
@@ -363,7 +366,7 @@ public class OrderMenuUI extends BaseMenu {
         System.out.println("You are about to add the following items to order: ");
         System.out.println(mi.printItemDetail());
         System.out.println("Quantity: " + quantity + "");
-        System.out.printf("Total Set Price: $%.2f\n", (quantity * mi.getPrice()));
+        System.out.printf("Total Item Price: $%.2f\n", (quantity * mi.getPrice()));
         boolean confirm = ScannerHelper.getYesNoInput("Confirm?");
         if (confirm) {
             // Add to Order
@@ -536,6 +539,10 @@ public class OrderMenuUI extends BaseMenu {
             String itemName = item.getName();
             double price = item.getPrice();
             if (i.isPromotion()) itemName = "[PROMO] " + itemName;
+
+            if (prettyPrint) System.out.printf("%3dx %-45s $%-6.2f\n", i.getQuantity(), itemName, price);
+            else System.out.println(imm + ") " + i.getQuantity() + "x " + itemName + "\t$" + String.format("%.2f", price));
+            imm++;
         }
     }
 }

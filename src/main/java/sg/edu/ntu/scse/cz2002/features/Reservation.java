@@ -265,6 +265,7 @@ public class Reservation implements ICsvSerializable {
      */
     @Nullable
     public static Table hasReservation(String telNo) {
+        Reservation removeResv = null;
         int tableNum = -1;
         char session = ' ';
         for (Reservation r : MainApp.reservations) {
@@ -272,11 +273,13 @@ public class Reservation implements ICsvSerializable {
                 session = r.getResvSession() == ReservationSession.AM_SESSION ? 'A' : 'P';
                 if (r.getResvDate().isEqual(DateTimeFormatHelper.getTodayDate(false))
                         && (session == MainApp.restaurantSession)) {
+                    removeResv = r;
                     tableNum = r.getTableNum();
                     break;
                 }
             }
         }
+        if (removeResv != null) removeReservationFromList(removeResv);
         return Table.getTableByNumber(tableNum);
     }
 
@@ -316,6 +319,14 @@ public class Reservation implements ICsvSerializable {
                 i.remove();
         }
         System.out.println("Reservation has been successfully removed.");
+    }
+
+    /**
+     * Removes a reservation from the main reservation list based reservation object
+     * @param r Reservation object
+     */
+    public static void removeReservationFromList(Reservation r) {
+        MainApp.reservations.remove(r);
     }
 
     /**
