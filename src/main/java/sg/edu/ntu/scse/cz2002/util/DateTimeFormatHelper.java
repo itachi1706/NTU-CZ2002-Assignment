@@ -6,9 +6,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoUnit;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.InputMismatchException;
 
 /**
@@ -170,7 +168,7 @@ public class DateTimeFormatHelper {
     public static boolean validateDate(String date) throws InputMismatchException, NumberFormatException, ArrayIndexOutOfBoundsException
     {
         try {
-            String[] dateSplit = new String[3];
+            String[] dateSplit;
             dateSplit = date.split("/");
             int d = Integer.parseInt(dateSplit[0]);
             int m = Integer.parseInt(dateSplit[1]);

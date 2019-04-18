@@ -60,7 +60,7 @@ public class MainApp {
     public static ArrayList<Staff> staffs;
 
     /**
-     *
+     * The current Restaurant Session (AM/PM)
      */
     public static char restaurantSession = ' ';
 

@@ -5,7 +5,6 @@ import sg.edu.ntu.scse.cz2002.MainApp;
 import sg.edu.ntu.scse.cz2002.ui.ReservationMenuUI;
 import sg.edu.ntu.scse.cz2002.util.ICsvSerializable;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Iterator;
@@ -50,7 +49,13 @@ public class Table implements ICsvSerializable {
      */
     private TableSeats numSeats;
 
-
+    /**
+     * Constructor class to create table instances
+     * @param num Table Number
+     * @param res Whether the table has been reserved
+     * @param seats Number of seats
+     * @param state Current occupancy state of the table
+     */
     public Table(int num, boolean res, int seats, int state) {
         this.tableNum = num;
         this.isReserved = res;
@@ -69,10 +74,8 @@ public class Table implements ICsvSerializable {
      * A method to read from a CSV string to convert to an object instance
      * This needs to be overridden if you need to retrieve CSV data from file
      * @param csv A string array of the CSV file
-     * @throws ParseException When the date time provided from the CSV file has an invalid format,
-     * which is unlikely to happen unless CSV file was modified outside of program.
      */
-    public Table(String[] csv) throws ParseException {
+    public Table(String[] csv) {
         this.tableNum= Integer.parseInt(csv[0]);
         int seats = Integer.parseInt(csv[1]);
         this.numSeats = seats == 2 ? TableSeats.TWO_SEATER      :
