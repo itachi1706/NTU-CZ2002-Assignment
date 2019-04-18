@@ -1,14 +1,14 @@
 package sg.edu.ntu.scse.cz2002.ui;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Scanner;
-
 import sg.edu.ntu.scse.cz2002.MainApp;
 import sg.edu.ntu.scse.cz2002.objects.restaurantItem.MenuItem;
 import sg.edu.ntu.scse.cz2002.objects.restaurantItem.PromotionItem;
 import sg.edu.ntu.scse.cz2002.util.PromoCSVHelper;
 import sg.edu.ntu.scse.cz2002.util.ScannerHelper;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Scanner;
 
 /**
  * PromotionItem Menu UI
@@ -139,7 +139,7 @@ public class PromotionMenuUI extends BaseMenu {
         while (!mainFound) {
             newPromoMain = ScannerHelper.getIntegerInput("Enter new promotion's main ID: ");
             mainFound = MenuItem.menuTypeChecker(filteredMainMenu, newPromoMain, "Main");
-            if (mainFound == false) System.out.println("Main not found. Please enter a valid main ID.");
+            if (!mainFound) System.out.println("Main not found. Please enter a valid main ID.");
         }
 
         //Code to print filtered menu of desserts
@@ -155,7 +155,7 @@ public class PromotionMenuUI extends BaseMenu {
         while (!dessertFound) {
             newPromoDessert = ScannerHelper.getIntegerInput("Enter new promotion's dessert ID: ");
             dessertFound = MenuItem.menuTypeChecker(filteredDessertMenu, newPromoDessert, "Dessert");
-            if (dessertFound == false) System.out.println("Dessert not found. Please enter a valid dessert ID.");
+            if (!dessertFound) System.out.println("Dessert not found. Please enter a valid dessert ID.");
         }
 
         //Code to print filtered menu of drinks
@@ -171,7 +171,7 @@ public class PromotionMenuUI extends BaseMenu {
         while (!drinkFound) {
             newPromoDrink = ScannerHelper.getIntegerInput("Enter new promotion's drink ID: ");
             drinkFound = MenuItem.menuTypeChecker(filteredDrinkMenu, newPromoDrink, "Drink");
-            if (drinkFound == false) System.out.println("Drink not found. Please enter a valid drink ID.");
+            if (!drinkFound) System.out.println("Drink not found. Please enter a valid drink ID.");
             //need to find way to reprompt for input!
         }
         //Basically the actual addNewPromotion method
@@ -254,7 +254,7 @@ public class PromotionMenuUI extends BaseMenu {
         while (!mainFound) {
             editPromoMain = ScannerHelper.getIntegerInput("Enter the main's ID of the promotion to be edited: ");
             mainFound = MenuItem.menuTypeChecker(filteredMainMenu, editPromoMain, "Main");
-            if (mainFound == false) System.out.println("Main not found. Please enter a valid main ID.");
+            if (!mainFound) System.out.println("Main not found. Please enter a valid main ID.");
         }
 
         //Code to print filtered menu of desserts
@@ -270,7 +270,7 @@ public class PromotionMenuUI extends BaseMenu {
         while (!dessertFound) {
             editPromoDessert = ScannerHelper.getIntegerInput("Enter the dessert's ID of the promotion to be edited: ");
             dessertFound = MenuItem.menuTypeChecker(filteredDessertMenu, editPromoDessert, "Dessert");
-            if (dessertFound == false) System.out.println("Dessert not found. Please enter a valid dessert ID.");
+            if (!dessertFound) System.out.println("Dessert not found. Please enter a valid dessert ID.");
         }
 
         //Code to print filtered menu of drinks
@@ -286,7 +286,7 @@ public class PromotionMenuUI extends BaseMenu {
         while (!drinkFound) {
             editPromoDrink = ScannerHelper.getIntegerInput("Enter the drink's ID of the promotion to be edited: ");
             drinkFound = MenuItem.menuTypeChecker(filteredDrinkMenu, editPromoDrink, "Drink");
-            if (drinkFound == false) System.out.println("Drink not found. Please enter a valid drink ID.");
+            if (!drinkFound) System.out.println("Drink not found. Please enter a valid drink ID.");
             //need to find way to reprompt for input!
         }
 
