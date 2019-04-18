@@ -240,7 +240,6 @@ public class Table implements ICsvSerializable {
         if (bookedTables.equals(MainApp.tables)) {
             if (MainApp.DEBUG) System.out.println("DEBUG: Walk-in check");
             Table tab;
-            //TODO: Do walk-in check
             while (iter.hasNext()) {
                 tab = iter.next();
                 if (tab.getState() != TableState.TABLE_VACATED) iter.remove();
@@ -248,7 +247,6 @@ public class Table implements ICsvSerializable {
         }
         else {
             if (MainApp.DEBUG) System.out.println("DEBUG: Reservation check");
-            //TODO: Do reservation check
             tablesByNumPax.removeAll(bookedTables);
         }
         return tablesByNumPax;
