@@ -133,10 +133,7 @@ public class StaffMgmtMenuUI extends BaseMenu {
 				max = st.getStaffId();
 			}
 		}
-
-		newId = max +1;
 		newId = max + 1;
-
 
 		s = new Staff(newId, name, gender, title);
 		MainApp.staffs.add(s);
