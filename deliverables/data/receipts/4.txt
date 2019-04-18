@@ -3,19 +3,20 @@ ____________________________________________________________
                Block N4, SCSE, NTU Singapore
                  50 Nanyang Ave, SG 639798
 
-Check #: 1                         Server: Weibin (1002)
-Date: 9/4/2019 21:42               Table: 21           
+Check #: 4                         Server: James (1001)
+Date: 15/4/2019 17:09              Table: 5            
 ____________________________________________________________
- 2  x Curry Potato Stew (Chicken)                   $ 15.80
+ 10 x Teriyaki Chicken Pasta                        $ 89.00
+ 1  x Set Mera                                      $199.00
 ____________________________________________________________
-                                   Order Subtotal:  $ 15.80
-                                         GST (7%):  $  1.11
+                                   Order Subtotal:  $288.00
+                                         GST (7%):  $ 20.16
 ____________________________________________________________
-                                            Total:  $ 16.91
+                                            Total:  $308.16
 ____________________________________________________________
-                                      Paid (NETS):  $ 16.91
+                         Paid (Debit/Credit Card):  $308.16
 ____________________________________________________________
 
 
                Thank you and have a nice day!
-           Transaction Completed: 9/4/2019 21:42
+           Transaction Completed: 15/4/2019 17:09

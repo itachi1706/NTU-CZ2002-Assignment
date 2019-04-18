@@ -3,19 +3,20 @@ ____________________________________________________________
                Block N4, SCSE, NTU Singapore
                  50 Nanyang Ave, SG 639798
 
-Check #: 1                         Server: Weibin (1002)
-Date: 9/4/2019 21:42               Table: 21           
+Check #: 5                         Server: James (1001)
+Date: 15/4/2019 18:03              Table: 1            
 ____________________________________________________________
- 2  x Curry Potato Stew (Chicken)                   $ 15.80
+ 5  x Updated Promotion                             $249.75
+ 5  x Carribean Curry Pasta                         $ 44.50
 ____________________________________________________________
-                                   Order Subtotal:  $ 15.80
-                                         GST (7%):  $  1.11
+                                   Order Subtotal:  $294.25
+                                         GST (7%):  $ 20.60
 ____________________________________________________________
-                                            Total:  $ 16.91
+                                            Total:  $314.85
 ____________________________________________________________
-                                      Paid (NETS):  $ 16.91
+                         Paid (Debit/Credit Card):  $314.85
 ____________________________________________________________
 
 
                Thank you and have a nice day!
-           Transaction Completed: 9/4/2019 21:42
+           Transaction Completed: 15/4/2019 18:03
