@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 
-
 /**
  * PromotionItem Menu UI
  *
@@ -22,15 +21,16 @@ import java.util.Scanner;
 public class PromotionMenuUI extends BaseMenu {
 
 
-	/**
-	 * Scanner for use in retrieving user input.
-	 */
-	private Scanner sc = ScannerHelper.getScannerInput();
+    /**
+     * Scanner for use in retrieving user input.
+     */
+    private Scanner sc = ScannerHelper.getScannerInput();
 
-	/**
-	 * The PromotionItem Management Menu
-	 * @return Exit Code. Return 1 to exit the program and -1 to exit to main menu
-	 */
+    /**
+     * The PromotionItem Management Menu
+     *
+     * @return Exit Code. Return 1 to exit the program and -1 to exit to main menu
+     */
     @Override
     protected int generateMenuScreen() {
         printHeader("Promotion Item Management");
@@ -44,19 +44,19 @@ public class PromotionMenuUI extends BaseMenu {
 
         int choice = doMenuChoice(5, 0);
         switch (choice) {
-        
+
             case 1: // Prints existing promotions
-            	this.printPromotion();
+                this.printPromotion();
                 break;
             case 2: // Create a new promotion
-				this.addNewPromotion();
-				break;
+                this.addNewPromotion();
+                break;
 
             case 3: //Edit an existing promotion
-				this.editPromotion();
-            	break;
+                this.editPromotion();
+                break;
             case 4: //Delete an existing promotion
-				this.deletePromotion();
+                this.deletePromotion();
                 break;
             case 5:
                 return -1;
@@ -69,28 +69,26 @@ public class PromotionMenuUI extends BaseMenu {
     }
 
 
+    /**
+     * Prints the menu of promotions stored in the CSV file.
+     * Uses {@link MainApp#promotions} and {@link MenuItem#retrieveMenuItem(int)}.
+     */
+    public void printPromotion() {
 
+        System.out.println("This is the list of current promotions:");
 
-	/**
-	 * Prints the menu of promotions stored in the CSV file.
-	 * Uses {@link MainApp#promotions} and {@link MenuItem#retrieveMenuItem(int)}.
-	 */
-	public void printPromotion() {
+        for (int i = 0; i < MainApp.promotions.size(); i++) {
+            PromotionItem promotion = MainApp.promotions.get(i);
 
-		System.out.println("This is the list of current promotions:");
+            MenuItem mainItem = MenuItem.retrieveMenuItem(promotion.getPromoMain());
+            MenuItem dessertItem = MenuItem.retrieveMenuItem(promotion.getPromoDessert());
+            MenuItem drinkItem = MenuItem.retrieveMenuItem(promotion.getPromoDrink());
 
-		for (int i = 0; i < MainApp.promotions.size(); i++) {
-			PromotionItem promotion = MainApp.promotions.get(i);
-			
-			MenuItem mainItem = MenuItem.retrieveMenuItem(promotion.getPromoMain());
-			MenuItem dessertItem = MenuItem.retrieveMenuItem(promotion.getPromoDessert());
-			MenuItem drinkItem = MenuItem.retrieveMenuItem(promotion.getPromoDrink());
-
-			printHeader(promotion.getName());
-			//System.out.println("|============================|");
-			System.out.println("Promotion ID: " + promotion.getId());
-			//System.out.println("Promotion Name: " + promotion.getName());
-			System.out.println("Promotion Price: $" + promotion.getPrice());
+            printHeader(promotion.getName());
+            //System.out.println("|============================|");
+            System.out.println("Promotion ID: " + promotion.getId());
+            //System.out.println("Promotion Name: " + promotion.getName());
+            System.out.println("Promotion Price: $" + promotion.getPrice());
 
 			/*
 			System.out.println("Promotion Main: [" + promotion.getPromoMain() + "] "+ mainItem.getName());
@@ -98,167 +96,165 @@ public class PromotionMenuUI extends BaseMenu {
 			System.out.println("Promotion Drink: [" + promotion.getPromoDrink() + "] "+ drinkItem.getName());
 			 */
 
-			System.out.println("Promotion Description\n"+
-					"Served with these 3 items:\n"+
-					"Main: [" + promotion.getPromoMain() + "] "+ mainItem.getName()+
-					"\nDessert: [" + promotion.getPromoDessert() + "] "+ dessertItem.getName()+
-					"\nDrink: [" + promotion.getPromoDrink() + "] "+ drinkItem.getName());
-		}
-	}
+            System.out.println("Promotion Description\n" +
+                    "Served with these 3 items:\n" +
+                    "Main: [" + promotion.getPromoMain() + "] " + mainItem.getName() +
+                    "\nDessert: [" + promotion.getPromoDessert() + "] " + dessertItem.getName() +
+                    "\nDrink: [" + promotion.getPromoDrink() + "] " + drinkItem.getName());
+        }
+    }
 
-	/**
-	 * Method to add a new promotion.
-	 * Uses {@link PromoCSVHelper#writeToCsv(ArrayList)} to facilitate I/O operations.
-	 */
-	public void addNewPromotion() {
+    /**
+     * Method to add a new promotion.
+     * Uses {@link PromoCSVHelper#writeToCsv(ArrayList)} to facilitate I/O operations.
+     */
+    public void addNewPromotion() {
 
-		String newPromoName;
-		double newPromoPrice;
-		int newPromoMain = 1;
-		int newPromoDessert = 1;
-		int newPromoDrink = 1;
-		boolean mainFound = false;
-		boolean dessertFound = false;
-		boolean drinkFound = false;
+        String newPromoName;
+        double newPromoPrice;
+        int newPromoMain = 1;
+        int newPromoDessert = 1;
+        int newPromoDrink = 1;
+        boolean mainFound = false;
+        boolean dessertFound = false;
+        boolean drinkFound = false;
 
-		//have to create 3 temporary arrays here to filter out.
-		ArrayList<MenuItem> filteredMainMenu = MenuItem.retrieveMenuItemListFiltered(MenuItem.MenuItemType.MAIN); //the main here is just for main dishes
-		ArrayList<MenuItem> filteredDessertMenu = MenuItem.retrieveMenuItemListFiltered(MenuItem.MenuItemType.DESSERT);
-		ArrayList<MenuItem> filteredDrinkMenu = MenuItem.retrieveMenuItemListFiltered(MenuItem.MenuItemType.DRINK);
+        //have to create 3 temporary arrays here to filter out.
+        ArrayList<MenuItem> filteredMainMenu = MenuItem.retrieveMenuItemListFiltered(MenuItem.MenuItemType.MAIN); //the main here is just for main dishes
+        ArrayList<MenuItem> filteredDessertMenu = MenuItem.retrieveMenuItemListFiltered(MenuItem.MenuItemType.DESSERT);
+        ArrayList<MenuItem> filteredDrinkMenu = MenuItem.retrieveMenuItemListFiltered(MenuItem.MenuItemType.DRINK);
 
-		System.out.println("Enter new promotion set name: ");
-		sc.nextLine(); //required if previous scanner takes in int, and now string is required
-		newPromoName = sc.nextLine();
+        System.out.println("Enter new promotion set name: ");
+        sc.nextLine(); //required if previous scanner takes in int, and now string is required
+        newPromoName = sc.nextLine();
 
-		newPromoPrice = ScannerHelper.getDoubleInput("Enter new promotion's price: ");
+        newPromoPrice = ScannerHelper.getDoubleInput("Enter new promotion's price: ");
 
-		while (!mainFound) {
-			newPromoMain = ScannerHelper.getIntegerInput("Enter new promotion's main ID: ");
-			mainFound = MenuItem.menuTypeChecker(filteredMainMenu, newPromoMain, "Main");
-			if (!mainFound) System.out.println("Main not found. Please enter a valid main ID.");
-		}
+        while (!mainFound) {
+            newPromoMain = ScannerHelper.getIntegerInput("Enter new promotion's main ID: ");
+            mainFound = MenuItem.menuTypeChecker(filteredMainMenu, newPromoMain, "Main");
+            if (!mainFound) System.out.println("Main not found. Please enter a valid main ID.");
+        }
 
-		while (!dessertFound) {
-			newPromoDessert = ScannerHelper.getIntegerInput("Enter new promotion's dessert ID: ");
-			dessertFound = MenuItem.menuTypeChecker(filteredDessertMenu, newPromoDessert, "Dessert");
-			if (!dessertFound) System.out.println("Dessert not found. Please enter a valid dessert ID.");
-		}
+        while (!dessertFound) {
+            newPromoDessert = ScannerHelper.getIntegerInput("Enter new promotion's dessert ID: ");
+            dessertFound = MenuItem.menuTypeChecker(filteredDessertMenu, newPromoDessert, "Dessert");
+            if (!dessertFound) System.out.println("Dessert not found. Please enter a valid dessert ID.");
+        }
 
-		while (!drinkFound) {
-			newPromoDrink = ScannerHelper.getIntegerInput("Enter new promotion's drink ID: ");
-			drinkFound = MenuItem.menuTypeChecker(filteredDrinkMenu, newPromoDrink, "Drink");
-			if (!drinkFound) System.out.println("Drink not found. Please enter a valid drink ID.");
-			//need to find way to reprompt for input!
-		}
-		//Basically the actual addNewPromotion method
-		try {
+        while (!drinkFound) {
+            newPromoDrink = ScannerHelper.getIntegerInput("Enter new promotion's drink ID: ");
+            drinkFound = MenuItem.menuTypeChecker(filteredDrinkMenu, newPromoDrink, "Drink");
+            if (!drinkFound) System.out.println("Drink not found. Please enter a valid drink ID.");
+            //need to find way to reprompt for input!
+        }
+        //Basically the actual addNewPromotion method
+        try {
 
-			PromotionItem promotionObj = MainApp.promotions.get((MainApp.promotions.size())-1);
-			int promoID = promotionObj.getId()+1;
+            PromotionItem promotionObj = MainApp.promotions.get((MainApp.promotions.size()) - 1);
+            int promoID = promotionObj.getId() + 1;
 
-			PromotionItem promotion = new PromotionItem(promoID, newPromoName, newPromoPrice, newPromoMain, newPromoDessert, newPromoDrink);
-			MainApp.promotions.add(promotion);
+            PromotionItem promotion = new PromotionItem(promoID, newPromoName, newPromoPrice, newPromoMain, newPromoDessert, newPromoDrink);
+            MainApp.promotions.add(promotion);
 
-			PromoCSVHelper promotionHelper = PromoCSVHelper.getInstance();
-			promotionHelper.writeToCsv(MainApp.promotions);
-			
-		} catch (IOException e) {
-			System.out.println("IOException > " + e.getMessage());
-		}
+            PromoCSVHelper promotionHelper = PromoCSVHelper.getInstance();
+            promotionHelper.writeToCsv(MainApp.promotions);
 
-		System.out.println("Add successful. New promotion has been successfully added.");
-	}
+        } catch (IOException e) {
+            System.out.println("IOException > " + e.getMessage());
+        }
 
-	/**
-	 * Method to edit an existing promotion.
-	 * Uses {@link PromoCSVHelper#writeToCsv(ArrayList)} and {@link PromotionItem#retrievePromotion(int)} to facilitate I/O operations.
-	 */
-	public void editPromotion() {
+        System.out.println("Add successful. New promotion has been successfully added.");
+    }
 
-		int editPromoID;
-		String editPromoName;
-		double editPromoPrice;
-		int editPromoMain;
-		int editPromoDessert;
-		int editPromoDrink;
+    /**
+     * Method to edit an existing promotion.
+     * Uses {@link PromoCSVHelper#writeToCsv(ArrayList)} and {@link PromotionItem#retrievePromotion(int)} to facilitate I/O operations.
+     */
+    public void editPromotion() {
 
-		//probably need to check for targetItemID data type input
-		editPromoID = ScannerHelper.getIntegerInput("Enter the ID of the promotion to be edited: \n");
-		//sc.nextLine(); //clear for I.F.D.
+        int editPromoID;
+        String editPromoName;
+        double editPromoPrice;
+        int editPromoMain;
+        int editPromoDessert;
+        int editPromoDrink;
 
-		//retrieve menu item with editItemID check.
-		if (PromotionItem.retrievePromotion(editPromoID) == null){
-			System.out.println("Invalid ID. Promotion not found.");
-			return;
-		}
+        //probably need to check for targetItemID data type input
+        editPromoID = ScannerHelper.getIntegerInput("Enter the ID of the promotion to be edited: \n");
+        //sc.nextLine(); //clear for I.F.D.
 
-		System.out.println("Enter new name of the promotion to be edited: ");
-		editPromoName = sc.nextLine();
-		editPromoPrice= ScannerHelper.getDoubleInput("Enter the new price of the promotion to be edited: ");
-		editPromoMain = ScannerHelper.getIntegerInput("Enter the main's ID of the promotion to be edited: ");
-		editPromoDessert = ScannerHelper.getIntegerInput("Enter the dessert's ID of the promotion to be edited: ");
-		editPromoDrink = ScannerHelper.getIntegerInput("Enter the drink's ID of the promotion to be edited: ");
+        //retrieve menu item with editItemID check.
+        if (PromotionItem.retrievePromotion(editPromoID) == null) {
+            System.out.println("Invalid ID. Promotion not found.");
+            return;
+        }
 
-		PromoCSVHelper promoHelper = PromoCSVHelper.getInstance();
+        System.out.println("Enter new name of the promotion to be edited: ");
+        editPromoName = sc.nextLine();
+        editPromoPrice = ScannerHelper.getDoubleInput("Enter the new price of the promotion to be edited: ");
+        editPromoMain = ScannerHelper.getIntegerInput("Enter the main's ID of the promotion to be edited: ");
+        editPromoDessert = ScannerHelper.getIntegerInput("Enter the dessert's ID of the promotion to be edited: ");
+        editPromoDrink = ScannerHelper.getIntegerInput("Enter the drink's ID of the promotion to be edited: ");
 
-		for (int i=0; i<(MainApp.promotions.size()); i++) {
-			
-			PromotionItem promoObj = MainApp.promotions.get(i);
-			if (editPromoID == promoObj.getId()) {
-				try {
-					
-					PromotionItem promo = PromotionItem.retrievePromotion(editPromoID);
-					
-					promo.setName(editPromoName);
-					promo.setPrice(editPromoPrice);
-					promo.setPromoMain(editPromoMain);
-					promo.setPromoDessert(editPromoDessert);
-					promo.setPromoDrink(editPromoDrink);
-					//at this point, the object has been edited with the new values
-					
-					promoHelper.writeToCsv(MainApp.promotions); // calls IO method to save the array into the CSV file
-					System.out.println("Edit successful. Target promotion successfully edited!");
-					return;
-				}
-				catch (IOException e) {
-					System.out.println("IOException > " + e.getMessage());
-				}
-			}
-	
-		}
+        PromoCSVHelper promoHelper = PromoCSVHelper.getInstance();
 
-		System.out.println("Edit failed. Target promotion not found.");
+        for (int i = 0; i < (MainApp.promotions.size()); i++) {
 
-	}	
-	
-	/**
-	 * Method to delete an existing promotion.
-	 * Uses {@link PromoCSVHelper#writeToCsv(ArrayList)} to facilitate I/O operations.
-	 */
-	public void deletePromotion() {
+            PromotionItem promoObj = MainApp.promotions.get(i);
+            if (editPromoID == promoObj.getId()) {
+                try {
 
-		int targetPromoID;
-		targetPromoID = ScannerHelper.getIntegerInput("Enter the ID of the promotion to be deleted: ");
+                    PromotionItem promo = PromotionItem.retrievePromotion(editPromoID);
 
-		PromoCSVHelper promoHelper = PromoCSVHelper.getInstance();
+                    promo.setName(editPromoName);
+                    promo.setPrice(editPromoPrice);
+                    promo.setPromoMain(editPromoMain);
+                    promo.setPromoDessert(editPromoDessert);
+                    promo.setPromoDrink(editPromoDrink);
+                    //at this point, the object has been edited with the new values
 
-		for (int i=0; i<(MainApp.promotions.size()); i++) {
-			PromotionItem promoObj = MainApp.promotions.get(i);
-			if (targetPromoID == promoObj.getId()) {
-				try {
-					MainApp.promotions.remove(i); //delete using i as for loop index
-					promoHelper.writeToCsv(MainApp.promotions); // calls IO method to save the new array into the CSV file
-					System.out.println("Target promotion has been successfully removed!");
-					return;
-				}
-				catch (IOException e) {
-					System.out.println("IOException > " + e.getMessage());
-				}
-			}
-		}
+                    promoHelper.writeToCsv(MainApp.promotions); // calls IO method to save the array into the CSV file
+                    System.out.println("Edit successful. Target promotion successfully edited!");
+                    return;
+                } catch (IOException e) {
+                    System.out.println("IOException > " + e.getMessage());
+                }
+            }
 
-		System.out.println("Delete failed. Target promotion not found.");
-	}
+        }
+
+        System.out.println("Edit failed. Target promotion not found.");
+
+    }
+
+    /**
+     * Method to delete an existing promotion.
+     * Uses {@link PromoCSVHelper#writeToCsv(ArrayList)} to facilitate I/O operations.
+     */
+    public void deletePromotion() {
+
+        int targetPromoID;
+        targetPromoID = ScannerHelper.getIntegerInput("Enter the ID of the promotion to be deleted: ");
+
+        PromoCSVHelper promoHelper = PromoCSVHelper.getInstance();
+
+        for (int i = 0; i < (MainApp.promotions.size()); i++) {
+            PromotionItem promoObj = MainApp.promotions.get(i);
+            if (targetPromoID == promoObj.getId()) {
+                try {
+                    MainApp.promotions.remove(i); //delete using i as for loop index
+                    promoHelper.writeToCsv(MainApp.promotions); // calls IO method to save the new array into the CSV file
+                    System.out.println("Target promotion has been successfully removed!");
+                    return;
+                } catch (IOException e) {
+                    System.out.println("IOException > " + e.getMessage());
+                }
+            }
+        }
+
+        System.out.println("Delete failed. Target promotion not found.");
+    }
 
 
 }

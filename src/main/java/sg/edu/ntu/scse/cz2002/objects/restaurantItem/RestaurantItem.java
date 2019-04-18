@@ -25,7 +25,6 @@ public class RestaurantItem implements ICsvSerializable {
     protected double restaurantItemPrice;
 
 
-
     /**
      * Constructor to pass in all required parameters for a restaurant item.
      *
@@ -65,7 +64,6 @@ public class RestaurantItem implements ICsvSerializable {
         s[2] = this.restaurantItemPrice + "";
         return s;
     }
-
 
 
     /**

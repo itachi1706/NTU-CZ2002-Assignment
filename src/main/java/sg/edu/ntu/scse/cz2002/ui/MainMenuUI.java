@@ -15,6 +15,7 @@ public class MainMenuUI extends BaseMenu {
 
     /**
      * The application main menu
+     *
      * @return Exit Code. Return 1 to exit the program
      */
     @Override
@@ -53,7 +54,7 @@ public class MainMenuUI extends BaseMenu {
                 if (new CheckoutMenuUI().startMainMenu()) return 1;
                 break;
             case 7:
-            	if (new SalesRevenueReportMenuUI().startMainMenu()) return 1;
+                if (new SalesRevenueReportMenuUI().startMainMenu()) return 1;
                 break;
             case 8:
                 if (new StaffMgmtMenuUI().startMainMenu()) return 1;
@@ -71,21 +72,21 @@ public class MainMenuUI extends BaseMenu {
      */
     private void checkTableAvailability() {
         int count = 0;
-    	System.out.println("These are the tables available for the current session:");
-		for (int i = 0; i < MainApp.tables.size(); i++) {
-			Table tables = MainApp.tables.get(i);
-			if(tables.getState() == TableState.TABLE_VACATED)
-			{
-			    int seat = (tables.getNumSeats() == Table.TableSeats.TWO_SEATER) ? 2 :
-                                (tables.getNumSeats() == Table.TableSeats.FOUR_SEATER) ? 4 :
+        System.out.println("These are the tables available for the current session:");
+        for (int i = 0; i < MainApp.tables.size(); i++) {
+            Table tables = MainApp.tables.get(i);
+            if (tables.getState() == TableState.TABLE_VACATED) {
+                int seat = (tables.getNumSeats() == Table.TableSeats.TWO_SEATER) ? 2 :
+                        (tables.getNumSeats() == Table.TableSeats.FOUR_SEATER) ? 4 :
                                 (tables.getNumSeats() == Table.TableSeats.EIGHT_SEATER) ? 8 : 10;
-				System.out.println("Table " + tables.getTableNum() + ": " + seat + " seats");
-			    count++;
-			}
-		}
+                System.out.println("Table " + tables.getTableNum() + ": " + seat + " seats");
+                count++;
+            }
+        }
 
-		if (count == 0) System.out.println("There are no available tables for the current/upcoming session. We're sorry!");
-		else System.out.println("There are " + count + " tables available for the current/upcoming session.");
+        if (count == 0)
+            System.out.println("There are no available tables for the current/upcoming session. We're sorry!");
+        else System.out.println("There are " + count + " tables available for the current/upcoming session.");
 
     }
 }

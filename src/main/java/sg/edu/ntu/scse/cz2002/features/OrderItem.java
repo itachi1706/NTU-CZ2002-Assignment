@@ -17,7 +17,7 @@ public class OrderItem {
     /**
      * Enums for type of order item
      */
-    public enum OrderItemType { TYPE_MENU, TYPE_PROMO }
+    public enum OrderItemType {TYPE_MENU, TYPE_PROMO}
 
     /**
      * Item ID ({@link MenuItem}/{@link PromotionItem} Set)
@@ -39,6 +39,7 @@ public class OrderItem {
     /**
      * A method to read from a CSV string to convert to an object instance
      * This needs to be overridden if you need to retrieve CSV data from file
+     *
      * @param otherData the split CSV string object for the order item, be it menuitems or promotions
      */
     public OrderItem(@NotNull String[] otherData) {
@@ -50,7 +51,8 @@ public class OrderItem {
 
     /**
      * Constructor
-     * @param itemId Item ID
+     *
+     * @param itemId   Item ID
      * @param quantity Quantity of the item
      * @param itemType Type of Item
      */
@@ -64,6 +66,7 @@ public class OrderItem {
     /**
      * A method to convert to string
      * This needs to be overridden if you need to save files to CSV
+     *
      * @return A String array of the CSV file
      */
     public String toCompiledString() {
@@ -72,6 +75,7 @@ public class OrderItem {
 
     /**
      * Internal method for getting the {@link PromotionItem} object
+     *
      * @return {@link PromotionItem} Object
      */
     private PromotionItem getPromo() {
@@ -81,6 +85,7 @@ public class OrderItem {
 
     /**
      * Internal method for getting the {@link MenuItem} object
+     *
      * @return {@link MenuItem} Object
      */
     private MenuItem getMenuItem() {
@@ -91,6 +96,7 @@ public class OrderItem {
     /**
      * Gets the object from this entry
      * This object can either be a {@link MenuItem} or a {@link PromotionItem}
+     *
      * @return {@link MenuItem} or {@link PromotionItem} object
      */
     public RestaurantItem getItem() {
@@ -100,6 +106,7 @@ public class OrderItem {
 
     /**
      * Gets the quantity of item in this entry
+     *
      * @return Quantity of the item
      */
     public int getQuantity() {
@@ -108,6 +115,7 @@ public class OrderItem {
 
     /**
      * Sets the quantity of this entry
+     *
      * @param quantity Quantity of the item in the entry
      */
     public void setQuantity(int quantity) {
@@ -116,6 +124,7 @@ public class OrderItem {
 
     /**
      * Checks if the item in this entry is a {@link PromotionItem} object
+     *
      * @return true if {@link PromotionItem}, false otherwise
      */
     public boolean isPromotion() {
@@ -125,6 +134,7 @@ public class OrderItem {
     /**
      * Gets the total price of the entry
      * This is calculated by the item's base price * quantity
+     *
      * @return Price of the entry
      */
     public double getItemTotal() {

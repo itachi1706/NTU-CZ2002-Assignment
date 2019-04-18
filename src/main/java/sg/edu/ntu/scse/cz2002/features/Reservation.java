@@ -69,14 +69,15 @@ public class Reservation implements ICsvSerializable {
 
     /**
      * Overriden constructor for Reservation
-     * @param id Reservation ID
-     * @param rd Reservation Date
-     * @param rt Reservation Time
-     * @param sess Reservation Session
+     *
+     * @param id    Reservation ID
+     * @param rd    Reservation Date
+     * @param rt    Reservation Time
+     * @param sess  Reservation Session
      * @param telNo Customer Telephone Number
-     * @param name Customer Name
-     * @param pax Number of pax for table
-     * @param t Table number assigned
+     * @param name  Customer Name
+     * @param pax   Number of pax for table
+     * @param t     Table number assigned
      */
     public Reservation(int id, LocalDate rd, LocalTime rt, char sess, String telNo, String name, int pax, int t) {
         this.resvId = id;
@@ -93,12 +94,13 @@ public class Reservation implements ICsvSerializable {
     /**
      * A method to read from a CSV string to convert to an object instance
      * This needs to be overridden if you need to retrieve CSV data from file
+     *
      * @param csv A string array of the CSV file
      * @throws DateTimeParseException When the date time provided from the CSV file has an invalid format,
-     * which is unlikely to happen unless CSV file was modified outside of program.
+     *                                which is unlikely to happen unless CSV file was modified outside of program.
      */
     public Reservation(String[] csv) throws DateTimeParseException {
-        this.resvId= Integer.parseInt(csv[0]);
+        this.resvId = Integer.parseInt(csv[0]);
         this.custName = csv[1];
         this.custTelNo = csv[2];
         this.numPax = Integer.parseInt(csv[3]);
@@ -112,6 +114,7 @@ public class Reservation implements ICsvSerializable {
     /**
      * A method to convert to CSV
      * This needs to be overridden if you need to save files to CSV
+     *
      * @return A String array of the CSV file
      */
     @Override
@@ -130,6 +133,7 @@ public class Reservation implements ICsvSerializable {
 
     /**
      * Accessor for Reservation ID
+     *
      * @return Reservation ID in integer
      */
     public int getResvId() {
@@ -138,6 +142,7 @@ public class Reservation implements ICsvSerializable {
 
     /**
      * Mutator for Reservation ID
+     *
      * @param resvId Reservation ID
      */
     public void setResvId(int resvId) {
@@ -146,6 +151,7 @@ public class Reservation implements ICsvSerializable {
 
     /**
      * Accessor for Reservation Date
+     *
      * @return Rservation Date in LocalDate
      */
     public LocalDate getResvDate() {
@@ -154,6 +160,7 @@ public class Reservation implements ICsvSerializable {
 
     /**
      * Mutator for Reservation Date
+     *
      * @param resvDate Reservation Date
      */
     public void setResvDate(LocalDate resvDate) {
@@ -162,6 +169,7 @@ public class Reservation implements ICsvSerializable {
 
     /**
      * Accessor for Reservation Time
+     *
      * @return Reservation Time in Local Time
      */
     public LocalTime getResvTime() {
@@ -170,6 +178,7 @@ public class Reservation implements ICsvSerializable {
 
     /**
      * Mutator for Reservation TIme
+     *
      * @param resvTime Reservation Time
      */
     public void setResvTime(LocalTime resvTime) {
@@ -178,6 +187,7 @@ public class Reservation implements ICsvSerializable {
 
     /**
      * Accessor for Reservation Session
+     *
      * @return Enum type of ReservationSession
      */
     public ReservationSession getResvSession() {
@@ -186,6 +196,7 @@ public class Reservation implements ICsvSerializable {
 
     /**
      * Mutator for Reservation Session
+     *
      * @param resvSession Enum type ReservationSession value
      */
     public void setResvSession(ReservationSession resvSession) {
@@ -194,6 +205,7 @@ public class Reservation implements ICsvSerializable {
 
     /**
      * Accessor for number of pax
+     *
      * @return Number of pax in integer
      */
     public int getNumPax() {
@@ -202,6 +214,7 @@ public class Reservation implements ICsvSerializable {
 
     /**
      * Mutator for number of pax
+     *
      * @param numPax Number of pax
      */
     public void setNumPax(int numPax) {
@@ -210,6 +223,7 @@ public class Reservation implements ICsvSerializable {
 
     /**
      * Accessor for Customer Name
+     *
      * @return Customer Name in String
      */
     public String getCustName() {
@@ -218,6 +232,7 @@ public class Reservation implements ICsvSerializable {
 
     /**
      * Mutator for Customer Name
+     *
      * @param custName Customer Name
      */
     public void setCustName(String custName) {
@@ -226,6 +241,7 @@ public class Reservation implements ICsvSerializable {
 
     /**
      * Accessor for Customer Telephone Number
+     *
      * @return Customer Telephone Number in String
      */
     public String getCustTelNo() {
@@ -234,6 +250,7 @@ public class Reservation implements ICsvSerializable {
 
     /**
      * Mutator for Customer Telephone number
+     *
      * @param custTelNo Customer Telephone number
      */
     public void setCustTelNo(String custTelNo) {
@@ -242,6 +259,7 @@ public class Reservation implements ICsvSerializable {
 
     /**
      * Accessor for Table Number
+     *
      * @return Table number in integer
      */
     public int getTableNum() {
@@ -250,6 +268,7 @@ public class Reservation implements ICsvSerializable {
 
     /**
      * Mutator for table number
+     *
      * @param tableNum Table number in int
      */
     public void setTableNum(int tableNum) {
@@ -260,6 +279,7 @@ public class Reservation implements ICsvSerializable {
      * A method to return a Table object based on the telephone number.
      * Checks through the list of reservations.
      * Invokes method from Table class to return Table object
+     *
      * @param telNo Telephone number in String
      * @return Table object. Null if tableNum is eventually -1
      */
@@ -289,7 +309,7 @@ public class Reservation implements ICsvSerializable {
      * and stores into a local instanced ArrayList.
      * This ArrayList will be used for the upcoming for-loops
      *
-     * @param resvDate Date of reservation input by user
+     * @param resvDate    Date of reservation input by user
      * @param resvSession Restaurant morning (A) or evening (P) session
      * @return ArrayList of Tables booked on that date according to the session A or P
      */
@@ -309,6 +329,7 @@ public class Reservation implements ICsvSerializable {
 
     /**
      * Removes a reservation from the main reservation list based on solely telephone numbre
+     *
      * @param telNo Customer telephone number
      */
     public static void removeReservationFromList(String telNo) {
@@ -318,6 +339,7 @@ public class Reservation implements ICsvSerializable {
 
     /**
      * Removes a reservation from the main reservation list based reservation object
+     *
      * @param r Reservation object
      */
     public static void removeReservationFromList(Reservation r) {
@@ -330,7 +352,8 @@ public class Reservation implements ICsvSerializable {
      * This function will be invoked from {@link sg.edu.ntu.scse.cz2002.ui.ReservationMenuUI} if there are more than one reservation
      * found that is linked to the same telephone number
      * If resvId input given is -1, exit function immediately.
-     * @param telNo Customer telephone number
+     *
+     * @param telNo  Customer telephone number
      * @param resvId Reservation index number
      */
     public static void removeReservationFromList(String telNo, int resvId) {

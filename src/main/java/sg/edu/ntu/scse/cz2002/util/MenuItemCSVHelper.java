@@ -35,6 +35,7 @@ public class MenuItemCSVHelper extends CSVBaseHelper {
 
     /**
      * Gets the singleton instance of MenuItemCSVHelper that reads from menu.csv
+     *
      * @return Instance of this class
      */
     public static MenuItemCSVHelper getInstance() {
