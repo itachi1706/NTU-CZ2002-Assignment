@@ -1,5 +1,7 @@
 package sg.edu.ntu.scse.cz2002.objects.restaurantItem;
 
+import org.jetbrains.annotations.Nullable;
+import sg.edu.ntu.scse.cz2002.MainApp;
 import sg.edu.ntu.scse.cz2002.util.ICsvSerializable;
 
 import java.util.ArrayList;
@@ -167,5 +169,60 @@ public class MenuItem extends RestaurantItem implements ICsvSerializable {
         //implied else
         System.out.println("No "+textParameter+" exists with this ID.");
         return false;
+    }
+
+
+
+    /**
+     * Method returning a MenuItem object that matches the input targetItemID.
+     * Uses {@link MainApp#menuItems} to retrieval operations.
+     *
+     * @param targetItemID ID of the menu item object to be retrieved.
+     * @return menuItemObj Object containing menu item attributes.
+     */
+    @Nullable
+    public static MenuItem retrieveMenuItem(int targetItemID) {
+
+        for (int i = 0; i < (MainApp.menuItems.size()); i++) {
+
+            MenuItem menuItemObj = MainApp.menuItems.get(i);
+
+            if (targetItemID == menuItemObj.getId()) { //"Target menu item found."
+                return menuItemObj;
+            }
+
+        }
+
+        return null; //"Target menu item not found."
+    }
+
+    /**
+     * Method returning an ArrayList filtered by enum type.
+     * Uses {@link MainApp#menuItems} to retrieval operations.
+     *
+     * @param targetItemType type of the menu item objects to be retrieved.
+     * @return menuItemsFiltered ArrayList containing the menu item type selected
+     */
+    @Nullable
+    public static ArrayList<MenuItem> retrieveMenuItemListFiltered(MenuItem.MenuItemType targetItemType) {
+
+        ArrayList<MenuItem> menuItemsFiltered = new ArrayList<>(); //declare new empty arraylist
+
+        //send in master first if ALL
+        if (targetItemType == MenuItem.MenuItemType.ALL) {
+            return MainApp.menuItems; //returns original array if ALL is selected.
+        }
+
+        for (int i = 0; i < (MainApp.menuItems.size()); i++) { //for loop to run through menuitems and to filter out
+
+            MenuItem menuItemObj = MainApp.menuItems.get(i); //gets a menu item object while the loop is running
+
+            //need to change to enum
+            if (targetItemType == menuItemObj.getType()) { //"Menu item of target item types found."
+                menuItemsFiltered.add(menuItemObj); //add the found object into the filtered array list
+            }
+
+        }
+        return menuItemsFiltered;
     }
 }
