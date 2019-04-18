@@ -149,6 +149,7 @@ public class MenuItem extends RestaurantItem implements ICsvSerializable {
      * @param menuArrayList    filtered array list that contains menu items based on enum specified
      * @param newPromoItemType type of the menu item added to the promotion
      * @param textParameter    text for the menu item type
+     * @return True if found, false otherwise
      */
     public static boolean menuTypeChecker(ArrayList<MenuItem> menuArrayList, int newPromoItemType, String textParameter) {
 
