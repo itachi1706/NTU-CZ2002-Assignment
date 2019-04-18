@@ -24,7 +24,7 @@ public class Reservation implements ICsvSerializable {
     /**
      * The sessions enum of the reservation, AM or PM
      */
-    public enum ReservationSession {AM_SESSION, PM_SESSION};
+    public enum ReservationSession {AM_SESSION, PM_SESSION}
 
     /**
      * Serial number of the reservation, for sorting purposes

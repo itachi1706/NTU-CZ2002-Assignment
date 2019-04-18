@@ -156,12 +156,10 @@ public class MenuItem extends RestaurantItem implements ICsvSerializable {
      */
     public static boolean menuTypeChecker(ArrayList<MenuItem> menuArrayList, int newPromoItemType, String textParameter){
 
-        boolean found = false;
         for (int i=0; i<menuArrayList.size(); i++){
 
             MenuItem menuItemObj = menuArrayList.get(i);
             if (newPromoItemType == menuItemObj.getId()) { //"Target menu item found."
-                found = true;
                 return true;
             }
 

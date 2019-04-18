@@ -4,7 +4,6 @@ import sg.edu.ntu.scse.cz2002.features.Table;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,9 +45,8 @@ public class TableCSVHelper extends CSVBaseHelper {
      * Reads the CSV file and parse it into an array list of menu item objects
      * @return ArrayList of Menu Item Objects
      * @throws IOException Unable to read from file
-     * @throws ParseException Wrong format of date time passed in
      */
-    public ArrayList<Table> readFromCsv() throws IOException, ParseException{
+    public ArrayList<Table> readFromCsv() throws IOException {
         if (!FileIOHelper.exists(this.tableCsv)) return new ArrayList<>(); // Empty array list
         BufferedReader csvFile = FileIOHelper.getFileBufferedReader(this.tableCsv);
         List<String[]> csvLines = readAll(csvFile, 1);

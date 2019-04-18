@@ -11,7 +11,6 @@ import sg.edu.ntu.scse.cz2002.util.*;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.text.ParseException;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -109,8 +108,6 @@ public class MainApp {
         } catch (IOException e) {
             //e.printStackTrace();
             System.out.println("[ERROR] Failed to read CSV from data folder. (" + e.getLocalizedMessage() + ")");
-        } catch (ParseException e) {
-            System.out.println("[ERROR] Wrong format of date and time read from CSV. (" + e.getLocalizedMessage() + ")");
         }
 
         System.out.println("Initializing Program...");

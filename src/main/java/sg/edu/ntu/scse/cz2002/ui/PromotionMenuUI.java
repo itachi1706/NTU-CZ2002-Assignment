@@ -1,15 +1,14 @@
 package sg.edu.ntu.scse.cz2002.ui;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Scanner;
-
-import org.jetbrains.annotations.Nullable;
 import sg.edu.ntu.scse.cz2002.MainApp;
 import sg.edu.ntu.scse.cz2002.objects.restaurantItem.MenuItem;
 import sg.edu.ntu.scse.cz2002.objects.restaurantItem.PromotionItem;
 import sg.edu.ntu.scse.cz2002.util.PromoCSVHelper;
 import sg.edu.ntu.scse.cz2002.util.ScannerHelper;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Scanner;
 
 
 
@@ -81,7 +80,7 @@ public class PromotionMenuUI extends BaseMenu {
 		System.out.println("This is the list of current promotions:");
 
 		for (int i = 0; i < MainApp.promotions.size(); i++) {
-			PromotionItem promotion = (PromotionItem) MainApp.promotions.get(i);
+			PromotionItem promotion = MainApp.promotions.get(i);
 			
 			MenuItem mainItem = MenuItem.retrieveMenuItem(promotion.getPromoMain());
 			MenuItem dessertItem = MenuItem.retrieveMenuItem(promotion.getPromoDessert());
@@ -136,19 +135,19 @@ public class PromotionMenuUI extends BaseMenu {
 		while (!mainFound) {
 			newPromoMain = ScannerHelper.getIntegerInput("Enter new promotion's main ID: ");
 			mainFound = MenuItem.menuTypeChecker(filteredMainMenu, newPromoMain, "Main");
-			if (mainFound == false) System.out.println("Main not found. Please enter a valid main ID.");
+			if (!mainFound) System.out.println("Main not found. Please enter a valid main ID.");
 		}
 
 		while (!dessertFound) {
 			newPromoDessert = ScannerHelper.getIntegerInput("Enter new promotion's dessert ID: ");
 			dessertFound = MenuItem.menuTypeChecker(filteredDessertMenu, newPromoDessert, "Dessert");
-			if (dessertFound == false) System.out.println("Dessert not found. Please enter a valid dessert ID.");
+			if (!dessertFound) System.out.println("Dessert not found. Please enter a valid dessert ID.");
 		}
 
 		while (!drinkFound) {
 			newPromoDrink = ScannerHelper.getIntegerInput("Enter new promotion's drink ID: ");
 			drinkFound = MenuItem.menuTypeChecker(filteredDrinkMenu, newPromoDrink, "Drink");
-			if (drinkFound == false) System.out.println("Drink not found. Please enter a valid drink ID.");
+			if (!drinkFound) System.out.println("Drink not found. Please enter a valid drink ID.");
 			//need to find way to reprompt for input!
 		}
 		//Basically the actual addNewPromotion method
@@ -202,9 +201,6 @@ public class PromotionMenuUI extends BaseMenu {
 
 		PromoCSVHelper promoHelper = PromoCSVHelper.getInstance();
 
-		//implement flag check
-		boolean found = false;
-
 		for (int i=0; i<(MainApp.promotions.size()); i++) {
 			
 			PromotionItem promoObj = MainApp.promotions.get(i);
@@ -231,10 +227,7 @@ public class PromotionMenuUI extends BaseMenu {
 	
 		}
 
-		if (found == false){
-			System.out.println("Edit failed. Target promotion not found.");
-			return;
-		}
+		System.out.println("Edit failed. Target promotion not found.");
 
 	}	
 	
@@ -247,11 +240,7 @@ public class PromotionMenuUI extends BaseMenu {
 		int targetPromoID;
 		targetPromoID = ScannerHelper.getIntegerInput("Enter the ID of the promotion to be deleted: ");
 
-
 		PromoCSVHelper promoHelper = PromoCSVHelper.getInstance();
-
-		//implement flag check
-		boolean found = false;
 
 		for (int i=0; i<(MainApp.promotions.size()); i++) {
 			PromotionItem promoObj = MainApp.promotions.get(i);
@@ -260,7 +249,6 @@ public class PromotionMenuUI extends BaseMenu {
 					MainApp.promotions.remove(i); //delete using i as for loop index
 					promoHelper.writeToCsv(MainApp.promotions); // calls IO method to save the new array into the CSV file
 					System.out.println("Target promotion has been successfully removed!");
-					found = true;
 					return;
 				}
 				catch (IOException e) {
@@ -269,10 +257,7 @@ public class PromotionMenuUI extends BaseMenu {
 			}
 		}
 
-		if (found == false) {
-			System.out.println("Delete failed. Target promotion not found.");
-			return;
-		}
+		System.out.println("Delete failed. Target promotion not found.");
 	}
 
 
