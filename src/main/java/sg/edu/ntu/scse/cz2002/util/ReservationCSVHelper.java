@@ -5,7 +5,6 @@ import sg.edu.ntu.scse.cz2002.features.Reservation;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
-import java.text.ParseException;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +16,6 @@ import java.util.List;
  * @version 1.0
  * @since 2019-03-29
  */
-@SuppressWarnings("Duplicates")
 public class ReservationCSVHelper extends CSVBaseHelper {
 
     /**

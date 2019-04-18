@@ -119,9 +119,6 @@ public class StaffMgmtMenuUI extends BaseMenu {
 		case 3:
 			title = "Supervisor";
 			break;
-		case 4:
-			title = "Waiter";
-			break;
 		default :
 			title = "Waiter";
 			break;
@@ -250,9 +247,6 @@ public class StaffMgmtMenuUI extends BaseMenu {
 				break;
 			case 3:
 				title = "Supervisor";
-				break;
-			case 4:
-				title = "Waiter";
 				break;
 			default :
 				title = "Waiter";

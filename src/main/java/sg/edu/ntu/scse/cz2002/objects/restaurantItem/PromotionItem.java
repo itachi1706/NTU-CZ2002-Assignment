@@ -1,7 +1,6 @@
 package sg.edu.ntu.scse.cz2002.objects.restaurantItem;
 import org.jetbrains.annotations.Nullable;
 import sg.edu.ntu.scse.cz2002.MainApp;
-import sg.edu.ntu.scse.cz2002.ui.FoodMenuUI;
 import sg.edu.ntu.scse.cz2002.util.ICsvSerializable;
 
 import java.util.ArrayList;

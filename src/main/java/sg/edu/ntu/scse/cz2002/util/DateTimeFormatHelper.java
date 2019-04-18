@@ -38,8 +38,7 @@ public class DateTimeFormatHelper {
         year = date.getYear() + "";
         month = date.getMonthValue() + "";
         day = date.getDayOfMonth() + "";
-        String formatDate = day + "/" + month + "/" + year;
-        return formatDate;
+        return day + "/" + month + "/" + year;
     }
 
     /**
@@ -52,8 +51,7 @@ public class DateTimeFormatHelper {
         String hour, minute;
         hour = time.getHour() + "";
         minute = ((time.getMinute() == 0) ? "00" : time.getMinute()) + "";
-        String formatTime = hour + ":" + minute;
-        return formatTime;
+        return hour + ":" + minute;
     }
 
     /**
@@ -65,8 +63,7 @@ public class DateTimeFormatHelper {
      */
     public static LocalDate formatToLocalDate(String date) throws DateTimeParseException {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy");
-        LocalDate ld = LocalDate.parse(date, formatter);
-        return ld;
+        return LocalDate.parse(date, formatter);
     }
 
     /**
@@ -78,8 +75,7 @@ public class DateTimeFormatHelper {
      */
     public static LocalTime formatToLocalTime(String time) throws DateTimeParseException {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
-        LocalTime lt = LocalTime.parse(time, formatter);
-        return lt;
+        return LocalTime.parse(time, formatter);
     }
 
     /**

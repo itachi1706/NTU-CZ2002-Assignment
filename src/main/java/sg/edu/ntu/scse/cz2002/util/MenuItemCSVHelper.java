@@ -15,7 +15,6 @@ import java.util.List;
  * @version 1.1
  * @since 2019-03-19
  */
-@SuppressWarnings("Duplicates")
 public class MenuItemCSVHelper extends CSVBaseHelper {
 
     /**

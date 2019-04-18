@@ -1,6 +1,5 @@
 package sg.edu.ntu.scse.cz2002.ui;
 
-import org.jetbrains.annotations.Nullable;
 import sg.edu.ntu.scse.cz2002.MainApp;
 import sg.edu.ntu.scse.cz2002.objects.restaurantItem.MenuItem;
 import sg.edu.ntu.scse.cz2002.objects.restaurantItem.PromotionItem;
@@ -125,8 +124,7 @@ public class FoodMenuUI extends BaseMenu {
         }
 
 
-        for (int i = 0; i < filteredMenu.size(); i++) {
-            MenuItem menuItem = filteredMenu.get(i);
+        for (MenuItem menuItem : filteredMenu) {
             printHeader(menuItem.getName());
             System.out.println("ID: " + menuItem.getId());
             //System.out.println("Name: " + menuItem.getName());
@@ -247,9 +245,6 @@ public class FoodMenuUI extends BaseMenu {
 
         MenuItemCSVHelper menuHelper = MenuItemCSVHelper.getInstance();
 
-        //implement flag check
-        boolean found = false;
-
         for (int i = 0; i < (MainApp.menuItems.size()); i++) {
 
             MenuItem menuItemObj = MainApp.menuItems.get(i); //when you do this, you actually retrieve the whole object
@@ -263,7 +258,6 @@ public class FoodMenuUI extends BaseMenu {
                     //at this point, the object has been edited with the new values
 
                     menuHelper.writeToCsv(MainApp.menuItems); // calls IO method to save the array into the CSV file
-                    found = true; //when found
                     System.out.println("Edit successful. Target menu item edited!");
                     return;
                 } catch (IOException e) {
@@ -273,11 +267,7 @@ public class FoodMenuUI extends BaseMenu {
 
         }
 
-        if (found == false) {
-            System.out.println("Edit failed. Target menu item not found.");
-            return;
-        }
-
+        System.out.println("Edit failed. Target menu item not found.");
     }
 
     /**
@@ -309,9 +299,6 @@ public class FoodMenuUI extends BaseMenu {
 
         MenuItemCSVHelper menuHelper = MenuItemCSVHelper.getInstance();
 
-        //implement flag check
-        boolean found = false;
-
         for (int i = 0; i < (MainApp.menuItems.size()); i++) {
 
             MenuItem menuItemObj = MainApp.menuItems.get(i);
@@ -333,14 +320,12 @@ public class FoodMenuUI extends BaseMenu {
                             System.out.println("Associated Promotion Deleted.");
                         }
                         //else business as usual
-
                     }
 
 
                     MainApp.menuItems.remove(i); //delete using i as for loop index
                     menuHelper.writeToCsv(MainApp.menuItems); // calls IO method to save the new array into the CSV file
                     System.out.println("Delete Successful. Target menu item deleted!");
-                    found = true;
                     return;
                 } catch (IOException e) {
                     System.out.println("IOException > " + e.getMessage());
@@ -349,10 +334,7 @@ public class FoodMenuUI extends BaseMenu {
 
         }
 
-        if (found == false) {
-            System.out.println("Delete failed. Target menu item not found.");
-            return;
-        }
+        System.out.println("Delete failed. Target menu item not found.");
 
     }
 

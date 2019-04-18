@@ -73,7 +73,7 @@ public class MainMenuUI extends BaseMenu {
         int count = 0;
     	System.out.println("These are the tables available for the current session:");
 		for (int i = 0; i < MainApp.tables.size(); i++) {
-			Table tables = (Table) MainApp.tables.get(i);
+			Table tables = MainApp.tables.get(i);
 			if(tables.getState() == TableState.TABLE_VACATED)
 			{
 			    int seat = (tables.getNumSeats() == Table.TableSeats.TWO_SEATER) ? 2 :
