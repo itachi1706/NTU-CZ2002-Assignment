@@ -22,6 +22,7 @@ public class MenuItem extends RestaurantItem implements ICsvSerializable {
     public enum MenuItemType {ALL, MAIN, DESSERT, DRINK} //these values actually correspond to 0,1,2,3
 
 
+
     /**
      * The type of the menu item.
      */
@@ -30,6 +31,7 @@ public class MenuItem extends RestaurantItem implements ICsvSerializable {
      * The description of the menu item.
      */
     protected String description;
+
 
 
     /**
@@ -48,6 +50,7 @@ public class MenuItem extends RestaurantItem implements ICsvSerializable {
         this.eType = convertToItemType(type);
         this.description = description;
     }
+
 
 
     /**
@@ -72,13 +75,14 @@ public class MenuItem extends RestaurantItem implements ICsvSerializable {
     public String[] toCsv() {
         ArrayList<String> stuff = new ArrayList<>();
         Collections.addAll(stuff, super.toCsv()); //these are the details called from the super class
-        stuff.add(this.eType == MenuItemType.MAIN ? "1" :
-                this.eType == MenuItemType.DESSERT ? "2" :
-                        this.eType == MenuItemType.DRINK ? "3" :
+        stuff.add(  this.eType == MenuItemType.MAIN     ?   "1" :
+                this.eType == MenuItemType.DESSERT  ?   "2" :
+                        this.eType == MenuItemType.DRINK    ?   "3" :
                                 "0"); //this is for the 5th column
-        stuff.add(this.description); //this is for the 6th column
+        stuff.add(  this.description); //this is for the 6th column
         return stuff.toArray(new String[0]);
     }
+
 
 
     /**
@@ -118,6 +122,7 @@ public class MenuItem extends RestaurantItem implements ICsvSerializable {
     }
 
 
+
     /**
      * Method that takes in integer of menu type to convert into its corresponding enum type equivalent.
      *
@@ -125,7 +130,7 @@ public class MenuItem extends RestaurantItem implements ICsvSerializable {
      * @return The menu item's type in its enum equivalent form.
      */
     public MenuItemType convertToItemType(int type) {
-        return type == 1 ? MenuItemType.MAIN :
+        return  type == 1 ? MenuItemType.MAIN :
                 type == 2 ? MenuItemType.DESSERT :
                         type == 3 ? MenuItemType.DRINK :
                                 MenuItemType.ALL;
@@ -145,23 +150,27 @@ public class MenuItem extends RestaurantItem implements ICsvSerializable {
 
     /**
      * Returns true if the filtered array list contains the menu item type.
-     *
-     * @param menuArrayList    filtered array list that contains menu items based on enum specified
+     * @param menuArrayList filtered array list that contains menu items based on enum specified
      * @param newPromoItemType type of the menu item added to the promotion
-     * @param textParameter    text for the menu item type
-     * @return True if found, false otherwise
+     * @param textParameter text for the menu item type
      */
-    public static boolean menuTypeChecker(ArrayList<MenuItem> menuArrayList, int newPromoItemType, String textParameter) {
+    public static boolean menuTypeChecker(ArrayList<MenuItem> menuArrayList, int newPromoItemType, String textParameter){
 
-        for (MenuItem menuItemObj : menuArrayList) {
+        boolean found = false;
+        for (int i=0; i<menuArrayList.size(); i++){
+
+            MenuItem menuItemObj = menuArrayList.get(i);
             if (newPromoItemType == menuItemObj.getId()) { //"Target menu item found."
+                found = true;
                 return true;
             }
+
         }
         //implied else
-        System.out.println("No " + textParameter + " exists with this ID.");
+        System.out.println("No "+textParameter+" exists with this ID.");
         return false;
     }
+
 
 
     /**

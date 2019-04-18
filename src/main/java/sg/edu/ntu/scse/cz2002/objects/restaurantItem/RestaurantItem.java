@@ -14,15 +14,15 @@ public class RestaurantItem implements ICsvSerializable {
     /**
      * The ID of the restaurant item.
      */
-    protected int restaurantItemID;
+    private int restaurantItemID;
     /**
      * The name of the restaurant item.
      */
-    protected String restaurantItemName;
+    private String restaurantItemName;
     /**
      * The price of the restaurant item.
      */
-    protected double restaurantItemPrice;
+    private double restaurantItemPrice;
 
 
     /**
@@ -32,7 +32,7 @@ public class RestaurantItem implements ICsvSerializable {
      * @param restaurantItemName  This restaurant item's name.
      * @param restaurantItemPrice This restaurant item's price.
      */
-    public RestaurantItem(int restaurantItemID, String restaurantItemName, double restaurantItemPrice) {
+    RestaurantItem(int restaurantItemID, String restaurantItemName, double restaurantItemPrice) {
         this.restaurantItemID = restaurantItemID;
         this.restaurantItemName = restaurantItemName;
         this.restaurantItemPrice = restaurantItemPrice;
@@ -44,7 +44,7 @@ public class RestaurantItem implements ICsvSerializable {
      *
      * @param csv A string array of the CSV file.
      */
-    public RestaurantItem(String[] csv) {
+    RestaurantItem(String[] csv) {
         this.restaurantItemID = Integer.parseInt(csv[0]);
         this.restaurantItemName = csv[1];
         this.restaurantItemPrice = Double.parseDouble(csv[2]);
