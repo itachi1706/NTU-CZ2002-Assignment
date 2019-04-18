@@ -303,7 +303,7 @@ public class Reservation implements ICsvSerializable {
                 tablesBooked.add(Table.getTableByNumber(r.getTableNum()));
         }
 
-        tablesBooked.sort(Comparator.comparingInt(o -> o.getTableNum()));
+        tablesBooked.sort(Comparator.comparingInt(Table::getTableNum));
         return tablesBooked;
     }
 
@@ -312,12 +312,7 @@ public class Reservation implements ICsvSerializable {
      * @param telNo Customer telephone number
      */
     public static void removeReservationFromList(String telNo) {
-        Iterator<Reservation> i = MainApp.reservations.iterator();
-        while (i.hasNext()) {
-            Reservation r = i.next();
-            if (r.getCustTelNo().equals(telNo))
-                i.remove();
-        }
+        MainApp.reservations.removeIf(r -> r.getCustTelNo().equals(telNo));
         System.out.println("Reservation has been successfully removed.");
     }
 

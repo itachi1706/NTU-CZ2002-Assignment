@@ -124,8 +124,7 @@ public class FoodMenuUI extends BaseMenu {
         }
 
 
-        for (int i = 0; i < filteredMenu.size(); i++) {
-            MenuItem menuItem = filteredMenu.get(i);
+        for (MenuItem menuItem : filteredMenu) {
             printHeader(menuItem.getName());
             System.out.println("ID: " + menuItem.getId());
             //System.out.println("Name: " + menuItem.getName());
