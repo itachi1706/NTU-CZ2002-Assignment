@@ -68,7 +68,6 @@ public class FoodMenuUI extends BaseMenu {
     }
 
 
-
     /**
      * Prints the menu of items stored in the CSV file.
      * Uses {@link MainApp#menuItems} to facilitate printing operations.
@@ -204,7 +203,8 @@ public class FoodMenuUI extends BaseMenu {
         while (!menuItemFound) {
             editItemID = ScannerHelper.getIntegerInput("Enter the ID of the menu item to be edited: \n");
 
-            if (MenuItem.retrieveMenuItem(editItemID) == null) System.out.println("Invalid ID. Please enter a valid menu item ID.");
+            if (MenuItem.retrieveMenuItem(editItemID) == null)
+                System.out.println("Invalid ID. Please enter a valid menu item ID.");
 
             else menuItemFound = true;
         }
@@ -281,7 +281,8 @@ public class FoodMenuUI extends BaseMenu {
         while (!menuItemFound) {
             targetItemID = ScannerHelper.getIntegerInput("Enter the ID of the menu item to be deleted. Note: any promotions linked to this item will be deleted. \n");
 
-            if (MenuItem.retrieveMenuItem(targetItemID) == null) System.out.println("Invalid ID. Please enter a valid menu item ID.");
+            if (MenuItem.retrieveMenuItem(targetItemID) == null)
+                System.out.println("Invalid ID. Please enter a valid menu item ID.");
 
             else menuItemFound = true;
         }
@@ -312,7 +313,7 @@ public class FoodMenuUI extends BaseMenu {
                             tempPromoName = MainApp.promotions.get(j).getName();
                             MainApp.promotions.remove(j);
 
-                            System.out.println("Associated Promotion '"+tempPromoName+"' Deleted.");
+                            System.out.println("Associated Promotion '" + tempPromoName + "' Deleted.");
                         }
                         //else business as usual
 
