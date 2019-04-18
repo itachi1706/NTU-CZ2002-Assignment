@@ -115,8 +115,6 @@ public class ReservationMenuUI extends BaseMenu {
                 System.out.print("Your input (or enter 0 to exit): ");
                 userDate = input.nextLine();
 
-                //TODO: This is a premature return in a case of user wanting to exit infinite loop.
-                //TODO: To find some other better implementation code than this.
                 if (userDate.equals("0")) return;
 
                 correctDate = DateTimeFormatHelper.validateDate(userDate);
@@ -144,7 +142,6 @@ public class ReservationMenuUI extends BaseMenu {
                     Passing while loop assumes a valid date
                     Check for available session on that date
                     checkSessionAvailability(resvDate);
-                    TODO: Errorneous checking of availability: to check against all reservations to determine if there is availability.
                     */
                     amAvail = checkMorningSessionDate(resvDate, isToday);
                     pmAvail = checkEveningSessionDate(resvDate, isToday);
@@ -179,7 +176,6 @@ public class ReservationMenuUI extends BaseMenu {
                 System.out.print("Your input: ");
                 resvTime = DateTimeFormatHelper.formatToLocalTime(input.nextLine());
 
-                //TODO: Find a better code for the if fragment below
                 if (!isToday || !(DateTimeFormatHelper.getTimeDifferenceMinutes(LocalTime.now(), resvTime) <= 0)) {
                     if (amAvail && DateTimeFormatHelper.checkResvTimeSession
                             (resvTime, LocalTime.of(11, 0), LocalTime.of(15, 0))) {
@@ -225,7 +221,6 @@ public class ReservationMenuUI extends BaseMenu {
             }
 
             input.nextLine(); //Clears buffer (?)
-            //TODO: Further validation
         } catch (DateTimeParseException e) {
             //Only thrown for failure to parse Date and Time in custom format
             System.out.println("[ERROR] Input date or time format is wrong. (" + e.getLocalizedMessage() + ")");
@@ -405,7 +400,6 @@ public class ReservationMenuUI extends BaseMenu {
                     r.getResvSession() == Reservation.ReservationSession.AM_SESSION)
                         amCount++;
         }
-        //For debug purposes - print out numTables left; TODO: Remove line after completion of code checking.
         System.out.println("There are " + (MAX_TABLES - amCount) + " reservations slots free for the AM session.");
         return amCount < MAX_TABLES;
     }
@@ -428,7 +422,6 @@ public class ReservationMenuUI extends BaseMenu {
                     r.getResvSession() == Reservation.ReservationSession.PM_SESSION)
                 pmCount++;
         }
-        //For debug purposes - print out numTables left; TODO: Remove line after completion of code checking.
         System.out.println("There are " + (MAX_TABLES - pmCount) + " reservations slots free for the PM session.");
         return pmCount < MAX_TABLES;
     }
