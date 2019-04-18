@@ -225,9 +225,6 @@ public class FoodMenuUI extends BaseMenu {
 
         MenuItemCSVHelper menuHelper = MenuItemCSVHelper.getInstance();
 
-        //implement flag check
-        boolean found = false;
-
         for (int i = 0; i < (MainApp.menuItems.size()); i++) {
 
             MenuItem menuItemObj = MainApp.menuItems.get(i); //when you do this, you actually retrieve the whole object
@@ -241,7 +238,6 @@ public class FoodMenuUI extends BaseMenu {
                     //at this point, the object has been edited with the new values
 
                     menuHelper.writeToCsv(MainApp.menuItems); // calls IO method to save the array into the CSV file
-                    found = true; //when found
                     System.out.println("Edit successful. Target menu item edited!");
                     return;
                 } catch (IOException e) {
@@ -292,8 +288,6 @@ public class FoodMenuUI extends BaseMenu {
 
         MenuItemCSVHelper menuHelper = MenuItemCSVHelper.getInstance();
 
-        //implement flag check
-        boolean found = false;
         String tempPromoName;
 
         for (int i = 0; i < (MainApp.menuItems.size()); i++) {
@@ -328,7 +322,6 @@ public class FoodMenuUI extends BaseMenu {
                     MainApp.menuItems.remove(i); //delete using i as for loop index
                     menuHelper.writeToCsv(MainApp.menuItems); // calls IO method to save the new array into the CSV file
                     System.out.println("Delete Successful. Target menu item deleted!");
-                    found = true;
                     return;
                 } catch (IOException e) {
                     System.out.println("IOException > " + e.getMessage());
