@@ -3,7 +3,6 @@ package sg.edu.ntu.scse.cz2002.util;
 import sg.edu.ntu.scse.cz2002.features.Table;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -17,7 +16,6 @@ import java.util.List;
  * @since 2019-04-01
  */
 
-@SuppressWarnings("Duplicates")
 public class TableCSVHelper extends CSVBaseHelper {
 
     /**

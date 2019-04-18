@@ -15,7 +15,6 @@ import java.util.List;
  * @version 1.0
  * @since 2019-03-30
  */
-@SuppressWarnings("Duplicates")
 public class StaffCSVHelper extends CSVBaseHelper {
 
     /**
