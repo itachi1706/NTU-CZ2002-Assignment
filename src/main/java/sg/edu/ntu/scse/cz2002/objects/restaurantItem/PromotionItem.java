@@ -1,7 +1,7 @@
 package sg.edu.ntu.scse.cz2002.objects.restaurantItem;
 import org.jetbrains.annotations.Nullable;
 import sg.edu.ntu.scse.cz2002.MainApp;
-import sg.edu.ntu.scse.cz2002.ui.FoodMenuUI;
+
 import sg.edu.ntu.scse.cz2002.util.ICsvSerializable;
 
 import java.util.ArrayList;
@@ -19,15 +19,15 @@ public class PromotionItem extends RestaurantItem implements ICsvSerializable {
     /**
      * The ID of the promotion item's main.
      */
-    protected int promoMain;
+    private int promoMain;
     /**
      * The ID of the promotion item's dessert.
      */
-    protected int promoDessert;
+    private int promoDessert;
     /**
      * The ID of the promotion item's drink.
      */
-    protected int promoDrink;
+    private int promoDrink;
 
 
 

@@ -1,6 +1,5 @@
 package sg.edu.ntu.scse.cz2002.ui;
 
-import org.jetbrains.annotations.Nullable;
 import sg.edu.ntu.scse.cz2002.MainApp;
 import sg.edu.ntu.scse.cz2002.objects.restaurantItem.MenuItem;
 import sg.edu.ntu.scse.cz2002.objects.restaurantItem.PromotionItem;
@@ -267,11 +266,6 @@ public class FoodMenuUI extends BaseMenu {
 
         }
 
-        if (found == false) {
-            System.out.println("Edit failed. Target menu item not found.");
-            return;
-        }
-
     }
 
     /**
@@ -356,11 +350,6 @@ public class FoodMenuUI extends BaseMenu {
                 }
             }
 
-        }
-
-        if (found == false) {
-            System.out.println("Delete failed. Target menu item not found.");
-            return;
         }
 
     }

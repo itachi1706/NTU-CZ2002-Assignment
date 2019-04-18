@@ -4,14 +4,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import org.jetbrains.annotations.Nullable;
 import sg.edu.ntu.scse.cz2002.MainApp;
 import sg.edu.ntu.scse.cz2002.objects.restaurantItem.MenuItem;
 import sg.edu.ntu.scse.cz2002.objects.restaurantItem.PromotionItem;
 import sg.edu.ntu.scse.cz2002.util.PromoCSVHelper;
 import sg.edu.ntu.scse.cz2002.util.ScannerHelper;
-import sun.rmi.rmic.Main;
-
 
 /**
  * PromotionItem Menu UI
@@ -76,7 +73,7 @@ public class PromotionMenuUI extends BaseMenu {
      * Prints the menu of promotions stored in the CSV file.
      * Uses {@link MainApp#promotions} and {@link MenuItem#retrieveMenuItem(int)}.
      */
-    public void printPromotion() {
+    private void printPromotion() {
 
         //Code to print all promotions
         printHeader("All Promotions");
@@ -107,7 +104,7 @@ public class PromotionMenuUI extends BaseMenu {
      * Method to add a new promotion.
      * Uses {@link PromoCSVHelper#writeToCsv(ArrayList)} to facilitate I/O operations.
      */
-    public void addNewPromotion() {
+    private void addNewPromotion() {
 
         String newPromoName;
         double newPromoPrice;
@@ -200,11 +197,11 @@ public class PromotionMenuUI extends BaseMenu {
      * Method to edit an existing promotion.
      * Uses {@link PromoCSVHelper#writeToCsv(ArrayList)} and {@link PromotionItem#retrievePromotion(int)} to facilitate I/O operations.
      */
-    public void editPromotion() {
+    private void editPromotion() {
 
         int editPromoID = 1;
         String editPromoName;
-        double editPromoPrice = 0.0;
+        double editPromoPrice;
         int editPromoMain = 1;
         int editPromoDessert = 2;
         int editPromoDrink = 3;
@@ -324,18 +321,13 @@ public class PromotionMenuUI extends BaseMenu {
 
         }
 
-        if (found == false){
-            System.out.println("Edit failed. Target promotion not found.");
-            return;
-        }
-
     }
 
     /**
      * Method to delete an existing promotion.
      * Uses {@link PromoCSVHelper#writeToCsv(ArrayList)} to facilitate I/O operations.
      */
-    public void deletePromotion() {
+    private void deletePromotion() {
 
         int targetPromoID = 1;
         boolean promoFound = false;
@@ -369,10 +361,6 @@ public class PromotionMenuUI extends BaseMenu {
             }
         }
 
-        if (found == false) {
-            System.out.println("Delete failed. Target promotion not found.");
-            return;
-        }
     }
 
 
