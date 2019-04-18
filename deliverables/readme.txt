@@ -157,7 +157,7 @@ The Program is split into various menu items:
 5.1) Should you wish to view the receipt again, repeat Step (1) and select (2) Reprint Invoice
 5.2) Enter receipt ID and you can view the receipt again
 
-## Resrvation Flow ##
+## Reservation Flow ##
 1) Select (4) Reservation Management
 2) Select (1) Create a new reservation booking
 3) Enter name of customer which the reservation will be booked under
@@ -192,3 +192,17 @@ The Program is split into various menu items:
 11) If needed, user can (4) List all current reservations, which will list out every single reservation and return to Reservation Menu.
 12) User can (6) Check for expired reservations
 12.1) System checks and displays the number of reservatons expired and removed at that point of time.
+
+## Print Sales Revenue Report Flow ##
+1) Select (7) Print sale revenue report
+2) Select (1) Generate for a day
+3) Enter date in dd/MM/yyyy for the date of sale revenue report
+3.1) If date is invalid (e.g. 30th day in February, 31st day in April, 29th February when it is not leap year, invalid date, month, year, etc), user will be prompted to input date again.
+3.2) If input date is valid
+3.2.1) Console will show the every item sold, the total number of order, total sales amount for the date user entered in.
+4) User also can select (2) Generate for a period
+4.1) Enter date in dd/MM/yyyy for the starting date of sale revenue report 
+4.2) Enter date in dd/MM/yyyy for the ending date of sale revenue report
+4.3) If date is invalid (e.g. 30th day in February, 31st day in April, 29th February when it is not leap year, invalid date, month, year, etc), user will be prompted to input date again.
+4.4) If input date is valid 
+4.4.1) Console will show the every item sold, the total number of order, total sales amount for the period (start date to end date) user entered in.

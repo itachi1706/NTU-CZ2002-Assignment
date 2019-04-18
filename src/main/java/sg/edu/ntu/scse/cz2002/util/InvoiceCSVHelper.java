@@ -15,7 +15,6 @@ import java.util.List;
  * @version 1.1
  * @since 2019-03-19
  */
-@SuppressWarnings("Duplicates")
 public class InvoiceCSVHelper extends CSVBaseHelper {
 
     /**
@@ -31,20 +30,12 @@ public class InvoiceCSVHelper extends CSVBaseHelper {
     /**
      * Default Constructor to initialize this class with menu.csv as the CSV file
      */
-    private InvoiceCSVHelper() {}
-
-    /**
-     * Initialize the Helper object
-     * @deprecated Call {@link InvoiceCSVHelper#getInstance()} instead
-     * @param filename Path to MenuItems CSV File
-     */
-    @Deprecated
-    public InvoiceCSVHelper(String filename) {
-        this.orderCsv = filename;
+    private InvoiceCSVHelper() {
     }
 
     /**
      * Gets the singleton instance of MenuItemCSVHelper that reads from menu.csv
+     *
      * @return Instance of this class
      */
     public static InvoiceCSVHelper getInstance() {
@@ -54,6 +45,7 @@ public class InvoiceCSVHelper extends CSVBaseHelper {
 
     /**
      * Reads the CSV file and parse it into an array list of menu item objects
+     *
      * @return ArrayList of Menu Item Objects
      * @throws IOException Unable to read from file
      */
@@ -69,6 +61,7 @@ public class InvoiceCSVHelper extends CSVBaseHelper {
 
     /**
      * Writes to the CSV File
+     *
      * @param items ArrayList of items to save
      * @throws IOException Unable to write to file
      */

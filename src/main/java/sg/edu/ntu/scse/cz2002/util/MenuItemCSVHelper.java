@@ -15,7 +15,6 @@ import java.util.List;
  * @version 1.1
  * @since 2019-03-19
  */
-@SuppressWarnings("Duplicates")
 public class MenuItemCSVHelper extends CSVBaseHelper {
 
     /**
@@ -35,20 +34,9 @@ public class MenuItemCSVHelper extends CSVBaseHelper {
     }
 
     /**
-     * Initialize the Helper object.
+     * Gets the singleton instance of MenuItemCSVHelper that reads from menu.csv
      *
-     * @param filename Path to MenuItems CSV File.
-     * @deprecated Call {@link MenuItemCSVHelper#getInstance()} instead.
-     */
-    @Deprecated
-    public MenuItemCSVHelper(String filename) {
-        this.menuItemCsv = filename;
-    }
-
-    /**
-     * Gets the singleton instance of MenuItemCSVHelper that reads from menu.csv.
-     *
-     * @return Instance of this class.
+     * @return Instance of this class
      */
     public static MenuItemCSVHelper getInstance() {
         if (mInstance == null) mInstance = new MenuItemCSVHelper();

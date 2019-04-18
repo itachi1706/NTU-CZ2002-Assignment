@@ -5,7 +5,6 @@ import sg.edu.ntu.scse.cz2002.features.Reservation;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
-import java.text.ParseException;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +16,6 @@ import java.util.List;
  * @version 1.0
  * @since 2019-03-29
  */
-@SuppressWarnings("Duplicates")
 public class ReservationCSVHelper extends CSVBaseHelper {
 
     /**
@@ -33,20 +31,12 @@ public class ReservationCSVHelper extends CSVBaseHelper {
     /**
      * Default Constructor to initialize this class with reservation.csv as the CSV file
      */
-    private ReservationCSVHelper() {}
-
-    /**
-     * Initialize the Helper object
-     * @deprecated Call {@link ReservationCSVHelper#getInstance()} instead
-     * @param filename Path to MenuItems CSV File
-     */
-    @Deprecated
-    public ReservationCSVHelper(String filename) {
-        this.reservationCsv = filename;
+    private ReservationCSVHelper() {
     }
 
     /**
      * Gets the singleton instance of MenuItemCSVHelper that reads from menu.csv
+     *
      * @return Instance of this class
      */
     public static ReservationCSVHelper getInstance() {
@@ -56,8 +46,9 @@ public class ReservationCSVHelper extends CSVBaseHelper {
 
     /**
      * Reads the CSV file and parse it into an array list of menu item objects
+     *
      * @return ArrayList of Menu Item Objects
-     * @throws IOException Unable to read from file
+     * @throws IOException            Unable to read from file
      * @throws DateTimeParseException Wrong format of date time passed in
      */
     public ArrayList<Reservation> readFromCsv() throws IOException, DateTimeParseException {
@@ -75,11 +66,12 @@ public class ReservationCSVHelper extends CSVBaseHelper {
 
     /**
      * Writes to the CSV File
+     *
      * @param reservations ArrayList of items to save
      * @throws IOException Unable to write to file
      */
     public void writeToCsv(ArrayList<Reservation> reservations) throws IOException {
-        String[] header = {"ID", "Name", "TelNo", "NumPax", "ResvDate", "ResvTime", "ResvSession", "TableNum" };
+        String[] header = {"ID", "Name", "TelNo", "NumPax", "ResvDate", "ResvTime", "ResvSession", "TableNum"};
         BufferedWriter csvFile = FileIOHelper.getFileBufferedWriter(this.reservationCsv);
         ArrayList<String[]> toWrite = new ArrayList<>();
         toWrite.add(header);

@@ -35,6 +35,7 @@ public class CheckoutMenuUI extends BaseMenu {
 
     /**
      * Generate the menu for checking out orders
+     *
      * @return Exit Code. Return 1 to exit the program and -1 to exit to main menu
      */
     @Override
@@ -71,6 +72,7 @@ public class CheckoutMenuUI extends BaseMenu {
 
     /**
      * Code for checking out created orders that have not been paid
+     *
      * @return true if completed, false otherwise
      */
     private boolean checkout() {
@@ -123,7 +125,8 @@ public class CheckoutMenuUI extends BaseMenu {
             case 0:
                 System.out.println("Operation Cancelled");
                 return false;
-            default: throw new MenuChoiceInvalidException("Checkout Payment");
+            default:
+                throw new MenuChoiceInvalidException("Checkout Payment");
         }
         System.out.println("Payment Complete! Payment Mode: " + paymentType.toString());
         if (paymentType == Invoice.PaymentType.PAYMENT_CASH) {
@@ -189,10 +192,11 @@ public class CheckoutMenuUI extends BaseMenu {
 
     /**
      * Generates receipt from data given
-     * @param o Order object
+     *
+     * @param o     Order object
      * @param total Total amount of the order
-     * @param paid Total amount of money paid
-     * @param type Payment Type
+     * @param paid  Total amount of money paid
+     * @param type  Payment Type
      * @return An arraylist containing the strings required to generate the receipt
      */
     private ArrayList<String> generateReceipt(@NotNull Order o, double total, double paid, Invoice.PaymentType type) {
@@ -208,7 +212,7 @@ public class CheckoutMenuUI extends BaseMenu {
         receiptStrings.add(centerText("50 Nanyang Ave, SG 639798", 60, ' '));
         receiptStrings.add("");
         receiptStrings.add(String.format("%-35s%-20s", "Check #: " + o.getOrderID(), "Server: " + staffName));
-        receiptStrings.add(String.format("%-35s%-20s", "Date: " + DateTimeFormatHelper.formatMillisToDateTime(o.getCompletedAt()),  "Table: " + tableNum));
+        receiptStrings.add(String.format("%-35s%-20s", "Date: " + DateTimeFormatHelper.formatMillisToDateTime(o.getCompletedAt()), "Table: " + tableNum));
         receiptStrings.add(spacer(60, '_'));
         // Print order items
         o.getOrderItems().forEach((item) -> receiptStrings.add(String.format(" %-3sx %-45s $%6.2f", item.getQuantity(), item.getItem().getName(), item.getItemTotal())));
@@ -219,7 +223,8 @@ public class CheckoutMenuUI extends BaseMenu {
         receiptStrings.add(String.format("%51s $%6.2f", "Total: ", total));
         receiptStrings.add(spacer(60, '_'));
         receiptStrings.add(String.format("%51s $%6.2f", "Paid (" + type.toString() + "): ", paid));
-        if (type == Invoice.PaymentType.PAYMENT_CASH) receiptStrings.add(String.format("%51s $%6.2f\n", "Change: ", (paid > total) ? Math.abs(total - paid) : 0));
+        if (type == Invoice.PaymentType.PAYMENT_CASH)
+            receiptStrings.add(String.format("%51s $%6.2f\n", "Change: ", (paid > total) ? Math.abs(total - paid) : 0));
         receiptStrings.add(spacer(60, '_'));
         receiptStrings.add("");
         receiptStrings.add("");
@@ -231,11 +236,12 @@ public class CheckoutMenuUI extends BaseMenu {
     /**
      * Centers the text and gives it to you
      * The text will be centered based on the length passed in and will be centered by appending the spacers before it
-     *
+     * <p>
      * Note: This will only append BEFORE the text inserted. It will not do so AFTER
+     *
      * @param toCenter Text to center
-     * @param length Width of your "screen"
-     * @param spacer Spacing used for the "centering"
+     * @param length   Width of your "screen"
+     * @param spacer   Spacing used for the "centering"
      * @return Centered String
      */
     private String centerText(String toCenter, int length, char spacer) {
@@ -249,6 +255,7 @@ public class CheckoutMenuUI extends BaseMenu {
 
     /**
      * Appends a spacer character to the entire line
+     *
      * @param length Length of the line
      * @param spacer Character to append
      * @return Spacer Appended String
@@ -263,6 +270,7 @@ public class CheckoutMenuUI extends BaseMenu {
     /**
      * Requests cash payment from the user
      * This will keep requesting for payment until the total amount paid exceeds the total passed into the method
+     *
      * @param total Total amount to request cash payment from
      * @return Total amount paid by the user
      */
@@ -278,7 +286,8 @@ public class CheckoutMenuUI extends BaseMenu {
 
     /**
      * Writes the receipt to a file in the data directory
-     * @param receipt ArrayList of Receipt Strings to write to file
+     *
+     * @param receipt   ArrayList of Receipt Strings to write to file
      * @param receiptId Receipt ID to save the file as
      * @return true if written successfully
      */
@@ -295,7 +304,9 @@ public class CheckoutMenuUI extends BaseMenu {
 
     /**
      * Print specific order details for invoice
+     *
      * @param o Order object to print details of
+     * @return Total price of the enitre order (inclusive of taxes)
      */
     @SuppressWarnings("Duplicates")
     private double printOrderDetails(@NotNull Order o) {

@@ -15,7 +15,6 @@ import java.util.List;
  * @version 1.0
  * @since 2019-03-30
  */
-@SuppressWarnings("Duplicates")
 public class StaffCSVHelper extends CSVBaseHelper {
 
     /**
@@ -31,20 +30,12 @@ public class StaffCSVHelper extends CSVBaseHelper {
     /**
      * Default Constructor to initialize this class with staff.csv as the CSV file
      */
-    private StaffCSVHelper() {}
-
-    /**
-     * Initialize the Helper object
-     * @deprecated Call {@link StaffCSVHelper#getInstance()} instead
-     * @param filename Path to MenuItems CSV File
-     */
-    @Deprecated
-    public StaffCSVHelper(String filename) {
-        this.staffCsv = filename;
+    private StaffCSVHelper() {
     }
 
     /**
      * Gets the singleton instance of MenuItemCSVHelper that reads from menu.csv
+     *
      * @return Instance of this class
      */
     public static StaffCSVHelper getInstance() {
@@ -54,10 +45,11 @@ public class StaffCSVHelper extends CSVBaseHelper {
 
     /**
      * Reads the CSV file and parse it into an array list of menu item objects
+     *
      * @return ArrayList of Menu Item Objects
      * @throws IOException Unable to read from file
      */
-    public ArrayList<Staff> readFromCsv() throws IOException{
+    public ArrayList<Staff> readFromCsv() throws IOException {
         if (!FileIOHelper.exists(this.staffCsv)) return new ArrayList<>(); // Empty array list
         BufferedReader csvFile = FileIOHelper.getFileBufferedReader(this.staffCsv);
         List<String[]> csvLines = readAll(csvFile, 1);
@@ -72,6 +64,7 @@ public class StaffCSVHelper extends CSVBaseHelper {
 
     /**
      * Writes to the CSV File
+     *
      * @param staffs ArrayList of items to save
      * @throws IOException Unable to write to file
      */

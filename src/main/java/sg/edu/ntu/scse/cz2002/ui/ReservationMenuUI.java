@@ -33,10 +33,11 @@ public class ReservationMenuUI extends BaseMenu {
 
     /**
      * The Reservation Management Menu
+     *
      * @return Exit Code. Return 1 to exit the program and -1 to exit to main menu
      */
     @Override
-    protected int generateMenuScreen(){
+    protected int generateMenuScreen() {
         printHeader("Reservation Booking Management");
         System.out.println("1) Create a new reservation booking");
         System.out.println("2) Check reservation booking");
@@ -115,8 +116,6 @@ public class ReservationMenuUI extends BaseMenu {
                 System.out.print("Your input (or enter 0 to exit): ");
                 userDate = input.nextLine();
 
-                //TODO: This is a premature return in a case of user wanting to exit infinite loop.
-                //TODO: To find some other better implementation code than this.
                 if (userDate.equals("0")) return;
 
                 correctDate = DateTimeFormatHelper.validateDate(userDate);
@@ -128,8 +127,7 @@ public class ReservationMenuUI extends BaseMenu {
                     if (resvDate.isAfter(DateTimeFormatHelper.getTodayDate(true))) {
                         System.out.println("Reservations can only be made at most 1 month in advance.");
                         correctDate = false;
-                    }
-                    else if (DateTimeFormatHelper.compareIfBeforeToday(resvDate) ||
+                    } else if (DateTimeFormatHelper.compareIfBeforeToday(resvDate) ||
                             (isToday && LocalTime.now().isAfter(LocalTime.of(22, 00)))) {
                         System.out.println("[ERROR] The date entered is already over.");
                         correctDate = false;
@@ -144,7 +142,6 @@ public class ReservationMenuUI extends BaseMenu {
                     Passing while loop assumes a valid date
                     Check for available session on that date
                     checkSessionAvailability(resvDate);
-                    TODO: Errorneous checking of availability: to check against all reservations to determine if there is availability.
                     */
                     amAvail = checkMorningSessionDate(resvDate, isToday);
                     pmAvail = checkEveningSessionDate(resvDate, isToday);
@@ -179,7 +176,6 @@ public class ReservationMenuUI extends BaseMenu {
                 System.out.print("Your input: ");
                 resvTime = DateTimeFormatHelper.formatToLocalTime(input.nextLine());
 
-                //TODO: Find a better code for the if fragment below
                 if (!isToday || !(DateTimeFormatHelper.getTimeDifferenceMinutes(LocalTime.now(), resvTime) <= 0)) {
                     if (amAvail && DateTimeFormatHelper.checkResvTimeSession
                             (resvTime, LocalTime.of(11, 0), LocalTime.of(15, 0))) {
@@ -205,7 +201,7 @@ public class ReservationMenuUI extends BaseMenu {
 
                 if (numPax <= 0) {
                     System.out.println("You cannot book a reservation for 0 pax.");
-                } else if (numPax > 10){
+                } else if (numPax > 10) {
                     System.out.println("Sorry! The restaurant's maximum seating is 10 people.");
                 }
             }
@@ -214,7 +210,7 @@ public class ReservationMenuUI extends BaseMenu {
 
             //Conditional loop to determine is available table is found.
             if (tableNum > 0) {
-                int lastNum = MainApp.reservations.get(MainApp.reservations.size()-1).getResvId() + 1;
+                int lastNum = MainApp.reservations.get(MainApp.reservations.size() - 1).getResvId() + 1;
                 r = new Reservation(lastNum, resvDate, resvTime, resvSession, custTelNo, custName, numPax, tableNum);
                 MainApp.reservations.add(r);
 
@@ -225,7 +221,6 @@ public class ReservationMenuUI extends BaseMenu {
             }
 
             input.nextLine(); //Clears buffer (?)
-            //TODO: Further validation
         } catch (DateTimeParseException e) {
             //Only thrown for failure to parse Date and Time in custom format
             System.out.println("[ERROR] Input date or time format is wrong. (" + e.getLocalizedMessage() + ")");
@@ -237,8 +232,9 @@ public class ReservationMenuUI extends BaseMenu {
 
     /**
      * Method to find available table for the number of pax, and date of reservation.
-     * @param numPax Number of people
-     * @param resvDate Reservation date indicated for the reservation
+     *
+     * @param numPax      Number of people
+     * @param resvDate    Reservation date indicated for the reservation
      * @param resvSession Reservation session A or P
      * @return An integer containing the first available table number for the date of reservation
      */
@@ -312,8 +308,7 @@ public class ReservationMenuUI extends BaseMenu {
 
             resvId = ScannerHelper.getIntegerInput("\nEnter the Reservation ID that is to be deleted, or input -1 to exit function: ");
             Reservation.removeReservationFromList(telNo, resvId);
-        }
-        else
+        } else
             System.out.println("There are no reservation bookings linked to the telephone number.");
 
 
@@ -353,6 +348,7 @@ public class ReservationMenuUI extends BaseMenu {
 
     /**
      * Overloaded method to print details of a single reservation
+     *
      * @param r Reservation object
      */
     private void printReservationLine(Reservation r) {
@@ -370,16 +366,16 @@ public class ReservationMenuUI extends BaseMenu {
     /**
      * Method to print details of reservation lines by phone number.
      * Uses overloaded method of same name {@link ReservationMenuUI#printReservationLine(Reservation)} that passes in Reservation object
+     *
      * @param telNo String variable containing customer's telephone number
      * @return The number of reservations linked to the same telephone number passed in.
      */
-    private int printReservationLine(String telNo)
-    {
+    private int printReservationLine(String telNo) {
         int count = 0;
         System.out.println("Below are the reservations linked to the number " + telNo);
         System.out.printf("%-6s %-15s %-10s %-10s %-15s %-30s %-3s %-9s\n", "ID", "Date", "Session", "Time", "Tel. No", "Name", "Pax", "Table No.");
         printBreaks();
-        for(Reservation r : MainApp.reservations) {
+        for (Reservation r : MainApp.reservations) {
             if (telNo.equals(r.getCustTelNo())) {
                 printReservationLine(r);
                 count++;
@@ -391,21 +387,21 @@ public class ReservationMenuUI extends BaseMenu {
     /**
      * Method to check if the restaurant is open to reservations for the morning session
      * given the specified date
-     * @param date LocalDate variable
+     *
+     * @param date    LocalDate variable
      * @param isToday Boolean variable indicating whether date input is today.
      * @return True if available, false if slot is taken
      */
-    private boolean checkMorningSessionDate (LocalDate date, boolean isToday) {
+    private boolean checkMorningSessionDate(LocalDate date, boolean isToday) {
         if (isToday &&
-                LocalTime.now().isAfter(LocalTime.of(15,00))) return false;
+                LocalTime.now().isAfter(LocalTime.of(15, 00))) return false;
 
         int amCount = 0;
-        for (Reservation r: MainApp.reservations) {
+        for (Reservation r : MainApp.reservations) {
             if (r.getResvDate().isEqual(date) &&
                     r.getResvSession() == Reservation.ReservationSession.AM_SESSION)
-                        amCount++;
+                amCount++;
         }
-        //For debug purposes - print out numTables left; TODO: Remove line after completion of code checking.
         System.out.println("There are " + (MAX_TABLES - amCount) + " reservations slots free for the AM session.");
         return amCount < MAX_TABLES;
     }
@@ -413,22 +409,22 @@ public class ReservationMenuUI extends BaseMenu {
     /**
      * Method to check if the restaurant is open to reservations for the evening session
      * given the specified date
-     * @param date LocalDate variable
+     *
+     * @param date    LocalDate variable
      * @param isToday Boolean variable indicating whether date input is today.
      * @return True if available, false if slot is taken
      */
-    private boolean checkEveningSessionDate (LocalDate date, boolean isToday) {
+    private boolean checkEveningSessionDate(LocalDate date, boolean isToday) {
 
         if (isToday &&
-                LocalTime.now().isAfter(LocalTime.of(22,00))) return false;
+                LocalTime.now().isAfter(LocalTime.of(22, 00))) return false;
 
         int pmCount = 0;
-        for (Reservation r: MainApp.reservations) {
+        for (Reservation r : MainApp.reservations) {
             if (r.getResvDate().isEqual(date) &&
                     r.getResvSession() == Reservation.ReservationSession.PM_SESSION)
                 pmCount++;
         }
-        //For debug purposes - print out numTables left; TODO: Remove line after completion of code checking.
         System.out.println("There are " + (MAX_TABLES - pmCount) + " reservations slots free for the PM session.");
         return pmCount < MAX_TABLES;
     }

@@ -1,16 +1,14 @@
 package sg.edu.ntu.scse.cz2002.ui;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Scanner;
-
-import org.jetbrains.annotations.Nullable;
 import sg.edu.ntu.scse.cz2002.MainApp;
 import sg.edu.ntu.scse.cz2002.objects.restaurantItem.MenuItem;
 import sg.edu.ntu.scse.cz2002.objects.restaurantItem.PromotionItem;
 import sg.edu.ntu.scse.cz2002.util.PromoCSVHelper;
 import sg.edu.ntu.scse.cz2002.util.ScannerHelper;
 import sun.rmi.rmic.Main;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Scanner;
 
 
 /**
@@ -23,15 +21,16 @@ import sun.rmi.rmic.Main;
 public class PromotionMenuUI extends BaseMenu {
 
 
-	/**
-	 * Scanner for use in retrieving user input.
-	 */
-	private Scanner sc = ScannerHelper.getScannerInput();
+    /**
+     * Scanner for use in retrieving user input.
+     */
+    private Scanner sc = ScannerHelper.getScannerInput();
 
-	/**
-	 * The PromotionItem Management Menu
-	 * @return Exit Code. Return 1 to exit the program and -1 to exit to main menu
-	 */
+    /**
+     * The PromotionItem Management Menu
+     *
+     * @return Exit Code. Return 1 to exit the program and -1 to exit to main menu
+     */
     @Override
     protected int generateMenuScreen() {
         printHeader("Promotion Item Management");
@@ -45,19 +44,19 @@ public class PromotionMenuUI extends BaseMenu {
 
         int choice = doMenuChoice(5, 0);
         switch (choice) {
-        
+
             case 1: // Prints existing promotions
-            	this.printPromotion();
+                this.printPromotion();
                 break;
             case 2: // Create a new promotion
-				this.addNewPromotion();
-				break;
+                this.addNewPromotion();
+                break;
 
             case 3: //Edit an existing promotion
-				this.editPromotion();
-            	break;
+                this.editPromotion();
+                break;
             case 4: //Delete an existing promotion
-				this.deletePromotion();
+                this.deletePromotion();
                 break;
             case 5:
                 return -1;
@@ -70,7 +69,13 @@ public class PromotionMenuUI extends BaseMenu {
     }
 
 
+    /**
+     * Prints the menu of promotions stored in the CSV file.
+     * Uses {@link MainApp#promotions} and {@link MenuItem#retrieveMenuItem(int)}.
+     */
+    public void printPromotion() {
 
+        System.out.println("This is the list of current promotions:");
 
 	/**
 	 * Prints the menu of promotions stored in the CSV file.
@@ -374,6 +379,5 @@ public class PromotionMenuUI extends BaseMenu {
 			return;
 		}
 	}
-
-
+      
 }

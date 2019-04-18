@@ -3,9 +3,7 @@ package sg.edu.ntu.scse.cz2002.util;
 import sg.edu.ntu.scse.cz2002.features.Table;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.IOException;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +15,6 @@ import java.util.List;
  * @since 2019-04-01
  */
 
-@SuppressWarnings("Duplicates")
 public class TableCSVHelper extends CSVBaseHelper {
 
     /**
@@ -33,20 +30,12 @@ public class TableCSVHelper extends CSVBaseHelper {
     /**
      * Default Constructor to initialize this class with reservation.csv as the CSV file
      */
-    private TableCSVHelper() {}
-
-    /**
-     * Initialize the Helper object
-     * @deprecated Call {@link ReservationCSVHelper#getInstance()} instead
-     * @param filename Path to MenuItems CSV File
-     */
-    @Deprecated
-    public TableCSVHelper(String filename) {
-        this.tableCsv = filename;
+    private TableCSVHelper() {
     }
 
     /**
      * Gets the singleton instance of MenuItemCSVHelper that reads from menu.csv
+     *
      * @return Instance of this class
      */
     public static TableCSVHelper getInstance() {
@@ -56,11 +45,11 @@ public class TableCSVHelper extends CSVBaseHelper {
 
     /**
      * Reads the CSV file and parse it into an array list of menu item objects
+     *
      * @return ArrayList of Menu Item Objects
      * @throws IOException Unable to read from file
-     * @throws ParseException Wrong format of date time passed in
      */
-    public ArrayList<Table> readFromCsv() throws IOException, ParseException{
+    public ArrayList<Table> readFromCsv() throws IOException {
         if (!FileIOHelper.exists(this.tableCsv)) return new ArrayList<>(); // Empty array list
         BufferedReader csvFile = FileIOHelper.getFileBufferedReader(this.tableCsv);
         List<String[]> csvLines = readAll(csvFile, 1);
@@ -71,20 +60,5 @@ public class TableCSVHelper extends CSVBaseHelper {
             tables.add(t);
         }
         return tables;
-    }
-
-    /**
-     * Writes to the CSV File
-     * @param tables ArrayList of items to save
-     * @throws IOException Unable to write to file
-     */
-    @Deprecated
-    public void writeToCsv(ArrayList<Table> tables) throws IOException {
-        String[] header = {"Table Num", "NumSeats", "IsReserved", "Table State"};
-        BufferedWriter csvFile = FileIOHelper.getFileBufferedWriter(this.tableCsv);
-        ArrayList<String[]> toWrite = new ArrayList<>();
-        toWrite.add(header);
-        tables.forEach((t) -> toWrite.add(t.toCsv()));
-        writeToCsvFile(toWrite, csvFile);
     }
 }

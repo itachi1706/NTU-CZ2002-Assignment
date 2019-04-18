@@ -11,7 +11,8 @@ public interface ICsvSerializable {
 
     /**
      * An interface that objects who are ICsvSerializable should implement
+     *
      * @return Array of Strings to write to CSV
      */
-    public String[] toCsv();
+    String[] toCsv();
 }

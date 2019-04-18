@@ -165,10 +165,6 @@ public class OrderMenuUI extends BaseMenu {
             t = vacantTables.get(0); // Allocate first possible table as it should be the least
             System.out.println("Allocated Table Number: " + t.getTableNum() + " (Table Size: " + t.getNumSeatsInt() + ")");
         }
-        else {
-
-        }
-
 
         // Create a new order (completed + incompleted check and get ID after)
         int newId = 1;
@@ -319,6 +315,11 @@ public class OrderMenuUI extends BaseMenu {
         }
     }
 
+    /**
+     * Adds ala-carte items {@link MenuItem} to the Order
+     *
+     * @param o Order object to add the item to
+     */
     private void addAlaCarteItem(@NotNull Order o) {
         System.out.println("Select Ala-Carte Item Types:");
         System.out.println("1) Main Dishes");
@@ -377,9 +378,9 @@ public class OrderMenuUI extends BaseMenu {
     }
 
     /**
-     * Edits item from Order
+     * Edits item from the order
      *
-     * @param o Order Object
+     * @param o Order Object to edit the item from
      */
     private void editOrderItem(@NotNull Order o) {
         if (o.getOrderItems().size() == 0) {
@@ -399,7 +400,7 @@ public class OrderMenuUI extends BaseMenu {
     /**
      * Removes item from Order
      *
-     * @param o Order Object
+     * @param o Order Object to remove the item from
      */
     private void removeOrderItem(@NotNull Order o) {
         if (o.getOrderItems().size() == 0) {
@@ -541,7 +542,8 @@ public class OrderMenuUI extends BaseMenu {
             if (i.isPromotion()) itemName = "[PROMO] " + itemName;
 
             if (prettyPrint) System.out.printf("%3dx %-45s $%-6.2f\n", i.getQuantity(), itemName, price);
-            else System.out.println(imm + ") " + i.getQuantity() + "x " + itemName + "\t$" + String.format("%.2f", price));
+            else
+                System.out.println(imm + ") " + i.getQuantity() + "x " + itemName + "\t$" + String.format("%.2f", price));
             imm++;
         }
     }
