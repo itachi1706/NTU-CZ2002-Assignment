@@ -306,6 +306,7 @@ public class CheckoutMenuUI extends BaseMenu {
      * Print specific order details for invoice
      *
      * @param o Order object to print details of
+     * @return Total price of the enitre order (inclusive of taxes)
      */
     @SuppressWarnings("Duplicates")
     private double printOrderDetails(@NotNull Order o) {
