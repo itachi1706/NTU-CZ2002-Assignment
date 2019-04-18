@@ -11,15 +11,21 @@ import sg.edu.ntu.scse.cz2002.objects.restaurantItem.PromotionItem;
 import sg.edu.ntu.scse.cz2002.util.PromoCSVHelper;
 import sg.edu.ntu.scse.cz2002.util.ScannerHelper;
 
+
+
 /**
- * The PromotionItem Menu UI
+ * PromotionItem Menu UI
  *
- * @author Kenneth Soh
+ * @author Arthur Koh, Kenneth Soh
  * @version 1.0
- * @since 2019-03-22
+ * @since 2019-04-17
  */
 public class PromotionMenuUI extends BaseMenu {
 
+
+	/**
+	 * Scanner for use in retrieving user input.
+	 */
 	private Scanner sc = ScannerHelper.getScannerInput();
 
 	/**
@@ -28,7 +34,7 @@ public class PromotionMenuUI extends BaseMenu {
 	 */
     @Override
     protected int generateMenuScreen() {
-        printHeader("PromotionItem Management");
+        printHeader("Promotion Item Management");
         System.out.println("1) View existing promotions");
         System.out.println("2) Create a new promotion");
         System.out.println("3) Update an existing promotion");
@@ -63,10 +69,12 @@ public class PromotionMenuUI extends BaseMenu {
         return 0;
     }
 
+
+
+
 	/**
-	 * Prints the CSV File of Promotions.
-	 * (uses the globally defined "promotions" ArrayList from MainApp)
-	 * (also calls the retrieveMenuItem method from FoodMenuUI)
+	 * Prints the menu of promotions stored in the CSV file.
+	 * Uses {@link MainApp#promotions} and {@link MenuItem#retrieveMenuItem(int)}.
 	 */
 	public void printPromotion() {
 
@@ -75,9 +83,9 @@ public class PromotionMenuUI extends BaseMenu {
 		for (int i = 0; i < MainApp.promotions.size(); i++) {
 			PromotionItem promotion = (PromotionItem) MainApp.promotions.get(i);
 			
-			MenuItem mainItem = FoodMenuUI.retrieveMenuItem(promotion.getPromoMain());
-			MenuItem dessertItem = FoodMenuUI.retrieveMenuItem(promotion.getPromoDessert());
-			MenuItem drinkItem = FoodMenuUI.retrieveMenuItem(promotion.getPromoDrink());
+			MenuItem mainItem = MenuItem.retrieveMenuItem(promotion.getPromoMain());
+			MenuItem dessertItem = MenuItem.retrieveMenuItem(promotion.getPromoDessert());
+			MenuItem drinkItem = MenuItem.retrieveMenuItem(promotion.getPromoDrink());
 
 			printHeader(promotion.getName());
 			//System.out.println("|============================|");
@@ -101,20 +109,23 @@ public class PromotionMenuUI extends BaseMenu {
 
 	/**
 	 * Method to add a new promotion.
-	 * (uses "writeToCsv" to facilitate I/O operations from PromotionCSVHelper.)
+	 * Uses {@link PromoCSVHelper#writeToCsv(ArrayList)} to facilitate I/O operations.
 	 */
 	public void addNewPromotion() {
 
 		String newPromoName;
 		double newPromoPrice;
-		int newPromoMain;
-		int newPromoDessert;
-		int newPromoDrink;
+		int newPromoMain = 1;
+		int newPromoDessert = 1;
+		int newPromoDrink = 1;
+		boolean mainFound = false;
+		boolean dessertFound = false;
+		boolean drinkFound = false;
 
 		//have to create 3 temporary arrays here to filter out.
-		ArrayList<MenuItem> filteredMainMenu = FoodMenuUI.retrieveMenuItemListFiltered(MenuItem.MenuItemType.MAIN); //the main here is just for main dishes
-		ArrayList<MenuItem> filteredDessertMenu = FoodMenuUI.retrieveMenuItemListFiltered(MenuItem.MenuItemType.DESSERT);
-		ArrayList<MenuItem> filteredDrinkMenu = FoodMenuUI.retrieveMenuItemListFiltered(MenuItem.MenuItemType.DRINK);
+		ArrayList<MenuItem> filteredMainMenu = MenuItem.retrieveMenuItemListFiltered(MenuItem.MenuItemType.MAIN); //the main here is just for main dishes
+		ArrayList<MenuItem> filteredDessertMenu = MenuItem.retrieveMenuItemListFiltered(MenuItem.MenuItemType.DESSERT);
+		ArrayList<MenuItem> filteredDrinkMenu = MenuItem.retrieveMenuItemListFiltered(MenuItem.MenuItemType.DRINK);
 
 		System.out.println("Enter new promotion set name: ");
 		sc.nextLine(); //required if previous scanner takes in int, and now string is required
@@ -122,29 +133,33 @@ public class PromotionMenuUI extends BaseMenu {
 
 		newPromoPrice = ScannerHelper.getDoubleInput("Enter new promotion's price: ");
 
-		//need to find way to reprompt for input!
-		newPromoMain = ScannerHelper.getIntegerInput("Enter new promotion's main ID: ");
-		boolean mainFound = this.menuTypeChecker(filteredMainMenu, newPromoMain, "Main");
-		if (mainFound == false) return;
+		while (!mainFound) {
+			newPromoMain = ScannerHelper.getIntegerInput("Enter new promotion's main ID: ");
+			mainFound = MenuItem.menuTypeChecker(filteredMainMenu, newPromoMain, "Main");
+			if (mainFound == false) System.out.println("Main not found. Please enter a valid main ID.");
+		}
 
-		newPromoDessert = ScannerHelper.getIntegerInput("Enter new promotion's dessert ID: ");
-		boolean dessertFound = this.menuTypeChecker(filteredDessertMenu, newPromoDessert, "Dessert");
-		if (dessertFound == false) return;
+		while (!dessertFound) {
+			newPromoDessert = ScannerHelper.getIntegerInput("Enter new promotion's dessert ID: ");
+			dessertFound = MenuItem.menuTypeChecker(filteredDessertMenu, newPromoDessert, "Dessert");
+			if (dessertFound == false) System.out.println("Dessert not found. Please enter a valid dessert ID.");
+		}
 
-		newPromoDrink = ScannerHelper.getIntegerInput("Enter new promotion's drink ID: ");
-		boolean drinkFound = this.menuTypeChecker(filteredDrinkMenu, newPromoDrink, "Drink");
-		if (drinkFound == false) return;
-		//need to find way to reprompt for input!
-
+		while (!drinkFound) {
+			newPromoDrink = ScannerHelper.getIntegerInput("Enter new promotion's drink ID: ");
+			drinkFound = MenuItem.menuTypeChecker(filteredDrinkMenu, newPromoDrink, "Drink");
+			if (drinkFound == false) System.out.println("Drink not found. Please enter a valid drink ID.");
+			//need to find way to reprompt for input!
+		}
 		//Basically the actual addNewPromotion method
 		try {
 
 			PromotionItem promotionObj = MainApp.promotions.get((MainApp.promotions.size())-1);
 			int promoID = promotionObj.getId()+1;
-			
+
 			PromotionItem promotion = new PromotionItem(promoID, newPromoName, newPromoPrice, newPromoMain, newPromoDessert, newPromoDrink);
 			MainApp.promotions.add(promotion);
-			
+
 			PromoCSVHelper promotionHelper = PromoCSVHelper.getInstance();
 			promotionHelper.writeToCsv(MainApp.promotions);
 			
@@ -157,7 +172,7 @@ public class PromotionMenuUI extends BaseMenu {
 
 	/**
 	 * Method to edit an existing promotion.
-	 * (uses "writeToCsv" AND "retrievePromotion" to facilitate I/O operations)
+	 * Uses {@link PromoCSVHelper#writeToCsv(ArrayList)} and {@link PromotionItem#retrievePromotion(int)} to facilitate I/O operations.
 	 */
 	public void editPromotion() {
 
@@ -173,7 +188,7 @@ public class PromotionMenuUI extends BaseMenu {
 		//sc.nextLine(); //clear for I.F.D.
 
 		//retrieve menu item with editItemID check.
-		if (retrievePromotion(editPromoID) == null){
+		if (PromotionItem.retrievePromotion(editPromoID) == null){
 			System.out.println("Invalid ID. Promotion not found.");
 			return;
 		}
@@ -196,7 +211,7 @@ public class PromotionMenuUI extends BaseMenu {
 			if (editPromoID == promoObj.getId()) {
 				try {
 					
-					PromotionItem promo = retrievePromotion(editPromoID);
+					PromotionItem promo = PromotionItem.retrievePromotion(editPromoID);
 					
 					promo.setName(editPromoName);
 					promo.setPrice(editPromoPrice);
@@ -225,7 +240,7 @@ public class PromotionMenuUI extends BaseMenu {
 	
 	/**
 	 * Method to delete an existing promotion.
-	 * (uses "writeToCsv" to facilitate I/O operations)
+	 * Uses {@link PromoCSVHelper#writeToCsv(ArrayList)} to facilitate I/O operations.
 	 */
 	public void deletePromotion() {
 
@@ -259,49 +274,6 @@ public class PromotionMenuUI extends BaseMenu {
 			return;
 		}
 	}
-	
-	/**
-	 * Returns a PromotionItem object that matches the input targetPromoID.
-	 * @param targetPromoID ID of the promotion object to be retrieved.
-	 * @return promoObj Object containing a promotion's attributes.
-	 */	
-	@Nullable
-	public static PromotionItem retrievePromotion(int targetPromoID) {
-		
-		for (int i=0; i<(MainApp.promotions.size()); i++) {
-			
-			PromotionItem promoObj = MainApp.promotions.get(i);
-			
-			if (targetPromoID == promoObj.getId()) {
-				//System.out.println("Target promotion found.");
-				return promoObj;
-			}
-			
-		}
 
-		return null; //"Target promotion not found."
-	}
 
-	/**
-	 * Returns true if the filtered array list contains the menu item type.
-	 * @param menuArrayList filtered array list that contains menu items based on enum specified
-	 * @param newPromoItemType type of the menu item added to the promotion
-	 * @param textParameter text for the menu item type
-	 */
-	public boolean menuTypeChecker(ArrayList<MenuItem> menuArrayList, int newPromoItemType, String textParameter){
-
-		boolean found = false;
-		for (int i=0; i<menuArrayList.size(); i++){
-
-			MenuItem menuItemObj = menuArrayList.get(i);
-			if (newPromoItemType == menuItemObj.getId()) { //"Target menu item found."
-				found = true;
-				return true;
-			}
-
-		}
-		//implied else
-		System.out.println("No "+textParameter+" exists with this ID.");
-		return false;
-	}
 }

@@ -1,4 +1,6 @@
 package sg.edu.ntu.scse.cz2002.objects.restaurantItem;
+import org.jetbrains.annotations.Nullable;
+import sg.edu.ntu.scse.cz2002.MainApp;
 import sg.edu.ntu.scse.cz2002.ui.FoodMenuUI;
 import sg.edu.ntu.scse.cz2002.util.ICsvSerializable;
 
@@ -6,28 +8,37 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 /**
- * Class handling PromotionItem Sets
+ * Menu Item Class
  *
- * @author Arthur, Kenneth
- * @version 1.1
- * @since 2019-04-03
- *
+ * @author Arthur Koh, Kenneth Soh
+ * @version 1.0
+ * @since 2019-04-17
  */
 public class PromotionItem extends RestaurantItem implements ICsvSerializable {
 
+	/**
+	 * The ID of the promotion item's main.
+	 */
     protected int promoMain;
+	/**
+	 * The ID of the promotion item's dessert.
+	 */
     protected int promoDessert;
+	/**
+	 * The ID of the promotion item's drink.
+	 */
     protected int promoDrink;
+
 
 
     /**
      * Constructor to pass in all attributes
-     * @param promoID This promotion's ID.
-     * @param promoName This promotion's name.
-     * @param promoPrice This promotion's price.
-     * @param promoMain This promotion's main.
-     * @param promoDessert This promotion's drink.
-     * @param promoDrink This promotion's drink.
+     * @param promoID 		This promotion item's ID.
+     * @param promoName 	This promotion item's name.
+     * @param promoPrice 	This promotion item's price.
+     * @param promoMain 	This promotion item's main ID.
+     * @param promoDessert 	This promotion item's dessert ID.
+     * @param promoDrink 	This promotion item's drink ID.
      */
 	public PromotionItem(int promoID, String promoName, double promoPrice, int promoMain, int promoDessert, int promoDrink) {
 
@@ -37,12 +48,13 @@ public class PromotionItem extends RestaurantItem implements ICsvSerializable {
 		this.promoDessert = promoDessert;
 		this.promoDrink = promoDrink;
 	}
-    
-    /**
-     * A method to READ from a CSV string to convert to an object instance
-     * This needs to be overridden if you need to retrieve CSV data from file
-     * @param csv A string array of the CSV file
-     */
+
+	/**
+	 * A method to read from a CSV string to convert to an object instance.
+	 * This needs to be overridden if CSV data must be retrieved from a file.
+	 *
+	 * @param csv A string array of the CSV file.
+	 */
     public PromotionItem(String[] csv) {
 
     	super(csv);
@@ -52,11 +64,12 @@ public class PromotionItem extends RestaurantItem implements ICsvSerializable {
         this.promoDrink = Integer.parseInt(csv[5]);
     }
 
-    /**
-     * A method to CONVERT to CSV
-     * This needs to be overridden if you need to save files to CSV
-     * @return A String array of the CSV file
-     */
+	/**
+	 * A method to convert to CSV.
+	 * This needs to be overridden if files need to be saved to CSV.
+	 *
+	 * @return A String array of the CSV file.
+	 */
     @Override
     public String[] toCsv() {
 		ArrayList<String> stuff = new ArrayList<>();
@@ -68,58 +81,74 @@ public class PromotionItem extends RestaurantItem implements ICsvSerializable {
     }
 
 
+
 	/**
-	 * @return Gets this promotion's main.
+	 * Accessor for Promotion item's main.
+	 *
+	 * @return Gets the Promotion item's main.
 	 */
 	public int getPromoMain() {
 		return promoMain;
 	}
 
 	/**
-	 * @param promoMain Sets this promotion's main.
+	 * Mutator for Promotion item's main.
+	 *
+	 * @param promoMain Sets the Promotion item's main.
 	 */
 	public void setPromoMain(int promoMain) {
 		this.promoMain = promoMain;
 	}
 
 	/**
-	 * @return Gets this promotion's dessert.
+	 * Accessor for Promotion item's dessert.
+	 *
+	 * @return Gets the Promotion item's dessert.
 	 */
 	public int getPromoDessert() {
 		return promoDessert;
 	}
 
 	/**
-	 * @param promoDessert Sets this promotion's dessert.
+	 * Mutator for Promotion item's main.
+	 *
+	 * @param promoDessert Sets the Promotion item's dessert.
 	 */
 	public void setPromoDessert(int promoDessert) {
 		this.promoDessert = promoDessert;
 	}
 
 	/**
-	 * @return Gets this promotion's drink.
+	 * Accessor for Promotion item's drink.
+	 *
+	 * @return Gets the Promotion item's drink.
 	 */
 	public int getPromoDrink() {
 		return promoDrink;
 	}
 
 	/**
-	 * @param promoDrink Sets this promotion's drink.
+	 * Mutator for Promotion item's drink.
+	 *
+	 * @param promoDrink Sets the Promotion item's drink.
 	 */
 	public void setPromoDrink(int promoDrink) {
 		this.promoDrink = promoDrink;
 	}
 
+
+
 	/**
-	 * Prints details regarding this promotion set
-	 * This is formatted to fit a console table of size 60
-	 * @return Parsed string of the PromotionItem Set
+	 * Prints details of this promotion item.
+	 * Formatted to fit a console table of size 60.
+	 *
+	 * @return Parsed string of the PromotionItem Set.
 	 */
 	public String printPromotionDetail() {
 		StringBuilder sb = new StringBuilder();
-		MenuItem main = FoodMenuUI.retrieveMenuItem(this.getPromoMain());
-		MenuItem drink = FoodMenuUI.retrieveMenuItem(this.getPromoDrink());
-		MenuItem dessert = FoodMenuUI.retrieveMenuItem(this.getPromoDessert());
+		MenuItem main = MenuItem.retrieveMenuItem(this.getPromoMain());
+		MenuItem drink = MenuItem.retrieveMenuItem(this.getPromoDrink());
+		MenuItem dessert = MenuItem.retrieveMenuItem(this.getPromoDessert());
 		sb.append("Name: ").append(super.getName()).append("\n")
 				.append("Price: $").append(String.format("%.2f", super.getPrice())).append("\n\n")
 				.append("Set Contains:").append("\n");
@@ -128,4 +157,29 @@ public class PromotionItem extends RestaurantItem implements ICsvSerializable {
 		if (dessert != null) sb.append(String.format("%-52s $%-6.2f", dessert.getName() + " (" + dessert.getDescription() + ") ", dessert.getPrice())).append("\n");
 		return sb.toString();
 	}
+
+
+
+	/**
+	 * Returns a PromotionItem object that matches the input targetPromoID.
+	 * @param targetPromoID ID of the promotion object to be retrieved.
+	 * @return promoObj Object containing a promotion item's attributes.
+	 */
+	@Nullable
+	public static PromotionItem retrievePromotion(int targetPromoID) {
+
+		for (int i = 0; i<(MainApp.promotions.size()); i++) {
+
+			PromotionItem promoObj = MainApp.promotions.get(i);
+
+			if (targetPromoID == promoObj.getId()) {
+				//System.out.println("Target promotion found.");
+				return promoObj;
+			}
+
+		}
+
+		return null; //"Target promotion not found."
+	}
+
 }

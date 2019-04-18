@@ -315,6 +315,10 @@ public class OrderMenuUI extends BaseMenu {
         }
     }
 
+    /**
+     * Adds ala-carte items {@link MenuItem} to the Order
+     * @param o Order object to add the item to
+     */
     private void addAlaCarteItem(@NotNull Order o) {
         System.out.println("Select Ala-Carte Item Types:");
         System.out.println("1) Main Dishes");
@@ -338,7 +342,7 @@ public class OrderMenuUI extends BaseMenu {
             default:
                 throw new MenuChoiceInvalidException("Order Ala Carte Item Add");
         }
-        ArrayList<MenuItem> foodItems = FoodMenuUI.retrieveMenuItemListFiltered(type);
+        ArrayList<MenuItem> foodItems = MenuItem.retrieveMenuItemListFiltered(type);
         if (foodItems.size() == 0) {
             System.out.println("No items in this category. Exiting....");
             return;
@@ -373,9 +377,9 @@ public class OrderMenuUI extends BaseMenu {
     }
 
     /**
-     * Edits item from Order
+     * Edits item from the order
      *
-     * @param o Order Object
+     * @param o Order Object to edit the item from
      */
     private void editOrderItem(@NotNull Order o) {
         if (o.getOrderItems().size() == 0) {
@@ -395,7 +399,7 @@ public class OrderMenuUI extends BaseMenu {
     /**
      * Removes item from Order
      *
-     * @param o Order Object
+     * @param o Order Object to remove the item from
      */
     private void removeOrderItem(@NotNull Order o) {
         if (o.getOrderItems().size() == 0) {
