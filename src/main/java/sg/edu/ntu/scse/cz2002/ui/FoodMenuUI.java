@@ -124,7 +124,16 @@ public class FoodMenuUI extends BaseMenu {
                 throw new MenuChoiceInvalidException("Choose menu to print");
         }
 
+        int i = 1;
+        System.out.printf("%-5s %-50s %-10s %-6s %-9s\n", "ID", "Name", "Type", "Price", "Description");
+        printBreaks();
+        for (MenuItem mi : MainApp.menuItems) {
+            System.out.printf("%-5s %-50s %-10s %-6s %-9s\n", mi.getId(), mi.getName(), mi.getType(), mi.getPrice(), mi.getDescription());
+            i++;
+        }
 
+
+        /*
         for (int i = 0; i < filteredMenu.size(); i++) {
             MenuItem menuItem = filteredMenu.get(i);
             printHeader(menuItem.getName());
@@ -133,7 +142,7 @@ public class FoodMenuUI extends BaseMenu {
             System.out.println("Type: " + menuItem.getType());
             System.out.println("Description: " + menuItem.getDescription());
             System.out.println("Price: $" + menuItem.getPrice() + "\n");
-        }
+        }*/
     }
 
     /**
@@ -206,6 +215,16 @@ public class FoodMenuUI extends BaseMenu {
 
         //probably need to check for targetItemID data type input
         //sc.nextLine(); //clear for I.F.D.
+
+        //Code to print all menu items
+        printHeader("All Menu Items");
+        int j = 1;
+        System.out.printf("%-5s %-50s %-10s %-6s %-9s\n", "ID", "Name", "Type", "Price", "Description");
+        printBreaks();
+        for (MenuItem mi : MainApp.menuItems) {
+            System.out.printf("%-5s %-50s %-10s %-6s %-9s\n", mi.getId(), mi.getName(), mi.getType(), mi.getPrice(), mi.getDescription());
+            j++;
+        }
 
         boolean menuItemFound = false;
 
@@ -297,6 +316,16 @@ public class FoodMenuUI extends BaseMenu {
 
         int targetItemID = 1;
 
+        //Code to print all menu items
+        printHeader("All Menu Items");
+        int k = 1;
+        System.out.printf("%-5s %-50s %-10s %-6s %-9s\n", "ID", "Name", "Type", "Price", "Description");
+        printBreaks();
+        for (MenuItem mi : MainApp.menuItems) {
+            System.out.printf("%-5s %-50s %-10s %-6s %-9s\n", mi.getId(), mi.getName(), mi.getType(), mi.getPrice(), mi.getDescription());
+            k++;
+        }
+
         boolean menuItemFound = false;
 
         while (!menuItemFound) {
@@ -311,31 +340,36 @@ public class FoodMenuUI extends BaseMenu {
 
         //implement flag check
         boolean found = false;
+        String tempPromoName;
 
         for (int i = 0; i < (MainApp.menuItems.size()); i++) {
 
             MenuItem menuItemObj = MainApp.menuItems.get(i);
 
-            if (targetItemID == menuItemObj.getId()) {
+            if (targetItemID == menuItemObj.getId()) { //if we can find the target item
 
                 try {
 
-                    PromoCSVHelper promoHelper = PromoCSVHelper.getInstance();
+                    PromoCSVHelper promoHelper = PromoCSVHelper.getInstance(); //bring in promo helper class to do I/O
 
-                    for (int j = 0; j < (MainApp.promotions.size()); j++) {
+                    //problem here is the promotions size becomes smaller, and it prematurely exits the loop.
+
+                    for (int j = 0; j < (MainApp.promotions.size()); j++) { //
 
                         PromotionItem promoItemObj = MainApp.promotions.get(j);
 
                         //if found
                         if (targetItemID == promoItemObj.getPromoMain() || targetItemID == promoItemObj.getPromoDessert() || targetItemID == promoItemObj.getPromoDrink()) {
+
+                            tempPromoName = MainApp.promotions.get(j).getName();
                             MainApp.promotions.remove(j);
-                            promoHelper.writeToCsv(MainApp.promotions);
-                            System.out.println("Associated Promotion Deleted.");
+
+                            System.out.println("Associated Promotion '"+tempPromoName+"' Deleted.");
                         }
                         //else business as usual
 
                     }
-
+                    promoHelper.writeToCsv(MainApp.promotions);
 
                     MainApp.menuItems.remove(i); //delete using i as for loop index
                     menuHelper.writeToCsv(MainApp.menuItems); // calls IO method to save the new array into the CSV file

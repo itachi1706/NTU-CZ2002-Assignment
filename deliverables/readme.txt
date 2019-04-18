@@ -29,6 +29,103 @@ The Program is split into various menu items:
 7) Printing sales revenue report per day and for a range period
 8) Managing staff for the program
 
+## Menu Item Flow ##
+1) Enter “1” for [1) Menu Items Management]
+
+## Print Menu Item Flow ##
+2) Enter “1” for [1) Print existing menu]
+3) Enter choice of menu type to print.
+3.1) If invalid number is entered, user will be prompted to re-enter.
+3.2) If “1” is entered, list of mains are printed.
+3.3) If “2” is entered, list of desserts are printed.
+3.4) If “3” is entered, list of drinks are printed.
+3.5) If “4” is entered, all items (mains, desserts and drinks) are displayed.
+
+## Create Menu Item Flow ##
+4) Enter “2” for [2) Create a new menu item]
+5) Enter new menu item name.
+6) Enter number of new menu item type.
+6.1) If an invalid number is entered, user will be prompted to re-enter.
+6.2) If “1”, “2” or “3” is entered, flow will continue.
+7) Enter new menu item description.
+8) Enter new menu item price.
+8.1) If an invalid price is entered, user will be prompted to re-enter.
+8.2) If a valid price is entered, flow will continue.
+9) Menu Item create success message is displayed.
+
+## Edit Menu Item Flow ##
+10) Enter “3” for [3) Edit an existing menu item’s details]
+11) Enter ID of menu item to edit.
+11.1) If an invalid ID is entered, user will be prompted to re-enter.
+11.2) If a valid ID is entered, flow will continue.
+12) Enter new name for menu-item-to-be-edited.
+13) Enter new menu type for menu-item-to-be-edited.
+13.1) If an invalid number is entered, user will be prompted to re-enter.
+13.2) If “1”, “2” or “3” is entered, flow will continue.
+14) Enter new description for menu-item-to-be-edited.
+15) Enter new price for menu-item-to-be-edited.
+15.1) If an invalid price is entered, user will be prompted to re-enter.
+15.2) If a valid price is entered, flow will continue.
+16) Menu Item edit success message is displayed.
+
+## Delete Menu Item Flow ##
+17) Enter “4” for [4) Delete a menu item]
+18) Enter ID of menu item to edit.
+18.1) If an invalid ID is entered, user will be prompted to re-enter.
+18.2) If a valid ID is entered, flow will continue.
+19) Menu Item delete success message is displayed.
+
+## Promotion Item Set Flow ##
+1) Enter “2” for [2) Promotions Management]
+
+## Print Promotions Flow ##
+2) Enter “1” for [1) View existing promotions]
+3) All promotions are displayed.
+
+## Create Promotion Flow ##
+4) Enter “2” for [2) Create a new promotion]
+5) Enter new Promotion’s name.
+6) Enter new Promotion’s price.
+6.1) If an invalid price is entered, user will be prompted to re-enter.
+6.2) If a valid price is entered, flow will continue.
+7) Enter new Promotion’s main ID.
+7.1) If an invalid main ID is entered, user will be prompted to re-enter.
+7.2) If a valid main ID is entered, flow will continue.
+8) Enter new Promotion’s dessert ID.
+8.1) If invalid dessert ID is entered, user will be prompted to re-enter.
+8.2) If a valid dessert main ID is entered, flow will continue.
+9) Enter new Promotion’s drink ID.
+8.1) If an invalid drink ID is entered, user will be prompted to re-enter.
+8.2) If a dessert drink ID is entered, flow will continue.
+9) Promotion create success message is displayed.
+
+## Edit Promotion Flow ##
+10) Enter “3” for [3) Update an existing promotion]
+11) Enter ID of Promotion to edit.
+11.1) If invalid ID is entered, user will be prompted to re-enter.
+11.2) If a valid Promo ID is entered, flow will continue.
+12) Enter new name for the Promotion to be edited.
+13) Enter new price for the Promotion to be edited.
+13.1) If an invalid price is entered, user will be prompted to re-enter.
+13.2) If a valid price is entered, flow will continue.
+14) Enter new main ID for the Promotion to be edited.
+14.1) If an invalid main ID is entered, user will be prompted to re-enter.
+14.2) If a valid price is entered, flow will continue.
+15) Enter new dessert ID for the Promotion to be edited.
+15.1) If invalid dessert ID is entered, user will be prompted to re-enter.
+15.2) If a valid price is entered, flow will continue.
+16) Enter new drink ID for the Promotion to be edited.
+16.1) If invalid drink ID is entered, user will be prompted to re-enter.
+16.2) If a valid price is entered, flow will continue.
+17) Promotion edit success message is displayed.
+
+## Delete Promotion Flow ##
+18) Enter “4” for [4) Delete a promotion]
+19) Enter ID of Promotion to delete.
+19.1) If an invalid ID is entered, user will be prompted to re-enter.
+19.2) If a valid ID is entered, flow will continue.
+20) Promotion delete success message is displayed.
+
 ## Order Flow ##
 1) Select (3) Order Management
 2) Select (1) Create a new order

@@ -4,13 +4,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import org.jetbrains.annotations.Nullable;
+//import org.jetbrains.annotations.Nullable;
 import sg.edu.ntu.scse.cz2002.MainApp;
 import sg.edu.ntu.scse.cz2002.objects.restaurantItem.MenuItem;
 import sg.edu.ntu.scse.cz2002.objects.restaurantItem.PromotionItem;
 import sg.edu.ntu.scse.cz2002.util.PromoCSVHelper;
 import sg.edu.ntu.scse.cz2002.util.ScannerHelper;
-
+//import sun.rmi.rmic.Main;
 
 
 /**
@@ -78,33 +78,29 @@ public class PromotionMenuUI extends BaseMenu {
 	 */
 	public void printPromotion() {
 
-		System.out.println("This is the list of current promotions:");
+		//Code to print all promotions
+		printHeader("All Promotions");
+		int n = 1;
+		System.out.printf("%-5s %-10s %-10s %-10s\n", "ID", "Name", "Price",  "Description");
+		printBreaks();
 
 		for (int i = 0; i < MainApp.promotions.size(); i++) {
-			PromotionItem promotion = (PromotionItem) MainApp.promotions.get(i);
-			
-			MenuItem mainItem = MenuItem.retrieveMenuItem(promotion.getPromoMain());
-			MenuItem dessertItem = MenuItem.retrieveMenuItem(promotion.getPromoDessert());
-			MenuItem drinkItem = MenuItem.retrieveMenuItem(promotion.getPromoDrink());
+			PromotionItem pi = MainApp.promotions.get(i);
+			MenuItem mainItem = MenuItem.retrieveMenuItem(pi.getPromoMain());
+			MenuItem dessertItem = MenuItem.retrieveMenuItem(pi.getPromoDessert());
+			MenuItem drinkItem = MenuItem.retrieveMenuItem(pi.getPromoDrink());
 
-			printHeader(promotion.getName());
-			//System.out.println("|============================|");
-			System.out.println("Promotion ID: " + promotion.getId());
-			//System.out.println("Promotion Name: " + promotion.getName());
-			System.out.println("Promotion Price: $" + promotion.getPrice());
+			String tempDescription = ("Served with the following items: ");
+			String tempMain = ("[" + pi.getPromoMain() + "]");
+			String tempDessert = ("[" + pi.getPromoDessert() + "]");
+			String tempDrink = ("[" + pi.getPromoDrink() + "]");
 
-			/*
-			System.out.println("Promotion Main: [" + promotion.getPromoMain() + "] "+ mainItem.getName());
-			System.out.println("Promotion Dessert: [" + promotion.getPromoDessert() + "] "+ dessertItem.getName());
-			System.out.println("Promotion Drink: [" + promotion.getPromoDrink() + "] "+ drinkItem.getName());
-			 */
-
-			System.out.println("Promotion Description\n"+
-					"Served with these 3 items:\n"+
-					"Main: [" + promotion.getPromoMain() + "] "+ mainItem.getName()+
-					"\nDessert: [" + promotion.getPromoDessert() + "] "+ dessertItem.getName()+
-					"\nDrink: [" + promotion.getPromoDrink() + "] "+ drinkItem.getName());
+			System.out.printf("%-5s %-10s %-10s %-10s\n", pi.getId(), pi.getName(), pi.getPrice(), tempDescription);
+			System.out.printf("%-5s %-10s %-10s %-10s %-5s %-5s\n", "", "", "", "Main: ", tempMain, mainItem.getName());
+			System.out.printf("%-5s %-10s %-10s %-10s %-5s %-5s\n", "", "", "", "Dessert: ", tempDessert, dessertItem.getName());
+			System.out.printf("%-5s %-10s %-10s %-10s %-5s %-5s\n\n", "", "", "", "Drink: ", tempDrink, drinkItem.getName());
 		}
+
 	}
 
 	/**
@@ -116,8 +112,8 @@ public class PromotionMenuUI extends BaseMenu {
 		String newPromoName;
 		double newPromoPrice;
 		int newPromoMain = 1;
-		int newPromoDessert = 1;
-		int newPromoDrink = 1;
+		int newPromoDessert = 2;
+		int newPromoDrink = 3;
 		boolean mainFound = false;
 		boolean dessertFound = false;
 		boolean drinkFound = false;
@@ -133,16 +129,46 @@ public class PromotionMenuUI extends BaseMenu {
 
 		newPromoPrice = ScannerHelper.getDoubleInput("Enter new promotion's price: ");
 
+		//Code to print filtered menu of mains
+		printHeader("All Main Items");
+		int k = 1;
+		System.out.printf("%-5s %-50s %-6s %-6s %-9s\n", "ID", "Name", "Type", "Price", "Description");
+		printBreaks();
+		for (MenuItem mi : filteredMainMenu) {
+			System.out.printf("%-5s %-50s %-6s %-6s %-9s\n", mi.getId(), mi.getName(), mi.getType(), mi.getPrice(), mi.getDescription());
+			k++;
+		}
+
 		while (!mainFound) {
 			newPromoMain = ScannerHelper.getIntegerInput("Enter new promotion's main ID: ");
 			mainFound = MenuItem.menuTypeChecker(filteredMainMenu, newPromoMain, "Main");
 			if (mainFound == false) System.out.println("Main not found. Please enter a valid main ID.");
 		}
 
+		//Code to print filtered menu of desserts
+		printHeader("All Dessert Items");
+		int l = 1;
+		System.out.printf("%-5s %-50s %-6s %-6s %-9s\n", "ID", "Name", "Type", "Price", "Description");
+		printBreaks();
+		for (MenuItem mi : filteredDessertMenu) {
+			System.out.printf("%-5s %-50s %-6s %-6s %-9s\n", mi.getId(), mi.getName(), mi.getType(), mi.getPrice(), mi.getDescription());
+			l++;
+		}
+
 		while (!dessertFound) {
 			newPromoDessert = ScannerHelper.getIntegerInput("Enter new promotion's dessert ID: ");
 			dessertFound = MenuItem.menuTypeChecker(filteredDessertMenu, newPromoDessert, "Dessert");
 			if (dessertFound == false) System.out.println("Dessert not found. Please enter a valid dessert ID.");
+		}
+
+		//Code to print filtered menu of drinks
+		printHeader("All Drink Items");
+		int m = 1;
+		System.out.printf("%-5s %-50s %-6s %-6s %-9s\n", "ID", "Name", "Type", "Price", "Description");
+		printBreaks();
+		for (MenuItem mi : filteredDrinkMenu) {
+			System.out.printf("%-5s %-50s %-6s %-6s %-9s\n", mi.getId(), mi.getName(), mi.getType(), mi.getPrice(), mi.getDescription());
+			m++;
 		}
 
 		while (!drinkFound) {
@@ -176,16 +202,29 @@ public class PromotionMenuUI extends BaseMenu {
 	 */
 	public void editPromotion() {
 
-		int editPromoID;
+		int editPromoID = 1;
 		String editPromoName;
-		double editPromoPrice;
-		int editPromoMain;
-		int editPromoDessert;
-		int editPromoDrink;
+		double editPromoPrice = 0.0;
+		int editPromoMain = 1;
+		int editPromoDessert = 2;
+		int editPromoDrink = 3;
+		boolean mainFound = false;
+		boolean dessertFound = false;
+		boolean drinkFound = false;
+		boolean promoFound = false;
 
-		//probably need to check for targetItemID data type input
-		editPromoID = ScannerHelper.getIntegerInput("Enter the ID of the promotion to be edited: \n");
-		//sc.nextLine(); //clear for I.F.D.
+		//have to create 3 temporary arrays here to filter out.
+		ArrayList<MenuItem> filteredMainMenu = MenuItem.retrieveMenuItemListFiltered(MenuItem.MenuItemType.MAIN); //the main here is just for main dishes
+		ArrayList<MenuItem> filteredDessertMenu = MenuItem.retrieveMenuItemListFiltered(MenuItem.MenuItemType.DESSERT);
+		ArrayList<MenuItem> filteredDrinkMenu = MenuItem.retrieveMenuItemListFiltered(MenuItem.MenuItemType.DRINK);
+
+		printPromotion();
+
+		while (!promoFound) {
+			editPromoID = ScannerHelper.getIntegerInput("Enter the ID of the promotion to be edited: ");
+			if (PromotionItem.retrievePromotion(editPromoID) == null) System.out.println("Invalid ID. Please enter a valid promo item ID.");
+			else promoFound = true;
+		}
 
 		//retrieve menu item with editItemID check.
 		if (PromotionItem.retrievePromotion(editPromoID) == null){
@@ -195,10 +234,64 @@ public class PromotionMenuUI extends BaseMenu {
 
 		System.out.println("Enter new name of the promotion to be edited: ");
 		editPromoName = sc.nextLine();
+
+
 		editPromoPrice= ScannerHelper.getDoubleInput("Enter the new price of the promotion to be edited: ");
+
+		/*
 		editPromoMain = ScannerHelper.getIntegerInput("Enter the main's ID of the promotion to be edited: ");
 		editPromoDessert = ScannerHelper.getIntegerInput("Enter the dessert's ID of the promotion to be edited: ");
 		editPromoDrink = ScannerHelper.getIntegerInput("Enter the drink's ID of the promotion to be edited: ");
+		 */
+
+		//Code to print filtered menu of mains
+		printHeader("All Main Items");
+		int k = 1;
+		System.out.printf("%-5s %-50s %-6s %-6s %-9s\n", "ID", "Name", "Type", "Price", "Description");
+		printBreaks();
+		for (MenuItem mi : filteredMainMenu) {
+			System.out.printf("%-5s %-50s %-6s %-6s %-9s\n", mi.getId(), mi.getName(), mi.getType(), mi.getPrice(), mi.getDescription());
+			k++;
+		}
+
+		while (!mainFound) {
+			editPromoMain = ScannerHelper.getIntegerInput("Enter the main's ID of the promotion to be edited: ");
+			mainFound = MenuItem.menuTypeChecker(filteredMainMenu, editPromoMain, "Main");
+			if (mainFound == false) System.out.println("Main not found. Please enter a valid main ID.");
+		}
+
+		//Code to print filtered menu of desserts
+		printHeader("All Dessert Items");
+		int l = 1;
+		System.out.printf("%-5s %-50s %-6s %-6s %-9s\n", "ID", "Name", "Type", "Price", "Description");
+		printBreaks();
+		for (MenuItem mi : filteredDessertMenu) {
+			System.out.printf("%-5s %-50s %-6s %-6s %-9s\n", mi.getId(), mi.getName(), mi.getType(), mi.getPrice(), mi.getDescription());
+			l++;
+		}
+
+		while (!dessertFound) {
+			editPromoDessert = ScannerHelper.getIntegerInput("Enter the dessert's ID of the promotion to be edited: ");
+			dessertFound = MenuItem.menuTypeChecker(filteredDessertMenu, editPromoDessert, "Dessert");
+			if (dessertFound == false) System.out.println("Dessert not found. Please enter a valid dessert ID.");
+		}
+
+		//Code to print filtered menu of drinks
+		printHeader("All Drink Items");
+		int m = 1;
+		System.out.printf("%-5s %-50s %-6s %-6s %-9s\n", "ID", "Name", "Type", "Price", "Description");
+		printBreaks();
+		for (MenuItem mi : filteredDrinkMenu) {
+			System.out.printf("%-5s %-50s %-6s %-6s %-9s\n", mi.getId(), mi.getName(), mi.getType(), mi.getPrice(), mi.getDescription());
+			m++;
+		}
+
+		while (!drinkFound) {
+			editPromoDrink = ScannerHelper.getIntegerInput("Enter the drink's ID of the promotion to be edited: ");
+			drinkFound = MenuItem.menuTypeChecker(filteredDrinkMenu, editPromoDrink, "Drink");
+			if (drinkFound == false) System.out.println("Drink not found. Please enter a valid drink ID.");
+			//need to find way to reprompt for input!
+		}
 
 		PromoCSVHelper promoHelper = PromoCSVHelper.getInstance();
 
@@ -244,9 +337,16 @@ public class PromotionMenuUI extends BaseMenu {
 	 */
 	public void deletePromotion() {
 
-		int targetPromoID;
-		targetPromoID = ScannerHelper.getIntegerInput("Enter the ID of the promotion to be deleted: ");
+		int targetPromoID = 1;
+		boolean promoFound = false;
 
+		printPromotion();
+
+		while (!promoFound) {
+			targetPromoID = ScannerHelper.getIntegerInput("Enter the ID of the promotion to be deleted: ");
+			if (PromotionItem.retrievePromotion(targetPromoID) == null) System.out.println("Invalid ID. Please enter a valid promo item ID.");
+			else promoFound = true;
+		}
 
 		PromoCSVHelper promoHelper = PromoCSVHelper.getInstance();
 
