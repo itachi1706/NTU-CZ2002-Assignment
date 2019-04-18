@@ -4,7 +4,7 @@ import java.io.*;
 
 /**
  * Helper class for File IO to the CSV files in the data folder
- *
+ * <p>
  * The data folder is where we will be storing the application data
  *
  * @author Kenneth
@@ -15,6 +15,7 @@ public class FileIOHelper {
 
     /**
      * Ensure that the data folder exists. Otherwise creates it
+     *
      * @return Folder file object
      */
     @SuppressWarnings("ResultOfMethodCallIgnored")
@@ -26,6 +27,7 @@ public class FileIOHelper {
 
     /**
      * Check if file exists
+     *
      * @param name File Name
      * @return true if exist
      */
@@ -37,6 +39,7 @@ public class FileIOHelper {
 
     /**
      * Creates a folder in the data directory
+     *
      * @param name File Name
      * @return true if created
      */
@@ -49,6 +52,7 @@ public class FileIOHelper {
 
     /**
      * Gets the file object in the data folder
+     *
      * @param name Filename with extension
      * @return File object if valid, null otherwise
      */
@@ -59,6 +63,7 @@ public class FileIOHelper {
 
     /**
      * Get the buffered reader object from the file
+     *
      * @param name Filename with extension
      * @return Buffered Reader of the file
      * @throws IOException File Not Found Exception
@@ -69,6 +74,7 @@ public class FileIOHelper {
 
     /**
      * Get the Buffered Writer object from the file
+     *
      * @param name filename with extension
      * @return Buffered Writer of the file
      * @throws IOException File Not Found Exception

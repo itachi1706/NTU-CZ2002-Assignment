@@ -18,7 +18,8 @@ public class Invoice extends Order implements ICsvSerializable {
     /**
      * Enum for the payment types you can select
      */
-    public enum PaymentType{ PAYMENT_CASH("Cash"), PAYMENT_CARD("Debit/Credit Card"), PAYMENT_NETS("NETS"), PAYMENT_EZLINK("EZ-Link");
+    public enum PaymentType {
+        PAYMENT_CASH("Cash"), PAYMENT_CARD("Debit/Credit Card"), PAYMENT_NETS("NETS"), PAYMENT_EZLINK("EZ-Link");
 
         /**
          * Readable Name for the payment type
@@ -27,13 +28,17 @@ public class Invoice extends Order implements ICsvSerializable {
 
         /**
          * Constructor for the enum usage
+         *
          * @param s Readable Name
          */
-        PaymentType(String s) { this.s = s; }
+        PaymentType(String s) {
+            this.s = s;
+        }
 
 
         /**
          * Get name of the enum in a string form
+         *
          * @return Readable name of the payment type
          */
         @Override
@@ -64,11 +69,12 @@ public class Invoice extends Order implements ICsvSerializable {
 
     /**
      * Constructor to generate the invoice from. This has to accept an Order object as that is what we use to determine stuff
-     * @param o Order object
+     *
+     * @param o           Order object
      * @param receiptPath File name of the receipt
      * @param paymentType Type of payment paid
-     * @param total Total cost of the order
-     * @param amountPaid Amount paid for the order
+     * @param total       Total cost of the order
+     * @param amountPaid  Amount paid for the order
      */
     public Invoice(@NotNull Order o, String receiptPath, PaymentType paymentType, double total, double amountPaid) {
         super(o);
@@ -81,6 +87,7 @@ public class Invoice extends Order implements ICsvSerializable {
     /**
      * A method to read from a CSV string to convert to an object instance
      * This needs to be overridden if you need to retrieve CSV data from file
+     *
      * @param csv A string array of the CSV file
      */
     public Invoice(@NotNull String[] csv) {
@@ -88,11 +95,19 @@ public class Invoice extends Order implements ICsvSerializable {
         this.total = Double.parseDouble(csv[8]);
         this.amountPaid = Double.parseDouble(csv[9]);
         switch (Integer.parseInt(csv[10])) {
-            case 1: this.paymentType = PaymentType.PAYMENT_CARD; break;
-            case 2: this.paymentType = PaymentType.PAYMENT_NETS; break;
-            case 3: this.paymentType = PaymentType.PAYMENT_EZLINK; break;
+            case 1:
+                this.paymentType = PaymentType.PAYMENT_CARD;
+                break;
+            case 2:
+                this.paymentType = PaymentType.PAYMENT_NETS;
+                break;
+            case 3:
+                this.paymentType = PaymentType.PAYMENT_EZLINK;
+                break;
             case 0:
-            default: this.paymentType = PaymentType.PAYMENT_CASH; break;
+            default:
+                this.paymentType = PaymentType.PAYMENT_CASH;
+                break;
         }
         this.receipt = csv[11];
     }
@@ -100,6 +115,7 @@ public class Invoice extends Order implements ICsvSerializable {
     /**
      * A method to convert to CSV
      * This needs to be overridden if you need to save files to CSV
+     *
      * @return A String array of the CSV file
      */
     @Override
@@ -115,6 +131,7 @@ public class Invoice extends Order implements ICsvSerializable {
 
     /**
      * Gets the path to the receipt
+     *
      * @return Filename for the receipt
      */
     public String getReceipt() {
@@ -123,6 +140,7 @@ public class Invoice extends Order implements ICsvSerializable {
 
     /**
      * Payment type of the invoice
+     *
      * @return Payment Type
      */
     public PaymentType getPaymentType() {
@@ -131,6 +149,7 @@ public class Invoice extends Order implements ICsvSerializable {
 
     /**
      * Total of the invoice
+     *
      * @return Total amount
      */
     public double getTotal() {
@@ -140,6 +159,7 @@ public class Invoice extends Order implements ICsvSerializable {
     /**
      * Amount Paid of the invoice. If it is cash
      * If payment type is not cash, this would be the same as the total price
+     *
      * @return The amount paid if cash
      */
     public double getAmountPaid() {

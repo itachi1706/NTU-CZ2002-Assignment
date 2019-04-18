@@ -30,10 +30,12 @@ public class TableCSVHelper extends CSVBaseHelper {
     /**
      * Default Constructor to initialize this class with reservation.csv as the CSV file
      */
-    private TableCSVHelper() {}
+    private TableCSVHelper() {
+    }
 
     /**
      * Gets the singleton instance of MenuItemCSVHelper that reads from menu.csv
+     *
      * @return Instance of this class
      */
     public static TableCSVHelper getInstance() {
@@ -43,6 +45,7 @@ public class TableCSVHelper extends CSVBaseHelper {
 
     /**
      * Reads the CSV file and parse it into an array list of menu item objects
+     *
      * @return ArrayList of Menu Item Objects
      * @throws IOException Unable to read from file
      */

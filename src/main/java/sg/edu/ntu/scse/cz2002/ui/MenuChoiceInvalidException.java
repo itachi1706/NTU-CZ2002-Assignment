@@ -13,6 +13,7 @@ public class MenuChoiceInvalidException extends IllegalStateException {
 
     /**
      * Required Constructor to throw this exception
+     *
      * @param tag A tag to differentiate where this is thrown from. Compulsory
      */
     public MenuChoiceInvalidException(@NotNull String tag) {

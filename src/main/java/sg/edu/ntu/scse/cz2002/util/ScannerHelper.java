@@ -16,6 +16,7 @@ public class ScannerHelper {
 
     /**
      * Integer input with validation of invalid characters entered
+     *
      * @param prompt Text to prompt for the input, pass in empty string for no prompt
      * @return Integer input value
      */
@@ -38,8 +39,9 @@ public class ScannerHelper {
 
     /**
      * Integer input with a minimum integer
+     *
      * @param prompt Text to prompt for the input, pass in empty string for no prompt
-     * @param min Minimum input (exclusive)
+     * @param min    Minimum input (exclusive)
      * @return Validated Input
      */
     public static int getIntegerInput(String prompt, int min) {
@@ -52,9 +54,10 @@ public class ScannerHelper {
 
     /**
      * Integer input with a minimum integer
+     *
      * @param prompt Text to prompt for the input, pass in empty string for no prompt
-     * @param min Minimum input (exclusive)
-     * @param max Maximum input (exclusive)
+     * @param min    Minimum input (exclusive)
+     * @param max    Maximum input (exclusive)
      * @return Validated Input
      */
     public static int getIntegerInput(String prompt, int min, int max) {
@@ -67,9 +70,10 @@ public class ScannerHelper {
 
     /**
      * Integer input with a list of accepted values
-     * @param prompt Text to prompt for the input, pass in empty string for no prompt
+     *
+     * @param prompt         Text to prompt for the input, pass in empty string for no prompt
      * @param acceptedValues List of accepted values
-     * @param errorMsg Error Message to provide to the user
+     * @param errorMsg       Error Message to provide to the user
      * @return Validated Input
      */
     public static int getIntegerInput(String prompt, ArrayList<Integer> acceptedValues, String errorMsg) {
@@ -83,6 +87,7 @@ public class ScannerHelper {
 
     /**
      * Double input with validation of invalid characters entered
+     *
      * @param prompt Text to prompt for the input, pass in empty string for no prompt
      * @return Double input value
      */
@@ -105,8 +110,9 @@ public class ScannerHelper {
 
     /**
      * Integer input with a minimum double
+     *
      * @param prompt Text to prompt for the input, pass in empty string for no prompt
-     * @param min Minimum input (exclusive)
+     * @param min    Minimum input (exclusive)
      * @return Validated Input
      */
     public static double getDoubleInput(String prompt, int min) {
@@ -119,6 +125,7 @@ public class ScannerHelper {
 
     /**
      * Yes/No Prompt
+     *
      * @param prompt Text to prompt for the input, pass in empty string for no prompt
      * @return true if yes, false if no
      */
@@ -140,6 +147,7 @@ public class ScannerHelper {
 
     /**
      * Get the Scanner instance object
+     *
      * @return A scanner instance object with System.in as the InputStream
      */
     public static Scanner getScannerInput() {

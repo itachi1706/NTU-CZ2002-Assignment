@@ -25,6 +25,7 @@ public abstract class BaseMenu {
 
     /**
      * An abstract class that the other classes that inherits this class needs to override and implement
+     *
      * @return Exit Codes for {@link BaseMenu#startMainMenu()} to implement. 0 to loop into the method again,
      * negative to return false and positive to return true
      */
@@ -32,6 +33,7 @@ public abstract class BaseMenu {
 
     /**
      * Other classes calls this method to start the MAIN Menu on a loop
+     *
      * @return Exit Code, true to exit the program
      */
     public boolean startMainMenu() {
@@ -52,8 +54,10 @@ public abstract class BaseMenu {
     }
 
     // Common Menu Helper Methods
+
     /**
      * Helper method to print the header of a menu
+     *
      * @param headerName Name of the menu
      */
     protected static void printHeader(String headerName) {
@@ -62,8 +66,9 @@ public abstract class BaseMenu {
 
     /**
      * Helper method to print the header of a menu
+     *
      * @param headerName Name of the menu
-     * @param length Length of the header
+     * @param length     Length of the header
      */
     protected static void printHeader(String headerName, int length) {
         printBreaks(length);
@@ -77,6 +82,7 @@ public abstract class BaseMenu {
     /**
      * Helper method to create a menu separator
      * (e.g -----------)
+     *
      * @param length How many dashes to append
      */
     protected static void printBreaks(int length) {
@@ -95,7 +101,8 @@ public abstract class BaseMenu {
     /**
      * Helper method to select a menu option with the appropriate exception handling.
      * If the user exceeds the max option defined or enters a non numeric character an appropriate error message will occur
-     * @param max The max option a user can select
+     *
+     * @param max           The max option a user can select
      * @param specialEscape A special option that will be used for special operations like exiting the program
      * @return The menu option selected by the user
      */

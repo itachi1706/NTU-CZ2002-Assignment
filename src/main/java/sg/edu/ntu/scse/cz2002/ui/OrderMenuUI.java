@@ -317,6 +317,7 @@ public class OrderMenuUI extends BaseMenu {
 
     /**
      * Adds ala-carte items {@link MenuItem} to the Order
+     *
      * @param o Order object to add the item to
      */
     private void addAlaCarteItem(@NotNull Order o) {
@@ -541,7 +542,8 @@ public class OrderMenuUI extends BaseMenu {
             if (i.isPromotion()) itemName = "[PROMO] " + itemName;
 
             if (prettyPrint) System.out.printf("%3dx %-45s $%-6.2f\n", i.getQuantity(), itemName, price);
-            else System.out.println(imm + ") " + i.getQuantity() + "x " + itemName + "\t$" + String.format("%.2f", price));
+            else
+                System.out.println(imm + ") " + i.getQuantity() + "x " + itemName + "\t$" + String.format("%.2f", price));
             imm++;
         }
     }

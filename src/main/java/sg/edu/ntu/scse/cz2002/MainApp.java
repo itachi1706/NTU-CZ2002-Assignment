@@ -20,6 +20,7 @@ import java.util.stream.Collectors;
 /**
  * MAIN Application Class
  * Entry point for the RRPSS application
+ *
  * @author Kenneth Soh, Francis Lim
  * @version 1.1
  * @since 2019-03-29
@@ -52,7 +53,7 @@ public class MainApp {
      * The list of promotions loaded into the program
      */
     public static ArrayList<PromotionItem> promotions;
-    
+
     /**
      * The list of reservations loaded into the program
      */
@@ -87,7 +88,7 @@ public class MainApp {
             System.out.println("Loading Promotions from file...");
             promotions = promotionCsv.readFromCsv();
             System.out.println(promotions.size() + " promotions loaded from file.");
-            
+
             System.out.println("Loading Reservations from file...");
             reservations = reservationCsv.readFromCsv();
             System.out.println(reservations.size() + " existing reservations loaded successfully.");
@@ -117,7 +118,7 @@ public class MainApp {
 
         System.out.println("\nThe current/next session of restaurant operation is: " +
                 ((restaurantSession == 'A') ? "AM session - from 11:00hrs to 15:00hrs" :
-                                            "PM session - from 18:00hrs to 22:00hrs") + ".\n");
+                        "PM session - from 18:00hrs to 22:00hrs") + ".\n");
     }
 
     /**
@@ -136,11 +137,11 @@ public class MainApp {
             System.out.println("Saving current menu item list to file...");
             menuItemCSVHelper.writeToCsv(menuItems);
             System.out.println("Menu Item List Saved!");
-            
+
             System.out.println("Saving current promotion list to file...");
             promoCSVHelper.writeToCsv(promotions);
             System.out.println("Promotion List Saved!");
-            
+
             System.out.println("Saving current reservation list to file...");
             reservationCsvHelper.writeToCsv(reservations);
             System.out.println("Reservation List Saved!");
@@ -199,6 +200,7 @@ public class MainApp {
      * If found reservation that matches today's date, set the table to reserved.
      * This function will init the session's (AM or PM) table status according to
      * available reservations
+     *
      * @return An integer containing the amount of expired reservations.
      */
     private static int checkTodayReservations() {
@@ -206,8 +208,8 @@ public class MainApp {
         //char session = 'A';
         Reservation r;
         Iterator<Reservation> iter = reservations.iterator();
-        
-        if (LocalTime.now().isBefore(LocalTime.of(15, 00)) || LocalTime.now().isAfter(LocalTime.of(22,00)))
+
+        if (LocalTime.now().isBefore(LocalTime.of(15, 00)) || LocalTime.now().isAfter(LocalTime.of(22, 00)))
             restaurantSession = 'A';
         else restaurantSession = 'P';
 
@@ -232,8 +234,7 @@ public class MainApp {
                         if (t.getTableNum() == r.getTableNum())
                             t.setReserved(true);
                     }
-                }
-                else if (restaurantSession == 'P' && r.getResvSession() == Reservation.ReservationSession.PM_SESSION) {
+                } else if (restaurantSession == 'P' && r.getResvSession() == Reservation.ReservationSession.PM_SESSION) {
                     for (Table t : tables) {
                         if (t.getTableNum() == r.getTableNum())
                             t.setReserved(true);

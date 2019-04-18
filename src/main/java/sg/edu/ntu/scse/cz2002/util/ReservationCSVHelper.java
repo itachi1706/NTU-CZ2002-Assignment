@@ -31,10 +31,12 @@ public class ReservationCSVHelper extends CSVBaseHelper {
     /**
      * Default Constructor to initialize this class with reservation.csv as the CSV file
      */
-    private ReservationCSVHelper() {}
+    private ReservationCSVHelper() {
+    }
 
     /**
      * Gets the singleton instance of MenuItemCSVHelper that reads from menu.csv
+     *
      * @return Instance of this class
      */
     public static ReservationCSVHelper getInstance() {
@@ -44,8 +46,9 @@ public class ReservationCSVHelper extends CSVBaseHelper {
 
     /**
      * Reads the CSV file and parse it into an array list of menu item objects
+     *
      * @return ArrayList of Menu Item Objects
-     * @throws IOException Unable to read from file
+     * @throws IOException            Unable to read from file
      * @throws DateTimeParseException Wrong format of date time passed in
      */
     public ArrayList<Reservation> readFromCsv() throws IOException, DateTimeParseException {
@@ -63,11 +66,12 @@ public class ReservationCSVHelper extends CSVBaseHelper {
 
     /**
      * Writes to the CSV File
+     *
      * @param reservations ArrayList of items to save
      * @throws IOException Unable to write to file
      */
     public void writeToCsv(ArrayList<Reservation> reservations) throws IOException {
-        String[] header = {"ID", "Name", "TelNo", "NumPax", "ResvDate", "ResvTime", "ResvSession", "TableNum" };
+        String[] header = {"ID", "Name", "TelNo", "NumPax", "ResvDate", "ResvTime", "ResvSession", "TableNum"};
         BufferedWriter csvFile = FileIOHelper.getFileBufferedWriter(this.reservationCsv);
         ArrayList<String[]> toWrite = new ArrayList<>();
         toWrite.add(header);
