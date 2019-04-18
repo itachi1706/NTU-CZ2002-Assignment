@@ -87,15 +87,19 @@ public class FoodMenuUI extends BaseMenu {
         switch (selection) {
             case 1:
                 printType = MenuItem.MenuItemType.MAIN;
+                printHeader("Mains");
                 break;
             case 2:
                 printType = MenuItem.MenuItemType.DESSERT;
+                printHeader("Desserts");
                 break;
             case 3:
                 printType = MenuItem.MenuItemType.DRINK;
+                printHeader("Drinks");
                 break;
             case 4:
                 printType = MenuItem.MenuItemType.ALL;
+                printHeader("All Items");
                 break;
             case 0:
                 return;
@@ -104,29 +108,10 @@ public class FoodMenuUI extends BaseMenu {
         }
         ArrayList<MenuItem> filteredMenu = MenuItem.retrieveMenuItemListFiltered(printType);
 
-        switch (selection) {
-            case 1:
-                printHeader("Mains");
-                break;
-            case 2:
-                printHeader("Desserts");
-                break;
-            case 3:
-                printHeader("Drinks");
-                break;
-            case 4:
-                printHeader("All Items");
-                break;
-            case 0:
-                return;
-            default:
-                throw new MenuChoiceInvalidException("Choose menu to print");
-        }
-
         int i = 1;
         System.out.printf("%-5s %-50s %-10s %-6s %-9s\n", "ID", "Name", "Type", "Price", "Description");
         printBreaks();
-        for (MenuItem mi : MainApp.menuItems) {
+        for (MenuItem mi : filteredMenu) {
             System.out.printf("%-5s %-50s %-10s %-6s %-9s\n", mi.getId(), mi.getName(), mi.getType(), mi.getPrice(), mi.getDescription());
             i++;
         }
