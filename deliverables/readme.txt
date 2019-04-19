@@ -176,23 +176,29 @@ The Program is split into various menu items:
 6.2) If number of pax is valid
 6.2.1) If appropriate tables for the number of pax is not available, system will show message that it is unavailable, and return to Reservation Menu.
 6.2.2) If appropriate tables are available, system will retrieve the first available table, assign it to the reservation. System will then display successful message and the assigned table number for that reservation, and return to Reservation Menu.
-7) User can also (2) Check for reservation booking
-8) User will be prompted to input their telephone number to identify reservation booking.
-8.1) If telephone number is not found within the list of reservation, display that the reservation is not found. Returns to Reservation menu.
-8.2) If telephone number is found, display all of the reservations linked under the single telephone number. Return to Reservation menu.
-9) User can also (3) Remove reservation booking.
-10) User will be prompted to input telephone number to identify reservation booking.
-10.1) If telephone number not found, system shows not found message and returns to Reservation menu,
-10.2) If telephone number is found
-10.2.1) If telephone number is linked to only 1 reservation, user is prompted to confirm whether they want to delete
-10.2.1.1) If yes, proceed with deletion, show successful message and return to Reservation menu
-10.2.1.2) If no, return to Reservation menu
-10.2.2) If telephone number is linked to more than 1 reservations, system displays all the reservations linked to the telephone number.
-10.2.2.1) Prompts user to input reservation ID from the list to delete. If invalid ID, return to reservation menu.
-10.2.2.2) Prompts user to input reservation Id from the list to delete. If valid ID, proceed with deletion, show successful message and return to reservation menu.
-11) If needed, user can (4) List all current reservations, which will list out every single reservation and return to Reservation Menu.
-12) User can (6) Check for expired reservations
-12.1) System checks and displays the number of reservatons expired and removed at that point of time.
+
+## Check Reservation Flow ##
+1) User can also (2) Check for reservation booking
+2) User will be prompted to input their telephone number to identify reservation booking.
+2.1) If telephone number is not found within the list of reservation, display that the reservation is not found. Returns to Reservation menu.
+2.2) If telephone number is found, display all of the reservations linked under the single telephone number. Return to Reservation menu.
+
+## Remove Reservation Flow ##
+1) User can also (3) Remove reservation booking.
+2) User will be prompted to input telephone number to identify reservation booking.
+2.1) If telephone number not found, system shows not found message and returns to Reservation menu,
+2.2) If telephone number is found
+2.2.1) If telephone number is linked to only 1 reservation, user is prompted to confirm whether they want to delete
+2.2.1.1) If yes, proceed with deletion, show successful message and return to Reservation menu
+2.2.1.2) If no, return to Reservation menu
+2.2.2) If telephone number is linked to more than 1 reservations, system displays all the reservations linked to the telephone number.
+2.2.2.1) Prompts user to input reservation ID from the list to delete. If invalid ID, return to reservation menu.
+2.2.2.2) Prompts user to input reservation Id from the list to delete. If valid ID, proceed with deletion, show successful message and return to reservation menu.
+
+## List all Reservation Flow ##
+1) If needed, user can (4) List all current reservations, which will list out every single reservation and return to Reservation Menu.
+2) User can (6) Check for expired reservations
+2.1) System checks and displays the number of reservatons expired and removed at that point of time.
 
 ## Print Sales Revenue Report Flow ##
 1) Select (7) Print sale revenue report
